@@ -41,7 +41,7 @@
     "yaml": "^2.9.1"
   },
   "devDependencies": {
-    "@graphql-codegen/cli": "^7.4.6",
+    "@graphql-codegen/cli": "^8.0.0",
     "@graphql-codegen/typescript": "^6.1.2",
     "@graphql-codegen/typescript-operations": "^6.2.0",
     "@types/node": "^24.19.2",
