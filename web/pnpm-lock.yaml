@@ -88,8 +88,8 @@ importers:
         specifier: ^0.157.0
         version: 0.157.0
       '@oxc-parser/binding-linux-x64-gnu':
-        specifier: ^0.157.0
-        version: 0.157.0
+        specifier: ^0.159.0
+        version: 0.159.0
       '@oxc-resolver/binding-linux-x64-gnu':
         specifier: ^11.24.2
         version: 11.24.2
@@ -1282,6 +1282,13 @@ packages:
 
   '@oxc-parser/binding-linux-x64-gnu@0.157.0':
     resolution: {integrity: sha512-C4BY4QSVzN6R03Ner3r6EtIvLNR4VW4RAb63m+L0tiF/zD7grkBHMn1svyrOBFR4i32+GWJHu05xC4gGQYBhtA==}
+    engines: {node: ^20.19.0 || >=22.12.0}
+    cpu: [x64]
+    os: [linux]
+    libc: [glibc]
+
+  '@oxc-parser/binding-linux-x64-gnu@0.159.0':
+    resolution: {integrity: sha512-dH2vcVJi2sqSd2S51WB/LXyoJKho+TL7UoCDOuMZ+0mggFF9Gf4fjspo89hZnT/KrINBJg3UsGlfogHGHUmQNA==}
     engines: {node: ^20.19.0 || >=22.12.0}
     cpu: [x64]
     os: [linux]
@@ -4487,6 +4494,9 @@ snapshots:
     optional: true
 
   '@oxc-parser/binding-linux-x64-gnu@0.157.0':
+    optional: true
+
+  '@oxc-parser/binding-linux-x64-gnu@0.159.0':
     optional: true
 
   '@oxc-parser/binding-linux-x64-musl@0.121.0':
