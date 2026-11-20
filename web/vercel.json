@@ -1,0 +1,13 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "node",
+  "fluid": true,
+  "installCommand": "pnpm install --frozen-lockfile --config.node-linker=hoisted",
+  "buildCommand": "bash scripts/vercel-build.sh",
+  "regions": ["iad1"],
+  "functions": {
+    "server.ts": {
+      "maxDuration": 60
+    }
+  }
+}

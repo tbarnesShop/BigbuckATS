@@ -1,0 +1,38 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require_relative "../config/boot"
+require_relative "../lib/local_security/recovery"
+
+begin
+  database = LocalSecurity::Database.new
+  recovery = LocalSecurity::Recovery.new(database)
+  case ARGV.shift
+  when "setup"
+    database.provision!
+    database.verify!
+  when "verify"
+    database.verify!
+  when "run"
+    role = ARGV.shift
+    raise LocalSecurity::Error, "Supply a profile and command" if ARGV.empty?
+    database.run!(role, *ARGV)
+  when "backup"
+    recovery.backup!
+  when "export-erasures"
+    recovery.export_erasures!
+  when "recover"
+    raise LocalSecurity::Error, "Supply a snapshot directory and fresh ledger file" unless ARGV.length == 2
+    recovery.recover!(*ARGV)
+  when "drill"
+    require_relative "../lib/local_security/drill"
+    LocalSecurity::Drill.new(database).run!
+  when "scanner-check"
+    require_relative "../lib/local_security/scanner_check"
+    LocalSecurity::ScannerCheck.run!
+  else
+    abort "Usage: bin/local-security {setup|verify|run PROFILE COMMAND...|backup|export-erasures|recover SNAPSHOT LEDGER|drill|scanner-check}"
+  end
+rescue LocalSecurity::Error => error
+  abort "Local security check failed: #{error.message}"
+end

@@ -1,0 +1,3228 @@
+{
+  "generatedAt": "2026-11-10T05:10:04.666Z",
+  "operations": [
+    {
+      "operationId": "acceptPublicOffer",
+      "summary": "Accept an offer via public token",
+      "method": "post",
+      "path": "/public/offers/{token}/accept",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": [
+        {
+          "name": "token",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "addHiringTeamMember",
+      "summary": "Put an active member on the job's hiring team in a role",
+      "method": "post",
+      "path": "/jobs/{id}/hiring_team/members",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "addJobApplicantsToProject",
+      "summary": "Add a job's applicants (default rejected and withdrawn, the silver medalists) to a pool",
+      "method": "post",
+      "path": "/projects/{id}/from_job",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "addPeopleToProject",
+      "summary": "Add many people to a pool by ids, by search filters, or by the pool's saved search (smart pool refresh)",
+      "method": "post",
+      "path": "/projects/{id}/people",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "addProjectMember",
+      "summary": "Add a person to a sourcing project",
+      "method": "post",
+      "path": "/projects/{id}/members",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "applyConfigPlan",
+      "summary": "Apply a previously created config plan",
+      "method": "post",
+      "path": "/config/apply",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": []
+    },
+    {
+      "operationId": "approveAgentProposal",
+      "summary": "Approve a proposal, optionally with an edited opener; enrolls through the normal outreach checks",
+      "method": "post",
+      "path": "/agent_proposals/{id}/approve",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "approveOffer",
+      "summary": "Approve a pending offer approval",
+      "method": "post",
+      "path": "/offers/{id}/approve",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "archiveCustomField",
+      "summary": "Archive a field; its values are kept",
+      "method": "post",
+      "path": "/custom_fields/{id}/archive",
+      "write": true,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "archiveMessageTemplate",
+      "summary": "Archive a message template (hidden from lists; sequences already using it keep working)",
+      "method": "post",
+      "path": "/message_templates/{id}/archive",
+      "write": true,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "bookPanel",
+      "summary": "Book an interview panel for an application",
+      "method": "post",
+      "path": "/applications/{id}/bookings",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "bookPublicSlot",
+      "summary": "Candidate books a slot from a scheduling link",
+      "method": "post",
+      "path": "/public/scheduling/{token}/book",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": [
+        {
+          "name": "token",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "bulkApproveAgentProposals",
+      "summary": "Approve several proposals with their drafted openers (people only; agents cannot approve)",
+      "method": "post",
+      "path": "/agent_proposals/bulk_approve",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": []
+    },
+    {
+      "operationId": "bulkEnrollSequence",
+      "summary": "Enroll many people in a sequence",
+      "method": "post",
+      "path": "/sequences/{id}/bulk_enroll",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "bulkMoveProjectMembers",
+      "summary": "Move many pool members to one stage",
+      "method": "post",
+      "path": "/projects/{id}/transitions",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "bulkPeopleAction",
+      "summary": "Bulk enroll, DNC, or add people to a project",
+      "method": "post",
+      "path": "/people/bulk",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": []
+    },
+    {
+      "operationId": "cancelInterview",
+      "summary": "Cancel an interview",
+      "method": "post",
+      "path": "/interviews/{id}/cancel",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "cancelTask",
+      "summary": "Cancel an open task",
+      "method": "post",
+      "path": "/tasks/{id}/cancel",
+      "write": true,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "changeCustomFieldType",
+      "summary": "Convert a field and its values to another type (dry_run previews counts)",
+      "method": "post",
+      "path": "/custom_fields/{id}/type_change",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "classifyCommunication",
+      "summary": "Reclassify an inbound message (interested, not_interested, question, unsubscribe, out_of_office, other); unsubscribe opts the person out",
+      "method": "patch",
+      "path": "/communications/{id}",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "closeRequisition",
+      "summary": "Close a requisition",
+      "method": "post",
+      "path": "/requisitions/{id}/close",
+      "write": true,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "completeDataRequest",
+      "summary": "Fulfil a request — access packet or erasure (legal holds refuse)",
+      "method": "post",
+      "path": "/data_requests/{id}/complete",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "completeSourcingTask",
+      "summary": "Mark a sourcing task complete",
+      "method": "post",
+      "path": "/sourcing_tasks/{id}/complete",
+      "write": true,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "completeTask",
+      "summary": "Complete a task; a task that paused a sequence resumes it",
+      "method": "post",
+      "path": "/tasks/{id}/complete",
+      "write": true,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "confirmPublicUnsubscribe",
+      "summary": "Opt out via an unsubscribe link (also the RFC 8058 one-click target)",
+      "method": "post",
+      "path": "/public/unsubscribe/{token}",
+      "write": true,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "token",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "convertProjectMember",
+      "summary": "Convert a pool member into a job application",
+      "method": "post",
+      "path": "/project_members/{id}/convert",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "createAffiliation",
+      "summary": "Link a person to a company with a title",
+      "method": "post",
+      "path": "/affiliations",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": []
+    },
+    {
+      "operationId": "createAgent",
+      "summary": "Create an agent you own. It acts with its scopes intersected with your role",
+      "method": "post",
+      "path": "/agents",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": []
+    },
+    {
+      "operationId": "createAgentCredential",
+      "summary": "Issue a bearer token for an agent. The token is returned once",
+      "method": "post",
+      "path": "/agents/{id}/credentials",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "createApplication",
+      "summary": "Create an application",
+      "method": "post",
+      "path": "/applications",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": []
+    },
+    {
+      "operationId": "createApplicationOffer",
+      "summary": "Create a draft offer on an application",
+      "method": "post",
+      "path": "/applications/{id}/offers",
+      "write": true,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "createApplicationQuestionTemplate",
+      "summary": "Create a question template owned by the authenticated recruiter",
+      "method": "post",
+      "path": "/application_question_templates",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": []
+    },
+    {
+      "operationId": "createApplicationTransition",
+      "summary": "Move, reject, withdraw, or hire an application",
+      "method": "post",
+      "path": "/applications/{id}/transitions",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "createCalendarConnection",
+      "summary": "Connect a calendar. Unverified domains are refused. Without a real grant the connection stays pending.",
+      "method": "post",
+      "path": "/calendar_connections",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": []
+    },
+    {
+      "operationId": "createCompany",
+      "summary": "Create a company",
+      "method": "post",
+      "path": "/companies",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": []
+    },
+    {
+      "operationId": "createConfigPlan",
+      "summary": "Plan a config apply from documents (kind/key/spec)",
+      "method": "post",
+      "path": "/config/plans",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": []
+    },
+    {
+      "operationId": "createCredential",
+      "summary": "Create a personal token (scopes ∩ your role) or an integration token (needs integration.manage)",
+      "method": "post",
+      "path": "/credentials",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": []
+    },
+    {
+      "operationId": "createCustomField",
+      "summary": "Add a custom field definition (version 1)",
+      "method": "post",
+      "path": "/custom_fields",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": []
+    },
+    {
+      "operationId": "createDataRequest",
+      "summary": "Log a data-subject request (access, correction, erasure)",
+      "method": "post",
+      "path": "/data_requests",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": []
+    },
+    {
+      "operationId": "createDncCompany",
+      "summary": "Add a company or domain to the DNC list",
+      "method": "post",
+      "path": "/dnc_companies",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": []
+    },
+    {
+      "operationId": "createImport",
+      "summary": "Import people from CSV (field mapping + dry run)",
+      "method": "post",
+      "path": "/imports",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": []
+    },
+    {
+      "operationId": "createJob",
+      "summary": "Create a job",
+      "method": "post",
+      "path": "/jobs",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": []
+    },
+    {
+      "operationId": "createJobPosting",
+      "summary": "Create an independently targeted posting for a job",
+      "method": "post",
+      "path": "/jobs/{job_id}/postings",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": [
+        {
+          "name": "job_id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "createLegalHold",
+      "summary": "Place a legal hold on a person, application or job",
+      "method": "post",
+      "path": "/legal_holds",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": []
+    },
+    {
+      "operationId": "createMailbox",
+      "summary": "Connect a personal or shared mailbox",
+      "method": "post",
+      "path": "/mailboxes",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": []
+    },
+    {
+      "operationId": "createMessageTemplate",
+      "summary": "Create a message template",
+      "method": "post",
+      "path": "/message_templates",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": []
+    },
+    {
+      "operationId": "createOauthIdentity",
+      "summary": "Bind an external subject and client to a tenant identity (requires integration.manage)",
+      "method": "post",
+      "path": "/oauth_identities",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": []
+    },
+    {
+      "operationId": "createOrganization",
+      "summary": "Provision an organization with owner role and seeded dimensions",
+      "method": "post",
+      "path": "/organizations",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": []
+    },
+    {
+      "operationId": "createPerson",
+      "summary": "Create a person",
+      "method": "post",
+      "path": "/people",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": []
+    },
+    {
+      "operationId": "createPersonNote",
+      "summary": "Add a note to a person",
+      "method": "post",
+      "path": "/people/{person_id}/notes",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": [
+        {
+          "name": "person_id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "createProject",
+      "summary": "Create a sourcing project",
+      "method": "post",
+      "path": "/projects",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": []
+    },
+    {
+      "operationId": "createReferral",
+      "summary": "Submit a referral (creates or attaches a person)",
+      "method": "post",
+      "path": "/referrals",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": []
+    },
+    {
+      "operationId": "createRequisition",
+      "summary": "Create a draft requisition with headcount",
+      "method": "post",
+      "path": "/requisitions",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": []
+    },
+    {
+      "operationId": "createSavedSearch",
+      "summary": "Save a people search filter set",
+      "method": "post",
+      "path": "/saved_searches",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": []
+    },
+    {
+      "operationId": "createSchedulingLink",
+      "summary": "Create a candidate self-schedule link",
+      "method": "post",
+      "path": "/applications/{id}/scheduling_links",
+      "write": true,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "createScorecard",
+      "summary": "Submit an interview scorecard",
+      "method": "post",
+      "path": "/scorecards",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": []
+    },
+    {
+      "operationId": "createScorecardRubric",
+      "summary": "Create a scorecard rubric",
+      "method": "post",
+      "path": "/scorecard_rubrics",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": []
+    },
+    {
+      "operationId": "createSequence",
+      "summary": "Create an outreach sequence",
+      "method": "post",
+      "path": "/sequences",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": []
+    },
+    {
+      "operationId": "createSession",
+      "summary": "Demo email sign-in (demo deployments only); returns a short-lived session token",
+      "method": "post",
+      "path": "/sessions",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": []
+    },
+    {
+      "operationId": "createTag",
+      "summary": "Create a tag",
+      "method": "post",
+      "path": "/tags",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": []
+    },
+    {
+      "operationId": "createTask",
+      "summary": "Create a follow-up task for a person",
+      "method": "post",
+      "path": "/tasks",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": []
+    },
+    {
+      "operationId": "createWebhook",
+      "summary": "Create a webhook endpoint",
+      "method": "post",
+      "path": "/webhooks",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": []
+    },
+    {
+      "operationId": "declinePublicOffer",
+      "summary": "Decline an offer via public token",
+      "method": "post",
+      "path": "/public/offers/{token}/decline",
+      "write": true,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "token",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "deleteCurrentSession",
+      "summary": "Sign out (revokes a session token)",
+      "method": "delete",
+      "path": "/sessions/current",
+      "write": true,
+      "hasJsonBody": false,
+      "parameters": []
+    },
+    {
+      "operationId": "deleteDncCompany",
+      "summary": "Remove a DNC company entry",
+      "method": "delete",
+      "path": "/dnc_companies/{id}",
+      "write": true,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "deletePersonNote",
+      "summary": "Delete a note (author only)",
+      "method": "delete",
+      "path": "/notes/{id}",
+      "write": true,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "deleteSavedSearch",
+      "summary": "Delete a saved search",
+      "method": "delete",
+      "path": "/saved_searches/{id}",
+      "write": true,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "drainWebhooks",
+      "summary": "Relay pending events and deliver due webhooks now",
+      "method": "post",
+      "path": "/webhooks/drain",
+      "write": true,
+      "hasJsonBody": false,
+      "parameters": []
+    },
+    {
+      "operationId": "enrollInSequence",
+      "summary": "Enroll a person in a sequence (sends first step)",
+      "method": "post",
+      "path": "/sequences/{id}/enrollments",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "enrollPlannedPeople",
+      "summary": "Enroll the eligible people from a reviewed selection (re-plans at commit time, up to 500)",
+      "method": "post",
+      "path": "/sequences/{id}/enroll_planned",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "erasePerson",
+      "summary": "Erase or anonymize a person (legal holds refuse)",
+      "method": "post",
+      "path": "/people/{id}/erase",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "exchangeSessionCode",
+      "summary": "Trade the one-time code from Google sign-in for a session token",
+      "method": "post",
+      "path": "/sessions/exchange",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": []
+    },
+    {
+      "operationId": "finishGoogleSignIn",
+      "summary": "Google sign-in callback (browser redirect with a one-time code)",
+      "method": "get",
+      "path": "/oauth/google/callback",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": []
+    },
+    {
+      "operationId": "getAccessPacket",
+      "summary": "Export everything held about a person (needs person.export; audited)",
+      "method": "get",
+      "path": "/people/{id}/access_packet",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "getAgent",
+      "summary": "Get an agent",
+      "method": "get",
+      "path": "/agents/{id}",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "getApplication",
+      "summary": "Get an application (includes person, job, pipeline stages, offers)",
+      "method": "get",
+      "path": "/applications/{id}",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "getApplicationForm",
+      "summary": "Get the careers application form (required fields, standard fields, screening questions)",
+      "method": "get",
+      "path": "/application_form",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": []
+    },
+    {
+      "operationId": "getApplicationMissingFeedback",
+      "summary": "Required interviews in the current stage still missing submitted feedback",
+      "method": "get",
+      "path": "/applications/{id}/missing_feedback",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "getCompany",
+      "summary": "Get a company",
+      "method": "get",
+      "path": "/companies/{id}",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "getCompliancePolicy",
+      "summary": "Get a compliance policy",
+      "method": "get",
+      "path": "/compliance_policies/{id}",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "getCurrentSession",
+      "summary": "Who this credential acts as (user, agent, organization, effective permissions)",
+      "method": "get",
+      "path": "/sessions/current",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": []
+    },
+    {
+      "operationId": "getCustomField",
+      "summary": "Get a custom field definition with its version history",
+      "method": "get",
+      "path": "/custom_fields/{id}",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "getEnrollment",
+      "summary": "Get a sequence enrollment",
+      "method": "get",
+      "path": "/enrollments/{id}",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "getFunnelAnalytics",
+      "summary": "Application funnel analytics",
+      "method": "get",
+      "path": "/analytics/funnel",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "job_id",
+          "in": "query",
+          "required": false
+        }
+      ]
+    },
+    {
+      "operationId": "getGoogleSignInStatus",
+      "summary": "Whether Google sign-in is configured",
+      "method": "get",
+      "path": "/oauth/google/status",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": []
+    },
+    {
+      "operationId": "getHealth",
+      "summary": "Liveness",
+      "method": "get",
+      "path": "/health",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": []
+    },
+    {
+      "operationId": "getImport",
+      "summary": "Get an import run and its rows",
+      "method": "get",
+      "path": "/imports/{id}",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "getInternalCareers",
+      "summary": "Careers page for the authenticated organization member",
+      "method": "get",
+      "path": "/internal/careers",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": []
+    },
+    {
+      "operationId": "getInterview",
+      "summary": "Get an interview",
+      "method": "get",
+      "path": "/interviews/{id}",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "getJob",
+      "summary": "Get a job",
+      "method": "get",
+      "path": "/jobs/{id}",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "getOffer",
+      "summary": "Get an offer",
+      "method": "get",
+      "path": "/offers/{id}",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "getOutreachFunnel",
+      "summary": "Outreach funnel for a window (default last 30 days): enrolled, contacted, replied, reply classification, applied, hired",
+      "method": "get",
+      "path": "/analytics/outreach",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "from",
+          "in": "query",
+          "required": false
+        },
+        {
+          "name": "to",
+          "in": "query",
+          "required": false
+        },
+        {
+          "name": "sequence_id",
+          "in": "query",
+          "required": false
+        }
+      ]
+    },
+    {
+      "operationId": "getPerson",
+      "summary": "Get a person",
+      "method": "get",
+      "path": "/people/{id}",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "getPersonDocument",
+      "summary": "Read a clean attached file belonging to a visible person",
+      "method": "get",
+      "path": "/people/{person_id}/documents/{id}",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "person_id",
+          "in": "path",
+          "required": true
+        },
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        },
+        {
+          "name": "download",
+          "in": "query",
+          "required": false
+        }
+      ]
+    },
+    {
+      "operationId": "getPersonFeed",
+      "summary": "The person's activity feed - emails, notes, tasks, tags, stage moves - newest first",
+      "method": "get",
+      "path": "/people/{id}/feed",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "getPersonTimeline",
+      "summary": "Timeline events for a person",
+      "method": "get",
+      "path": "/people/{id}/timeline",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "getProject",
+      "summary": "Get a sourcing project",
+      "method": "get",
+      "path": "/projects/{id}",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "getProjectMember",
+      "summary": "Get a pool member",
+      "method": "get",
+      "path": "/project_members/{id}",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "getPublicCareers",
+      "summary": "Public careers page with independently published, non-confidential public postings",
+      "method": "get",
+      "path": "/public/careers/{slug}",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "slug",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "getPublicOffer",
+      "summary": "Public offer letter by signed token",
+      "method": "get",
+      "path": "/public/offers/{token}",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "token",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "getPublicScheduling",
+      "summary": "Public scheduling link status",
+      "method": "get",
+      "path": "/public/scheduling/{token}",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "token",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "getPublicUnsubscribe",
+      "summary": "Show an unsubscribe link's recipient (masked)",
+      "method": "get",
+      "path": "/public/unsubscribe/{token}",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "token",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "getRediscoveryCriteria",
+      "summary": "A job's rediscovery criteria (must / nice-to-have)",
+      "method": "get",
+      "path": "/jobs/{job_id}/rediscovery/criteria",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "job_id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "getReferral",
+      "summary": "Get a referral",
+      "method": "get",
+      "path": "/referrals/{id}",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "getRequisition",
+      "summary": "Get a requisition with filled headcount",
+      "method": "get",
+      "path": "/requisitions/{id}",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "getSequence",
+      "summary": "Get a sequence",
+      "method": "get",
+      "path": "/sequences/{id}",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "getSequenceStats",
+      "summary": "Per-step message outcomes and replies, plus enrollment totals",
+      "method": "get",
+      "path": "/sequences/{id}/stats",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "getSourcingAnalytics",
+      "summary": "Sequence and outreach analytics",
+      "method": "get",
+      "path": "/analytics/sourcing",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": []
+    },
+    {
+      "operationId": "getToday",
+      "summary": "Recruiter home (feedback owed, new applicants, this week's interviews, pending offers, active jobs). Ids only.",
+      "method": "get",
+      "path": "/today",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": []
+    },
+    {
+      "operationId": "ingestInboundMessage",
+      "summary": "Record an inbound message (reply detection stops sequences)",
+      "method": "post",
+      "path": "/mailboxes/{id}/inbound",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "jobFormOptions",
+      "summary": "Departments and active members to choose from when creating a job",
+      "method": "get",
+      "path": "/jobs/form_options",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": []
+    },
+    {
+      "operationId": "listAffiliations",
+      "summary": "List person–company affiliations (filter with person_id)",
+      "method": "get",
+      "path": "/affiliations",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": []
+    },
+    {
+      "operationId": "listAgentProposals",
+      "summary": "What agents have proposed and what was decided",
+      "method": "get",
+      "path": "/agent_proposals",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "status",
+          "in": "query",
+          "required": false
+        },
+        {
+          "name": "job_id",
+          "in": "query",
+          "required": false
+        }
+      ]
+    },
+    {
+      "operationId": "listAgents",
+      "summary": "List your agents (everyone's with agent.manage)",
+      "method": "get",
+      "path": "/agents",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": []
+    },
+    {
+      "operationId": "listAllProjectMembers",
+      "summary": "List pool members (filter with person_id or project_id)",
+      "method": "get",
+      "path": "/project_members",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": []
+    },
+    {
+      "operationId": "listApplicationInterviews",
+      "summary": "List interviews for an application",
+      "method": "get",
+      "path": "/applications/{id}/interviews",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "listApplicationQuestionTemplates",
+      "summary": "List reusable application question templates and their owners",
+      "method": "get",
+      "path": "/application_question_templates",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": []
+    },
+    {
+      "operationId": "listApplications",
+      "summary": "List applications across jobs (filter with status and stage)",
+      "method": "get",
+      "path": "/applications",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "job_id",
+          "in": "query",
+          "required": false
+        },
+        {
+          "name": "person_id",
+          "in": "query",
+          "required": false
+        },
+        {
+          "name": "status",
+          "in": "query",
+          "required": false
+        },
+        {
+          "name": "stage",
+          "in": "query",
+          "required": false
+        },
+        {
+          "name": "sort",
+          "in": "query",
+          "required": false
+        },
+        {
+          "name": "page",
+          "in": "query",
+          "required": false
+        },
+        {
+          "name": "per_page",
+          "in": "query",
+          "required": false
+        }
+      ]
+    },
+    {
+      "operationId": "listApplicationTransitions",
+      "summary": "Stage transition history for an application",
+      "method": "get",
+      "path": "/applications/{id}/transitions",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "listAwaitingSchedule",
+      "summary": "Candidates whose current stage plans interviews nobody has booked yet",
+      "method": "get",
+      "path": "/interviews/awaiting_schedule",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "scope",
+          "in": "query",
+          "required": false
+        }
+      ]
+    },
+    {
+      "operationId": "listCalendarConnections",
+      "summary": "List calendar connections. Grants are not returned.",
+      "method": "get",
+      "path": "/calendar_connections",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": []
+    },
+    {
+      "operationId": "listCompanies",
+      "summary": "List companies",
+      "method": "get",
+      "path": "/companies",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": []
+    },
+    {
+      "operationId": "listCompliancePolicies",
+      "summary": "List compliance policies",
+      "method": "get",
+      "path": "/compliance_policies",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": []
+    },
+    {
+      "operationId": "listConfigPlans",
+      "summary": "List recent config plans",
+      "method": "get",
+      "path": "/config/plans",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": []
+    },
+    {
+      "operationId": "listCredentials",
+      "summary": "List your credentials and your agents' (all with integration.manage). Tokens are never returned",
+      "method": "get",
+      "path": "/credentials",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": []
+    },
+    {
+      "operationId": "listCustomFields",
+      "summary": "List custom field definitions (entity, include_archived)",
+      "method": "get",
+      "path": "/custom_fields",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": []
+    },
+    {
+      "operationId": "listDataRequests",
+      "summary": "List data-subject requests, soonest due first",
+      "method": "get",
+      "path": "/data_requests",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": []
+    },
+    {
+      "operationId": "listDemoMemberships",
+      "summary": "Existing memberships for the demo role picker. Does not create users or memberships.",
+      "method": "get",
+      "path": "/sessions/demo_memberships",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "slug",
+          "in": "query",
+          "required": false
+        }
+      ]
+    },
+    {
+      "operationId": "listDncCompanies",
+      "summary": "List do-not-contact companies and domains",
+      "method": "get",
+      "path": "/dnc_companies",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": []
+    },
+    {
+      "operationId": "listEnrollments",
+      "summary": "List sequence enrollments",
+      "method": "get",
+      "path": "/enrollments",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "person_id",
+          "in": "query",
+          "required": false
+        }
+      ]
+    },
+    {
+      "operationId": "listEvents",
+      "summary": "List recent outbox events",
+      "method": "get",
+      "path": "/events",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "event_type",
+          "in": "query",
+          "required": false
+        }
+      ]
+    },
+    {
+      "operationId": "listImports",
+      "summary": "List recent CSV import runs",
+      "method": "get",
+      "path": "/imports",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": []
+    },
+    {
+      "operationId": "listInterviews",
+      "summary": "List interviews across jobs (filter with tab upcoming, schedule, feedback or mine)",
+      "method": "get",
+      "path": "/interviews",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "tab",
+          "in": "query",
+          "required": false
+        }
+      ]
+    },
+    {
+      "operationId": "listJobPostings",
+      "summary": "List all postings and the mandatory organization form for a job",
+      "method": "get",
+      "path": "/jobs/{job_id}/postings",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "job_id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "listJobs",
+      "summary": "List jobs in the current organization",
+      "method": "get",
+      "path": "/jobs",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": []
+    },
+    {
+      "operationId": "listLegalHolds",
+      "summary": "List legal holds (active=true for current holds)",
+      "method": "get",
+      "path": "/legal_holds",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": []
+    },
+    {
+      "operationId": "listMailboxes",
+      "summary": "List connected mailboxes",
+      "method": "get",
+      "path": "/mailboxes",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": []
+    },
+    {
+      "operationId": "listMailboxMessages",
+      "summary": "List what a Test mailbox sent and received",
+      "method": "get",
+      "path": "/mailboxes/{id}/messages",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "listMessageTemplates",
+      "summary": "List message templates (filter with status active, archived or all)",
+      "method": "get",
+      "path": "/message_templates",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "status",
+          "in": "query",
+          "required": false
+        }
+      ]
+    },
+    {
+      "operationId": "listOauthIdentities",
+      "summary": "List provisioned OAuth identities (requires integration.manage)",
+      "method": "get",
+      "path": "/oauth_identities",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": []
+    },
+    {
+      "operationId": "listOffers",
+      "summary": "List offers, with counts by status. status filters the rows; counts stay the breakdown before that filter.",
+      "method": "get",
+      "path": "/offers",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "application_id",
+          "in": "query",
+          "required": false
+        },
+        {
+          "name": "status",
+          "in": "query",
+          "required": false
+        }
+      ]
+    },
+    {
+      "operationId": "listOutreachSnapshots",
+      "summary": "Daily outreach funnel snapshots, org-wide or for one sequence",
+      "method": "get",
+      "path": "/analytics/outreach_snapshots",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "from",
+          "in": "query",
+          "required": false
+        },
+        {
+          "name": "to",
+          "in": "query",
+          "required": false
+        },
+        {
+          "name": "sequence_id",
+          "in": "query",
+          "required": false
+        }
+      ]
+    },
+    {
+      "operationId": "listPeople",
+      "summary": "List people in the current organization",
+      "method": "get",
+      "path": "/people",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "q",
+          "in": "query",
+          "required": false
+        },
+        {
+          "name": "lifecycle_stage",
+          "in": "query",
+          "required": false
+        },
+        {
+          "name": "visibility",
+          "in": "query",
+          "required": false
+        },
+        {
+          "name": "do_not_contact",
+          "in": "query",
+          "required": false
+        },
+        {
+          "name": "owner_user_id",
+          "in": "query",
+          "required": false
+        },
+        {
+          "name": "tag",
+          "in": "query",
+          "required": false
+        },
+        {
+          "name": "not_tag",
+          "in": "query",
+          "required": false
+        },
+        {
+          "name": "source",
+          "in": "query",
+          "required": false
+        },
+        {
+          "name": "engagement_status",
+          "in": "query",
+          "required": false
+        },
+        {
+          "name": "location",
+          "in": "query",
+          "required": false
+        },
+        {
+          "name": "title",
+          "in": "query",
+          "required": false
+        },
+        {
+          "name": "company",
+          "in": "query",
+          "required": false
+        },
+        {
+          "name": "not_contacted_days",
+          "in": "query",
+          "required": false
+        },
+        {
+          "name": "contacted_within_days",
+          "in": "query",
+          "required": false
+        },
+        {
+          "name": "has_email",
+          "in": "query",
+          "required": false
+        },
+        {
+          "name": "sort",
+          "in": "query",
+          "required": false
+        },
+        {
+          "name": "limit",
+          "in": "query",
+          "required": false
+        },
+        {
+          "name": "page",
+          "in": "query",
+          "required": false
+        }
+      ]
+    },
+    {
+      "operationId": "listPersonCommunications",
+      "summary": "Conversation with a person",
+      "method": "get",
+      "path": "/people/{id}/communications",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "listPersonConsents",
+      "summary": "List a person's consent records, newest first",
+      "method": "get",
+      "path": "/people/{id}/consents",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "listPersonDocuments",
+      "summary": "List a visible person's resume and document metadata",
+      "method": "get",
+      "path": "/people/{person_id}/documents",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "person_id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "listPersonNotes",
+      "summary": "List a person's notes, pinned first",
+      "method": "get",
+      "path": "/people/{person_id}/notes",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "person_id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "listPersonTags",
+      "summary": "List a person's tags",
+      "method": "get",
+      "path": "/people/{person_id}/tags",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "person_id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "listProjectMembers",
+      "summary": "List members of a sourcing project",
+      "method": "get",
+      "path": "/projects/{id}/members",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "listProjectMemberTransitions",
+      "summary": "Stage history for a pool member",
+      "method": "get",
+      "path": "/project_members/{id}/transitions",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "listProjects",
+      "summary": "List sourcing projects (talent pools)",
+      "method": "get",
+      "path": "/projects",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": []
+    },
+    {
+      "operationId": "listRediscoveryQueue",
+      "summary": "The rediscovery review queue with per-criterion verdicts and evidence",
+      "method": "get",
+      "path": "/jobs/{job_id}/rediscovery/queue",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "job_id",
+          "in": "path",
+          "required": true
+        },
+        {
+          "name": "status",
+          "in": "query",
+          "required": false
+        },
+        {
+          "name": "bucket",
+          "in": "query",
+          "required": false
+        }
+      ]
+    },
+    {
+      "operationId": "listReferrals",
+      "summary": "List employee referrals",
+      "method": "get",
+      "path": "/referrals",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "job_id",
+          "in": "query",
+          "required": false
+        }
+      ]
+    },
+    {
+      "operationId": "listRequisitions",
+      "summary": "List requisitions / openings",
+      "method": "get",
+      "path": "/requisitions",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "status",
+          "in": "query",
+          "required": false
+        }
+      ]
+    },
+    {
+      "operationId": "listSavedSearches",
+      "summary": "List saved people searches for the current user",
+      "method": "get",
+      "path": "/saved_searches",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": []
+    },
+    {
+      "operationId": "listScorecardRubrics",
+      "summary": "List scorecard rubrics",
+      "method": "get",
+      "path": "/scorecard_rubrics",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": []
+    },
+    {
+      "operationId": "listScorecards",
+      "summary": "List the scorecards you may read (filter with interview_id or application_id)",
+      "method": "get",
+      "path": "/scorecards",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "interview_id",
+          "in": "query",
+          "required": false
+        },
+        {
+          "name": "application_id",
+          "in": "query",
+          "required": false
+        }
+      ]
+    },
+    {
+      "operationId": "listSequenceEnrollments",
+      "summary": "List enrollments in a sequence",
+      "method": "get",
+      "path": "/sequences/{id}/enrollments",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "listSequences",
+      "summary": "List outreach sequences",
+      "method": "get",
+      "path": "/sequences",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": []
+    },
+    {
+      "operationId": "listSourcingTasks",
+      "summary": "List open sourcing tasks from sequence steps",
+      "method": "get",
+      "path": "/sourcing_tasks",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "status",
+          "in": "query",
+          "required": false
+        },
+        {
+          "name": "person_id",
+          "in": "query",
+          "required": false
+        }
+      ]
+    },
+    {
+      "operationId": "listTags",
+      "summary": "List the tag vocabulary with person counts",
+      "method": "get",
+      "path": "/tags",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": []
+    },
+    {
+      "operationId": "listTasks",
+      "summary": "List follow-up tasks. The Today panel is assignee=me&due=today (overdue included).",
+      "method": "get",
+      "path": "/tasks",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "assignee",
+          "in": "query",
+          "required": false
+        },
+        {
+          "name": "due",
+          "in": "query",
+          "required": false
+        },
+        {
+          "name": "status",
+          "in": "query",
+          "required": false
+        },
+        {
+          "name": "person_id",
+          "in": "query",
+          "required": false
+        },
+        {
+          "name": "task_type",
+          "in": "query",
+          "required": false
+        }
+      ]
+    },
+    {
+      "operationId": "listTeam",
+      "summary": "Workspace members with their organization role, and each role's permissions (read-only)",
+      "method": "get",
+      "path": "/team",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": []
+    },
+    {
+      "operationId": "listWebhooks",
+      "summary": "List webhook endpoints",
+      "method": "get",
+      "path": "/webhooks",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": []
+    },
+    {
+      "operationId": "mergeTag",
+      "summary": "Merge this tag into another; people keep the target tag",
+      "method": "post",
+      "path": "/tags/{id}/merge",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "openRequisition",
+      "summary": "Open an approved requisition for hiring",
+      "method": "post",
+      "path": "/requisitions/{id}/open",
+      "write": true,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "pauseAgent",
+      "summary": "Pause an agent (its tokens stop working until resumed)",
+      "method": "post",
+      "path": "/agents/{id}/pause",
+      "write": true,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "planSequenceEnrollment",
+      "summary": "Dry run: who would be enrolled and why others are skipped (no_email, do_not_contact, opted_out, active_enrollment, company_dnc, cooldown, consent_blocked). Selects by person_ids, project_id, saved_search_id or filters.",
+      "method": "post",
+      "path": "/sequences/{id}/enrollment_plan",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "previewPanel",
+      "summary": "Preview available interview times without booking",
+      "method": "post",
+      "path": "/applications/{id}/booking_options",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "previewPersonMessage",
+      "summary": "Render a template or typed message for this person without sending it",
+      "method": "post",
+      "path": "/people/{id}/preview_message",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "previewSequence",
+      "summary": "Render every step of a sequence for one person from a mailbox",
+      "method": "get",
+      "path": "/sequences/{id}/preview",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        },
+        {
+          "name": "person_id",
+          "in": "query",
+          "required": true
+        },
+        {
+          "name": "mailbox_id",
+          "in": "query",
+          "required": false
+        }
+      ]
+    },
+    {
+      "operationId": "recordOfferResponse",
+      "summary": "Record the candidate's answer to a sent offer when it arrived outside the signed link",
+      "method": "post",
+      "path": "/offers/{id}/record_response",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "recordPersonConsent",
+      "summary": "Record a consent grant or withdrawal (append-only)",
+      "method": "post",
+      "path": "/people/{id}/consents",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "rediscoverTalent",
+      "summary": "Surface past applicants and silver medalists for a job",
+      "method": "get",
+      "path": "/jobs/{id}/rediscovery",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        },
+        {
+          "name": "limit",
+          "in": "query",
+          "required": false
+        }
+      ]
+    },
+    {
+      "operationId": "rejectAgentProposal",
+      "summary": "Reject a proposal (the person is marked not a fit in the review queue)",
+      "method": "post",
+      "path": "/agent_proposals/{id}/reject",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "rejectDataRequest",
+      "summary": "Reject a data-subject request with a note",
+      "method": "post",
+      "path": "/data_requests/{id}/reject",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "releaseLegalHold",
+      "summary": "Release a legal hold",
+      "method": "post",
+      "path": "/legal_holds/{id}/release",
+      "write": true,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "removeHiringTeamMember",
+      "summary": "Take a member off the job's hiring team",
+      "method": "post",
+      "path": "/jobs/{id}/hiring_team/members/{member_id}/remove",
+      "write": true,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        },
+        {
+          "name": "member_id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "replacePersonResume",
+      "summary": "Upload and replace a visible person's current resume",
+      "method": "post",
+      "path": "/people/{person_id}/documents",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": [
+        {
+          "name": "person_id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "rescheduleInterview",
+      "summary": "Reschedule an interview",
+      "method": "post",
+      "path": "/interviews/{id}/reschedule",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "rescindOffer",
+      "summary": "Rescind an offer",
+      "method": "post",
+      "path": "/offers/{id}/rescind",
+      "write": true,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "resendOffer",
+      "summary": "Issue a fresh candidate link for a sent offer (same letter and expiry)",
+      "method": "post",
+      "path": "/offers/{id}/resend",
+      "write": true,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "restoreCustomField",
+      "summary": "Restore an archived field",
+      "method": "post",
+      "path": "/custom_fields/{id}/restore",
+      "write": true,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "resumeAgent",
+      "summary": "Resume a paused agent",
+      "method": "post",
+      "path": "/agents/{id}/resume",
+      "write": true,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "reviewRediscoveryCandidate",
+      "summary": "Act on a queued person (consider, add_to_pool, enroll, not_a_fit, review_later), with optional feedback",
+      "method": "post",
+      "path": "/rediscovery_candidates/{id}/review",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "revokeAgent",
+      "summary": "Revoke an agent and all its tokens",
+      "method": "post",
+      "path": "/agents/{id}/revoke",
+      "write": true,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "revokeCredential",
+      "summary": "Revoke a credential",
+      "method": "post",
+      "path": "/credentials/{id}/revoke",
+      "write": true,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "revokeOauthIdentity",
+      "summary": "Disable an identity immediately for all issued access tokens (requires integration.manage)",
+      "method": "post",
+      "path": "/oauth_identities/{id}/revoke",
+      "write": true,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "rotateWebhookSecret",
+      "summary": "Rotate the endpoint signing key and return it once",
+      "method": "post",
+      "path": "/webhooks/{id}/rotate_secret",
+      "write": true,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "runRediscovery",
+      "summary": "Evaluate known people against the job's criteria and fill the review queue (people already decided on are left alone)",
+      "method": "post",
+      "path": "/jobs/{job_id}/rediscovery/run",
+      "write": true,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "job_id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "runSavedSearch",
+      "summary": "Run a saved search now and return the matching people",
+      "method": "get",
+      "path": "/saved_searches/{id}/people",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        },
+        {
+          "name": "limit",
+          "in": "query",
+          "required": false
+        }
+      ]
+    },
+    {
+      "operationId": "runSourcingAgent",
+      "summary": "Run the sourcing agent for a job: refresh rediscovery from the job's criteria and propose enrollments with drafted openers (pending approval unless org policy is unattended)",
+      "method": "post",
+      "path": "/jobs/{job_id}/sourcing_agent/run",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": [
+        {
+          "name": "job_id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "sendOffer",
+      "summary": "Send approved offer letter; returns candidate token",
+      "method": "post",
+      "path": "/offers/{id}/send",
+      "write": true,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "sendPersonCommunication",
+      "summary": "Send an email to a person",
+      "method": "post",
+      "path": "/people/{id}/communications",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "setCustomFieldValue",
+      "summary": "Set or clear one custom field value on a record",
+      "method": "put",
+      "path": "/custom_field_values",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": []
+    },
+    {
+      "operationId": "setRediscoveryCriteria",
+      "summary": "Replace a job's criteria. Each: {id?, label, kind: must|nice, match: {q|tag|location|title|company|source}}",
+      "method": "put",
+      "path": "/jobs/{job_id}/rediscovery/criteria",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": [
+        {
+          "name": "job_id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "simulateMailboxReply",
+      "summary": "Answer a message sent from a Test mailbox as the candidate (reply, bounce or auto_reply)",
+      "method": "post",
+      "path": "/mailboxes/{id}/simulate",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "startGoogleSignIn",
+      "summary": "Start Google sign-in (browser redirect)",
+      "method": "get",
+      "path": "/oauth/google",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": []
+    },
+    {
+      "operationId": "stopEnrollment",
+      "summary": "Stop a sequence enrollment",
+      "method": "post",
+      "path": "/enrollments/{id}/stop",
+      "write": true,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "submitInternalApplication",
+      "summary": "Apply to an internal posting as the authenticated organization member",
+      "method": "post",
+      "path": "/internal/careers/apply/{posting_id}",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": [
+        {
+          "name": "posting_id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "submitOffer",
+      "summary": "Submit offer for approval",
+      "method": "post",
+      "path": "/offers/{id}/submit",
+      "write": true,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "submitPublicApplication",
+      "summary": "Apply to a published posting. The path posting id wins over any body posting_id.",
+      "method": "post",
+      "path": "/public/careers/{slug}/apply/{posting_id}",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": [
+        {
+          "name": "slug",
+          "in": "path",
+          "required": true
+        },
+        {
+          "name": "posting_id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "syncPeople",
+      "summary": "Incremental people sync feed",
+      "method": "get",
+      "path": "/sync/people",
+      "write": false,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "sync_token",
+          "in": "query",
+          "required": false
+        }
+      ]
+    },
+    {
+      "operationId": "tagPerson",
+      "summary": "Tag a person by tag_id or name (created on first use); idempotent",
+      "method": "post",
+      "path": "/people/{person_id}/tags",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": [
+        {
+          "name": "person_id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "transitionProjectMember",
+      "summary": "Move a pool member to another stage",
+      "method": "post",
+      "path": "/project_members/{id}/transitions",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "untagPerson",
+      "summary": "Remove a tag from a person",
+      "method": "delete",
+      "path": "/people/{person_id}/tags/{id}",
+      "write": true,
+      "hasJsonBody": false,
+      "parameters": [
+        {
+          "name": "person_id",
+          "in": "path",
+          "required": true
+        },
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "updateApplicationForm",
+      "summary": "Set which standard fields the careers application form requires",
+      "method": "patch",
+      "path": "/application_form",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": []
+    },
+    {
+      "operationId": "updateApplicationQuestionTemplate",
+      "summary": "Edit or archive a template as its owner or a settings administrator",
+      "method": "patch",
+      "path": "/application_question_templates/{id}",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "updateCustomField",
+      "summary": "Change label, options, flags or data class (send expected_version)",
+      "method": "patch",
+      "path": "/custom_fields/{id}",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "updateHiringTeamMember",
+      "summary": "Change a hiring team member's role on the job",
+      "method": "patch",
+      "path": "/jobs/{id}/hiring_team/members/{member_id}",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        },
+        {
+          "name": "member_id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "updateJob",
+      "summary": "Update job openings, careers audience, and publication",
+      "method": "patch",
+      "path": "/jobs/{id}",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "updateJobPipeline",
+      "summary": "Add, rename, reorder or remove a stage on the job's pipeline",
+      "method": "patch",
+      "path": "/jobs/{id}/pipeline",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "updateJobPosting",
+      "summary": "Update posting audience, publication, template snapshot, or custom questions",
+      "method": "patch",
+      "path": "/postings/{id}",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "updateMailbox",
+      "summary": "Change a mailbox's daily sending cap, or pause, resume or disconnect it (only connected mailboxes send)",
+      "method": "patch",
+      "path": "/mailboxes/{id}",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "updateMessageTemplate",
+      "summary": "Edit a template's subject, body or type",
+      "method": "patch",
+      "path": "/message_templates/{id}",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "updateOfferChecklist",
+      "summary": "Track reference checks and the verbal offer alongside an offer",
+      "method": "patch",
+      "path": "/offers/{id}/checklist",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "updateOrganization",
+      "summary": "Update organization settings (including careers hero config)",
+      "method": "patch",
+      "path": "/organizations/{id}",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "updatePerson",
+      "summary": "Update person contact, company, and CRM fields",
+      "method": "patch",
+      "path": "/people/{id}",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "updatePersonNote",
+      "summary": "Edit or pin a note",
+      "method": "patch",
+      "path": "/notes/{id}",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "updateProject",
+      "summary": "Update a pool's name, description, owner or smart-pool saved search",
+      "method": "patch",
+      "path": "/projects/{id}",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "updateProjectMember",
+      "summary": "Set the per-member note on a pool member",
+      "method": "patch",
+      "path": "/project_members/{id}",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "updateSavedSearch",
+      "summary": "Rename a saved search or change its filters",
+      "method": "patch",
+      "path": "/saved_searches/{id}",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "updateScorecard",
+      "summary": "Correct a submitted scorecard (your own, or anyone's with scorecard.manage)",
+      "method": "patch",
+      "path": "/scorecards/{id}",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "updateScorecardRubric",
+      "summary": "Edit a scorecard rubric (name, guidance, attributes; the key is fixed)",
+      "method": "patch",
+      "path": "/scorecard_rubrics/{id}",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "updateSequence",
+      "summary": "Update a sequence's name, description, owner, status or steps",
+      "method": "patch",
+      "path": "/sequences/{id}",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "updateTag",
+      "summary": "Rename or recolor a tag",
+      "method": "patch",
+      "path": "/tags/{id}",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "updateTask",
+      "summary": "Edit an open task",
+      "method": "patch",
+      "path": "/tasks/{id}",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    },
+    {
+      "operationId": "updateWebhook",
+      "summary": "Change a webhook's URL, the events it receives (empty list = all), or turn it off and on",
+      "method": "patch",
+      "path": "/webhooks/{id}",
+      "write": true,
+      "hasJsonBody": true,
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+# Controls what `gcloud builds submit` uploads. Keep it small: no dependency trees or build output
+# (images install and build their own), no local state, no secrets.
+.git
+.gitignore
+.github
+**/node_modules
+**/dist
+/tmp
+/log
+/storage
+/.bundle
+/vendor/bundle
+.env*
+config/master.key
+config/credentials/*.key
+.vercel
+web/.vercel

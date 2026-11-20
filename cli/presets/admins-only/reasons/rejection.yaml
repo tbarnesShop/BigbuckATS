@@ -1,0 +1,10 @@
+kind: ReasonSet
+metadata:
+  key: rejection
+spec:
+  name: Rejection reasons
+  reasons:
+    - key: not-a-fit
+      name: Not a fit
+    - key: other
+      name: Other

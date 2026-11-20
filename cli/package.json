@@ -1,0 +1,39 @@
+{
+  "name": "@bigbuck/cli",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Big Buck CLI for company setup and recruiter ops (thin client over @bigbuck/sdk)",
+  "bin": {
+    "bigbuck": "./dist/cli.js"
+  },
+  "files": [
+    "dist",
+    "presets",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "dev": "tsx src/cli.ts",
+    "test": "tsx --test test/*.test.ts",
+    "bigbuck": "tsx src/cli.ts"
+  },
+  "engines": {
+    "node": ">=20.19"
+  },
+  "dependencies": {
+    "@bigbuck/sdk": "file:../sdk",
+    "@napi-rs/keyring": "^2.1.2",
+    "openid-client": "^6.8.9",
+    "proper-lockfile": "^4.1.2",
+    "yaml": "^2.9.1"
+  },
+  "devDependencies": {
+    "@types/node": "^24.19.2",
+    "@types/proper-lockfile": "^4.1.4",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
+  },
+  "packageManager": "pnpm@10.34.5"
+}

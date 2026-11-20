@@ -1,0 +1,21 @@
+#!/bin/bash -e
+
+# Enable jemalloc if present (set in image).
+if [ -z "${LD_PRELOAD+x}" ]; then
+  LD_PRELOAD=$(find /usr/lib -name libjemalloc.so.2 -print -quit)
+  export LD_PRELOAD
+fi
+
+# If running the rails server then create or migrate existing database(s),
+# including Solid Queue's queue schema when configured as a multi-db target.
+# Set BIGBUCK_SKIP_DB_PREPARE=1 where migrations run as a separate step (Cloud Run job), so scaled-out
+# or cold-started instances neither race on the schema nor pay for it at boot.
+if [ "${BIGBUCK_SKIP_DB_PREPARE:-}" == "1" ]; then
+  :
+elif [ "${1}" == "./bin/rails" ] && [ "${2}" == "server" ]; then
+  ./bin/rails db:prepare
+elif [ "${1}" == "./bin/thrust" ] && [ "${2}" == "./bin/rails" ] && [ "${3}" == "server" ]; then
+  ./bin/rails db:prepare
+fi
+
+exec "${@}"

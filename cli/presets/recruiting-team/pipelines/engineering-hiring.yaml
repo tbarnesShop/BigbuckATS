@@ -1,0 +1,21 @@
+kind: PipelineTemplate
+metadata:
+  key: engineering-hiring
+spec:
+  name: Engineering hiring
+  stages:
+    - key: applied
+      name: Applied
+      type: apply
+    - key: recruiter-screen
+      name: Recruiter screen
+      type: screen
+    - key: onsite
+      name: Onsite
+      type: interview
+    - key: offer
+      name: Offer
+      type: offer
+    - key: hired
+      name: Hired
+      type: hired

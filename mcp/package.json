@@ -1,0 +1,33 @@
+{
+  "name": "@bigbuck/mcp",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Big Buck MCP server — tools generated from openapi/openapi.yaml, proxied to /v1",
+  "bin": {
+    "bigbuck-mcp": "./dist/server.js"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json && node dist/generate.js",
+    "generate": "tsx src/generate.ts",
+    "start": "node dist/server.js",
+    "dev": "tsx src/server.ts",
+    "test": "tsx --test test/*.test.ts",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@bigbuck/sdk": "file:../sdk",
+    "@modelcontextprotocol/sdk": "^1.32.2",
+    "yaml": "^2.9.1",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@types/node": "^24.19.2",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
+  },
+  "packageManager": "pnpm@10.34.5"
+}

@@ -1,0 +1,93 @@
+{
+  "name": "web",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "NODE_ENV=development node --watch --import remix/node-tsx server.ts",
+    "hmr": "NODE_ENV=development node hmr.ts",
+    "start": "NODE_ENV=production node --import remix/node-tsx server.ts",
+    "test": "NODE_ENV=test remix test",
+    "typecheck": "tsc --noEmit",
+    "codegen": "graphql-codegen --config codegen.ts",
+    "persist-queries": "node --import remix/node-tsx scripts/persist-queries.ts",
+    "schema-breaking": "node --import remix/node-tsx scripts/schema-breaking.ts",
+    "validate-documents": "node --import remix/node-tsx scripts/validate-documents.ts",
+    "verify:lab": "node --import remix/node-tsx scripts/verify-lab.ts",
+    "lint": "oxlint --deny correctness",
+    "format:check": "node scripts/check-format.mjs",
+    "verify:lab:matrix": "node --import remix/node-tsx scripts/verify-lab-matrix.ts",
+    "verify:lab:mobile": "node --import remix/node-tsx scripts/verify-lab-mobile.ts",
+    "design:check": "node scripts/check-design.mjs",
+    "verify:hire": "node --import remix/node-tsx scripts/verify-hire-flow.ts",
+    "verify:crm": "node --import remix/node-tsx scripts/verify-crm-demo.ts",
+    "verify:mobile": "node --import remix/node-tsx scripts/verify-app-mobile.ts"
+  },
+  "engines": {
+    "node": ">=24.3.0"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.2",
+    "@oxc-project/runtime": "^0.157.0",
+    "@types/dom-navigation": "^1.0.7",
+    "iron-session": "^9.0.1",
+    "lightningcss": "1.33.0",
+    "marked": "^18.1.3",
+    "oxc-minify": "0.157.0",
+    "oxc-parser": "0.157.0",
+    "oxc-resolver": "^11.24.2",
+    "oxc-transform": "0.157.0",
+    "pdfjs-dist": "^6.5.438",
+    "remix": "^3.2.0",
+    "yaml": "^2.9.1"
+  },
+  "devDependencies": {
+    "@graphql-codegen/cli": "^7.4.6",
+    "@graphql-codegen/typescript": "^6.1.2",
+    "@graphql-codegen/typescript-operations": "^6.2.0",
+    "@types/node": "^24.19.2",
+    "graphql": "^17.1.0",
+    "oxlint": "^1.92.0",
+    "playwright": "^1.65.0",
+    "prettier": "^3.9.10",
+    "typescript": "~7.0.2"
+  },
+  "vercel": {
+    "nft": {
+      "include": [
+        "docs/schema.graphql",
+        ".repo/schema.graphql",
+        ".repo/cli/dist/**",
+        ".repo/cli/node_modules/**",
+        ".repo/cli/package.json",
+        ".repo/cli/presets/**",
+        ".repo/cli/src/**",
+        ".repo/mcp/dist/**",
+        ".repo/mcp/node_modules/**",
+        ".repo/mcp/package.json",
+        ".repo/sdk/**",
+        ".repo/openapi/**",
+        "node_modules/@oxc-project/**",
+        "node_modules/@oxc-minify/**",
+        "node_modules/@oxc-parser/**",
+        "node_modules/@oxc-resolver/**",
+        "node_modules/@oxc-transform/**",
+        "node_modules/lightningcss/**",
+        "node_modules/lightningcss-linux-x64-gnu/**",
+        "node_modules/oxc-minify/**",
+        "node_modules/oxc-parser/**",
+        "node_modules/oxc-resolver/**",
+        "node_modules/oxc-transform/**",
+        "node_modules/@remix-run/**",
+        "node_modules/remix/**"
+      ]
+    }
+  },
+  "optionalDependencies": {
+    "@oxc-minify/binding-linux-x64-gnu": "^0.157.0",
+    "@oxc-parser/binding-linux-x64-gnu": "^0.157.0",
+    "@oxc-resolver/binding-linux-x64-gnu": "^11.24.2",
+    "@oxc-transform/binding-linux-x64-gnu": "^0.157.0",
+    "lightningcss-linux-x64-gnu": "1.33.0"
+  },
+  "packageManager": "pnpm@10.34.5"
+}

@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+# Proves db/migrate and db/structure.sql describe the same schema.
+#
+# Tests load structure.sql; production deploys run migrations. If the two ever
+# disagree, production differs from what CI tested. This builds one database
+# from structure.sql and one by running every migration from empty, dumps both
+# with the same mysqldump, and fails on any difference.
+#
+# Needs a MySQL user that can create databases (CI uses root).
+set -euo pipefail
+
+host="${MYSQL_HOST:-127.0.0.1}"
+user="${DRIFT_MYSQL_USER:-root}"
+pass="${DRIFT_MYSQL_PASSWORD-root}"
+mysql_cmd=(mysql --no-defaults -h"$host" -u"$user")
+dump_cmd=(mysqldump --no-defaults -h"$host" -u"$user" --no-data --skip-comments --routines --triggers --set-gtid-purged=OFF --no-tablespaces)
+if [ -n "$pass" ]; then
+  mysql_cmd+=(--password="$pass")
+  dump_cmd+=(--password="$pass")
+fi
+database_url="mysql2://$user:$pass@$host:3306/drift_migrated"
+if [ -n "${DRIFT_MYSQL_SOCKET:-}" ]; then
+  mysql_cmd+=(-hlocalhost --socket="$DRIFT_MYSQL_SOCKET")
+  dump_cmd+=(-hlocalhost --socket="$DRIFT_MYSQL_SOCKET")
+  socket_query=$(ruby -ruri -e 'print URI.encode_www_form_component(ARGV.fetch(0))' "$DRIFT_MYSQL_SOCKET")
+  database_url="$database_url?socket=$socket_query"
+fi
+
+"${mysql_cmd[@]}" -e "
+  DROP DATABASE IF EXISTS drift_structure; DROP DATABASE IF EXISTS drift_migrated;
+  CREATE DATABASE drift_structure CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
+  CREATE DATABASE drift_migrated CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;"
+
+"${mysql_cmd[@]}" drift_structure < db/structure.sql
+
+cp db/structure.sql "${RUNNER_TEMP:-/tmp}/structure.sql.committed"
+MYSQL_USER="$user" MYSQL_PASSWORD="$pass" DATABASE_URL="$database_url" RAILS_ENV=test bin/rails db:migrate
+# db:migrate rewrites structure.sql from the migrated database; keep the committed one.
+cp "${RUNNER_TEMP:-/tmp}/structure.sql.committed" db/structure.sql
+
+normalize() { sed -E 's/ AUTO_INCREMENT=[0-9]+//; s/ ?DEFINER=`[^`]*`@`[^`]*`//; /^\/\*![0-9]+ SET /d; /^SET /d'; }
+"${dump_cmd[@]}" drift_structure 2>/dev/null | normalize > "${RUNNER_TEMP:-/tmp}/from_structure.sql"
+"${dump_cmd[@]}" drift_migrated 2>/dev/null | normalize > "${RUNNER_TEMP:-/tmp}/from_migrations.sql"
+
+versions() { "${mysql_cmd[@]}" -N "$1" -e "SELECT version FROM schema_migrations ORDER BY version" 2>/dev/null; }
+
+status=0
+if ! diff -u "${RUNNER_TEMP:-/tmp}/from_structure.sql" "${RUNNER_TEMP:-/tmp}/from_migrations.sql"; then
+  echo "::error::db/structure.sql does not match the schema produced by db/migrate"
+  status=1
+fi
+if ! diff <(versions drift_structure) <(versions drift_migrated); then
+  echo "::error::schema_migrations versions in structure.sql differ from db/migrate"
+  status=1
+fi
+[ "$status" -eq 0 ] && echo "schema drift check OK"
+exit "$status"

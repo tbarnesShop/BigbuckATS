@@ -1,0 +1,45 @@
+default: &default
+  adapter: mysql2
+  encoding: utf8mb4
+  collation: utf8mb4_0900_ai_ci
+  # Puma threads plus Solid Queue (worker threads, dispatcher, scheduler) share each pool when the queue
+  # runs inside Puma. Sized to the request threads alone, a burst of queued jobs after an idle spell
+  # starved requests for 30 s. DB_POOL overrides; Cloud SQL allows far more than instances x pools x 15.
+  max_connections: <%= ENV.fetch("DB_POOL") { ENV.fetch("RAILS_MAX_THREADS", 3).to_i + 12 } %>
+  username: <%= ENV.fetch("MYSQL_USER", "bigbuck") %>
+  password: <%= ENV.fetch("MYSQL_PASSWORD", "bigbuck") %>
+  <% if ENV["CLOUD_SQL_CONNECTION_NAME"].present? %>
+  # Cloud Run / Cloud SQL Auth Proxy unix socket
+  socket: <%= "/cloudsql/#{ENV.fetch("CLOUD_SQL_CONNECTION_NAME")}" %>
+  <% else %>
+  <% if Rails.env.production? %>
+  ssl_mode: verify_identity
+  sslca: <%= ENV.fetch("MYSQL_SSL_CA") %>
+  <% end %>
+  host: <%= ENV.fetch("MYSQL_HOST", "127.0.0.1") %>
+  port: <%= ENV.fetch("MYSQL_PORT", "3306") %>
+  <% end %>
+
+development:
+  <<: *default
+  database: bigbuck_development
+
+test:
+  <<: *default
+  database: bigbuck_test
+  max_connections: <%= ENV.fetch("RAILS_MAX_THREADS") { 10 } %>
+
+# Production uses multi-db so `db:prepare` also loads db/queue_schema.rb
+# (Solid Queue) onto the same MySQL database.
+production:
+  primary:
+    <<: *default
+    database: <%= ENV.fetch("MYSQL_DATABASE", "bigbuck_production") %>
+    username: <%= ENV.fetch("MYSQL_USER") %>
+    password: <%= ENV.fetch("MYSQL_PASSWORD") %>
+  queue:
+    <<: *default
+    database: <%= ENV.fetch("MYSQL_DATABASE", "bigbuck_production") %>
+    username: <%= ENV.fetch("MYSQL_USER") %>
+    password: <%= ENV.fetch("MYSQL_PASSWORD") %>
+    migrations_paths: db/queue_migrate

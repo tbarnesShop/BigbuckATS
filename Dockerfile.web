@@ -1,0 +1,39 @@
+# syntax=docker/dockerfile:1
+# Remix web UI for Cloud Run. Build context is the repository ROOT:
+#   gcloud builds submit --config script/cloudbuild.yaml   (builds this and the Rails image)
+#
+# The web server is a plain node:http server (web/server.ts) with no framework adapter, and it
+# transpiles TypeScript at runtime, so there is no web build step. It does read files that live
+# OUTSIDE web/ at runtime (openapi/, schema.graphql, mcp/generated, mcp/dist, cli/dist, cli/src)
+# and the lab explorers spawn the built MCP server and CLI as child processes, so the image
+# carries the whole repo layout under /app and builds sdk -> cli -> mcp first.
+# Must be linux/amd64: web/package.json pins x64 native bindings (oxc, lightningcss).
+
+FROM node:24-slim AS base
+ENV PNPM_HOME=/pnpm PATH=/pnpm:$PATH CI=true
+RUN corepack enable && corepack prepare pnpm@10.34.5 --activate
+WORKDIR /app
+
+FROM base AS build
+# sdk -> cli (depends on file:../sdk) -> mcp (build also regenerates mcp/generated/tools.json from openapi/)
+COPY openapi ./openapi
+COPY sdk ./sdk
+RUN cd sdk && pnpm install --frozen-lockfile && pnpm run build
+COPY cli ./cli
+RUN cd cli && pnpm install --frozen-lockfile && pnpm run build
+COPY mcp ./mcp
+RUN cd mcp && pnpm install --frozen-lockfile && pnpm run build
+COPY web ./web
+RUN cd web && pnpm install --frozen-lockfile --prod
+
+FROM base
+ENV NODE_ENV=production PORT=8080 \
+    LAB_CREDENTIAL_DIR=/tmp/lab-sessions
+COPY --from=build --chown=node:node /app /app
+COPY --chown=node:node schema.graphql ./schema.graphql
+# repoRoot is process.cwd()/.. , so cwd must be /app/web. Lab runners write under /app/tmp/lab-cli.
+RUN mkdir -p /app/tmp /tmp/lab-sessions && chown -R node:node /app/tmp /tmp/lab-sessions
+USER node
+WORKDIR /app/web
+EXPOSE 8080
+CMD ["node", "--import", "remix/node-tsx", "server.ts"]

@@ -1,0 +1,18 @@
+kind: PipelineTemplate
+metadata:
+  key: general-hiring
+spec:
+  name: General hiring
+  stages:
+    - key: applied
+      name: Applied
+      type: apply
+    - key: interview
+      name: Interview
+      type: interview
+    - key: offer
+      name: Offer
+      type: offer
+    - key: hired
+      name: Hired
+      type: hired

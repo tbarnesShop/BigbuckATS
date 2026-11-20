@@ -1,0 +1,10 @@
+node_modules/
+db/*.sqlite
+tmp/
+.DS_Store
+.vercel
+.env*
+.repo/
+docs/schema.graphql
+app/assets-files.json
+app/assets-manifest.json

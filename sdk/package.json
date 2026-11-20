@@ -1,0 +1,36 @@
+{
+  "name": "@bigbuck/sdk",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Thin TypeScript client for the Big Buck /v1 REST API (company setup + recruiter ops)",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "generated",
+    "README.md"
+  ],
+  "scripts": {
+    "generate": "tsx src/generate.ts",
+    "build": "pnpm run generate && tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "tsx --test test/*.test.ts"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2",
+    "yaml": "^2.9.1"
+  },
+  "packageManager": "pnpm@10.34.5"
+}

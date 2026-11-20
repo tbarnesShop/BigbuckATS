@@ -1,0 +1,64 @@
+# Solid Queue recurring tasks (bin/jobs runs the scheduler).
+# Times are UTC. Each job claims its rows with FOR UPDATE SKIP LOCKED or a
+# lease, so running more than one worker never double-processes.
+
+default: &default
+  reset_demo_sandboxes:
+    class: ResetDemoSandboxesJob
+    queue: maintenance
+    schedule: every minute
+  relay_outbox:
+    class: RelayOutboxJob
+    queue: outbox
+    # Every minute, not every 10 s: on Cloud Run the queue shares the API's CPU and connections, and
+    # frequent ticks pile up while the instance idles, then all run when a page request arrives.
+    schedule: every minute
+  deliver_webhooks:
+    class: DeliverWebhooksJob
+    queue: webhooks
+    schedule: every minute
+  advance_sequences:
+    class: AdvanceSequencesJob
+    queue: sequences
+    schedule: every 5 minutes
+  outreach_snapshot:
+    class: OutreachSnapshotJob
+    queue: maintenance
+    schedule: every day at 1:10am
+  sourcing_agent:
+    class: SourcingAgentJob
+    queue: sequences
+    schedule: every day at 2:20am
+  send_queue:
+    class: SendQueueJob
+    queue: sequences
+    schedule: every minute
+  expire_offers:
+    class: ExpireOffersJob
+    queue: maintenance
+    schedule: every 15 minutes
+  scorecard_nudges:
+    class: ScorecardNudgeJob
+    queue: maintenance
+    schedule: every hour at minute 7
+  run_retention:
+    class: RunRetentionJob
+    queue: maintenance
+    schedule: "17 3 * * *"
+  purge_idempotency_keys:
+    class: PurgeIdempotencyKeysJob
+    queue: maintenance
+    schedule: "23 4 * * *"
+  clean_contact_points:
+    class: CleanContactPointsJob
+    queue: maintenance
+    schedule: "11 5 * * 0"
+
+development:
+  <<: *default
+
+production:
+  <<: *default
+  clear_solid_queue_finished_jobs:
+    command: "SolidQueue::Job.clear_finished_in_batches(sleep_between_batches: 0.3)"
+    schedule: every hour at minute 12

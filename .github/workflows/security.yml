@@ -1,0 +1,44 @@
+name: Security
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  checks:
+    name: Security checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - run: sudo apt-get update && sudo apt-get install --no-install-recommends -y default-libmysqlclient-dev
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: .ruby-version
+          bundler-cache: true
+      - name: Ruby style and security
+        run: |
+          bundle exec rubocop
+          bin/brakeman --quiet --no-pager --exit-on-warn --exit-on-error
+          bundle exec bundler-audit check --update
+      - uses: pnpm/action-setup@v5
+        with:
+          version: 10.34.5
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+      - name: Audit all JavaScript dependency trees
+        run: |
+          for package in web mcp sdk cli; do
+            pnpm --dir "$package" audit --registry https://registry.npmjs.org --audit-level low
+          done
+      - name: JavaScript lint and changed-file formatting
+        working-directory: web
+        env:
+          FORMAT_BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm lint
+          pnpm format:check

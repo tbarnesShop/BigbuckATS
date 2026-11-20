@@ -1,0 +1,4348 @@
+openapi: 3.1.0
+info:
+  title: Big Buck API
+  version: "2026-11-01"
+  description: >-
+    Public REST API for Big Buck (ATS + talent CRM). One contract for the app, CLI, MCP tools, and integrations.
+    Every non-public operation authenticates with a bearer credential (Authorization: Bearer bb_...).
+    The credential decides the organization and the actor; X-Organization-Id is optional and must match it.
+servers:
+  - url: /v1
+security:
+  - bearerAuth: []
+paths:
+  /people/{person_id}/documents:
+    get:
+      operationId: listPersonDocuments
+      summary: List a visible person's resume and document metadata
+      description: Requires document.read. Returns availability and scan status without storage keys or file URLs.
+      parameters:
+        - name: person_id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        "200":
+          description: Visible person documents, newest first
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [data]
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      required: [id, filename, content_type, byte_size, scan_status, created_at, downloadable]
+                      properties:
+                        id: { type: string, format: uuid }
+                        filename: { type: string }
+                        content_type: { type: string }
+                        byte_size: { type: integer }
+                        scan_status: { type: string, enum: [pending, clean, infected, failed] }
+                        created_at: { type: string, format: date-time }
+                        downloadable: { type: boolean }
+        "403":
+          description: Document read permission required
+        "404":
+          description: Person is not visible
+    post:
+      operationId: replacePersonResume
+      summary: Upload and replace a visible person's current resume
+      description: Requires document.upload. Accepts PDF, plain text or DOCX up to 10 MB. A valid upload supersedes previous resumes without erasing their history. New files remain quarantined until a clean security scan. Use multipart for browser files or base64 JSON for integrations.
+      parameters:
+        - name: person_id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+        - $ref: "#/components/parameters/IdempotencyKey"
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [file]
+              properties:
+                file: { type: string, format: binary }
+          application/json:
+            schema:
+              type: object
+              required: [document]
+              properties:
+                document:
+                  type: object
+                  required: [filename, content_type, content_base64]
+                  properties:
+                    filename: { type: string }
+                    content_type: { type: string, enum: [application/pdf, text/plain, application/vnd.openxmlformats-officedocument.wordprocessingml.document] }
+                    content_base64: { type: string, contentEncoding: base64 }
+      responses:
+        "201":
+          description: Replacement resume metadata with pending scan status
+        "403":
+          description: Upload permission required
+        "404":
+          description: Person is not visible
+        "422":
+          description: Invalid, empty, oversized or unsupported file; the current resume is retained
+  /people/{person_id}/documents/{id}:
+    get:
+      operationId: getPersonDocument
+      summary: Read a clean attached file belonging to a visible person
+      description: Requires document.read. PDF and text may be viewed inline; other files download. Quarantined, missing, erased and inaccessible files are unavailable. Returns file bytes, not JSON.
+      parameters:
+        - name: person_id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+        - name: download
+          in: query
+          schema: { type: boolean, default: false }
+      responses:
+        "200":
+          description: Private file bytes with inline or attachment Content-Disposition
+          content:
+            application/pdf:
+              schema: { type: string, format: binary }
+            text/plain:
+              schema: { type: string }
+            application/octet-stream:
+              schema: { type: string, format: binary }
+        "403":
+          description: Document read permission required
+        "404":
+          description: File is not available or not visible
+  /organizations:
+    post:
+      operationId: createOrganization
+      security: []
+      summary: Provision an organization with owner role and seeded dimensions
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [organization]
+              properties:
+                organization:
+                  type: object
+                  required: [name, slug, owner_email, owner_name]
+                  properties:
+                    name: { type: string }
+                    slug: { type: string }
+                    owner_email: { type: string, format: email }
+                    owner_name: { type: string }
+      responses:
+        "201":
+          description: Created
+  /health:
+    get:
+      operationId: getHealth
+      security: []
+      summary: Liveness
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [status, service]
+                properties:
+                  status: { type: string }
+                  service: { type: string }
+  /people:
+    get:
+      operationId: listPeople
+      summary: List people in the current organization
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - name: q
+          in: query
+          schema: { type: string }
+        - name: lifecycle_stage
+          in: query
+          schema: { type: string }
+        - name: visibility
+          in: query
+          schema: { type: string }
+        - name: do_not_contact
+          in: query
+          schema: { type: boolean }
+        - name: owner_user_id
+          in: query
+          schema: { type: string, format: uuid }
+        - name: tag
+          in: query
+          description: Comma-separated tag names; the person needs every one
+          schema: { type: string }
+        - name: not_tag
+          in: query
+          description: Comma-separated tag names to exclude
+          schema: { type: string }
+        - name: source
+          in: query
+          description: "Comma-separated sources: sourced, referral, applied, event, import, agent"
+          schema: { type: string }
+        - name: engagement_status
+          in: query
+          description: "Comma-separated: not_contacted, contacted, replied, interested, not_interested, do_not_contact"
+          schema: { type: string }
+        - name: location
+          in: query
+          description: Matches city, region or country
+          schema: { type: string }
+        - name: title
+          in: query
+          description: Substring of the current title
+          schema: { type: string }
+        - name: company
+          in: query
+          description: Substring of a company the person is affiliated with
+          schema: { type: string }
+        - name: not_contacted_days
+          in: query
+          description: Never contacted, or last contacted more than N days ago
+          schema: { type: integer }
+        - name: contacted_within_days
+          in: query
+          description: Contacted in the last N days
+          schema: { type: integer }
+        - name: has_email
+          in: query
+          description: true or false
+          schema: { type: boolean }
+        - name: sort
+          in: query
+          description: recent (default), name, activity, relevance (relevance needs q)
+          schema: { type: string }
+        - name: limit
+          in: query
+          description: Page size, 1-500 (default 100)
+          schema: { type: integer }
+        - name: page
+          in: query
+          description: 1-based page; meta.total is the full match count
+          schema: { type: integer }
+      responses:
+        "200":
+          description: "People list with meta { page, per_page, total }. q takes words that must all match somewhere on the person (name, email, headline, title, city, company, a tag, a note); custom[field_key]=value filters by an internal custom field."
+        "401":
+          $ref: "#/components/responses/Problem"
+    post:
+      operationId: createPerson
+      summary: Create a person
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - $ref: "#/components/parameters/IdempotencyKey"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [person]
+              properties:
+                person:
+                  type: object
+                  required: [display_name]
+                  properties:
+                    display_name: { type: string }
+                    email: { type: string }
+                    phone: { type: string }
+                    headline: { type: string }
+                    current_title: { type: string }
+                    current_company_id: { type: string }
+                    city: { type: string }
+                    time_zone: { type: string, description: IANA zone the send window uses }
+                    source: { type: string, enum: [sourced, referral, applied, event, import, agent], description: Set once; defaults to sourced (agent when an agent creates it) }
+                    source_detail: { type: string }
+                    engagement_status: { type: string, enum: [not_contacted, contacted, replied, interested, not_interested] }
+      responses:
+        "201":
+          description: Created
+        "401":
+          $ref: "#/components/responses/Problem"
+  /people/{id}:
+    get:
+      operationId: getPerson
+      summary: Get a person
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        "200":
+          description: Person
+        "404":
+          $ref: "#/components/responses/Problem"
+    patch:
+      operationId: updatePerson
+      summary: Update person contact, company, and CRM fields
+      description: Contact and company edits require person.edit_details or person.update. Owner, DNC, and lifecycle changes require person.update.
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - $ref: "#/components/parameters/IdempotencyKey"
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                person:
+                  type: object
+                  properties:
+                    display_name: { type: string }
+                    headline: { type: string }
+                    current_title: { type: string }
+                    current_company_id: { type: string }
+                    city: { type: string }
+                    time_zone: { type: string }
+                    engagement_status: { type: string, enum: [not_contacted, contacted, replied, interested, not_interested], description: A recruiter's decision; do_not_contact follows the DNC flag. }
+                    email: { type: string, description: Normalized primary email; an empty value clears it. Duplicate contacts are rejected without exposing another record. }
+                    phone: { type: string, description: Normalized primary phone; an empty value clears it. }
+                    affiliation:
+                      type: object
+                      required: [company_id]
+                      properties:
+                        id: { type: string, format: uuid, description: An existing affiliation belonging to this person. Omit to add a company. }
+                        company_id: { type: string, format: uuid }
+                        title: { type: string }
+                    owner_user_id: { type: string, format: uuid }
+                    do_not_contact: { type: boolean }
+                    do_not_contact_reason: { type: string }
+                    lifecycle_stage: { type: string }
+      responses:
+        "200":
+          description: Updated
+  /people/bulk:
+    post:
+      operationId: bulkPeopleAction
+      summary: Bulk enroll, DNC, or add people to a project
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - $ref: "#/components/parameters/IdempotencyKey"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [bulk_action, person_ids]
+              properties:
+                bulk_action: { type: string, enum: [enroll_sequence, set_dnc, clear_dnc, add_to_project, tag, untag] }
+                person_ids: { type: array, items: { type: string, format: uuid } }
+                sequence_id: { type: string, format: uuid }
+                mailbox_id: { type: string, format: uuid }
+                project_id: { type: string, format: uuid }
+                reason: { type: string }
+                tag_id: { type: string, format: uuid }
+                tag_name: { type: string, description: 'For tag/untag when you have the name, not the id' }
+      responses:
+        "200":
+          description: Bulk results
+  /jobs:
+    get:
+      operationId: listJobs
+      summary: List jobs in the current organization
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+      responses:
+        "200":
+          description: Jobs list
+        "401":
+          $ref: "#/components/responses/Problem"
+    post:
+      operationId: createJob
+      summary: Create a job
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - $ref: "#/components/parameters/IdempotencyKey"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [job]
+              properties:
+                job:
+                  type: object
+                  required: [title]
+                  properties:
+                    title: { type: string }
+                    status: { type: string }
+                    pipeline_id: { type: string, format: uuid }
+                    careers_visibility: { type: string, enum: [public, internal, both, hidden], default: public }
+                    description: { type: string, description: "Job description for the posting created with the job" }
+                    location: { type: string }
+                    employment_type: { type: string, enum: [full_time, part_time, contract, internship, temporary] }
+                    question_template_id: { type: string, format: uuid, description: "Copy this active question template onto the new posting" }
+                    department_id: { type: string, format: uuid, description: "A value of the department dimension (see GET /jobs/form_options)" }
+                    hiring_manager_user_id: { type: string, format: uuid, description: "An active member to put on the hiring team as hiring manager; they approve the job's offers" }
+      responses:
+        "201":
+          description: Created
+        "401":
+          $ref: "#/components/responses/Problem"
+  /jobs/form_options:
+    get:
+      operationId: jobFormOptions
+      summary: Departments and active members to choose from when creating a job
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+      responses:
+        "200":
+          description: "{ departments: [{ id, key, label }], members: [{ user_id, name, email, role_key }] }"
+        "401":
+          $ref: "#/components/responses/Problem"
+  /jobs/{id}/hiring_team/members:
+    post:
+      operationId: addHiringTeamMember
+      summary: Put an active member on the job's hiring team in a role
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - $ref: "#/components/parameters/IdempotencyKey"
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [user_id, team_role]
+              properties:
+                user_id: { type: string, format: uuid }
+                team_role: { type: string, enum: [hiring-manager, recruiter, coordinator, interviewer], description: "hiring_manager is accepted as hiring-manager" }
+      responses:
+        "201":
+          description: The job, with its updated hiring team
+  /jobs/{id}/hiring_team/members/{member_id}:
+    patch:
+      operationId: updateHiringTeamMember
+      summary: Change a hiring team member's role on the job
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - $ref: "#/components/parameters/IdempotencyKey"
+        - { name: id, in: path, required: true, schema: { type: string, format: uuid } }
+        - { name: member_id, in: path, required: true, schema: { type: string, format: uuid } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [team_role]
+              properties:
+                team_role: { type: string, enum: [hiring-manager, recruiter, coordinator, interviewer] }
+      responses:
+        "200": { description: The job, with its updated hiring team }
+        "409": { $ref: "#/components/responses/Problem" }
+  /jobs/{id}/hiring_team/members/{member_id}/remove:
+    post:
+      operationId: removeHiringTeamMember
+      summary: Take a member off the job's hiring team
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - $ref: "#/components/parameters/IdempotencyKey"
+        - { name: id, in: path, required: true, schema: { type: string, format: uuid } }
+        - { name: member_id, in: path, required: true, schema: { type: string, format: uuid } }
+      responses:
+        "200": { description: The job, with its updated hiring team }
+  /jobs/{id}/pipeline:
+    patch:
+      operationId: updateJobPipeline
+      summary: Add, rename, reorder or remove a stage on the job's pipeline
+      description: Hired is a fixed final stage. A stage with candidates in it cannot be removed. Edits are stored as overrides on the pipeline template.
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - $ref: "#/components/parameters/IdempotencyKey"
+        - { name: id, in: path, required: true, schema: { type: string, format: uuid } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [op]
+              properties:
+                op: { type: string, enum: [add_stage, rename_stage, move_stage, remove_stage, add_interview, remove_interview] }
+                key: { type: string, description: "Stage key (all ops except add_stage)" }
+                name: { type: string, description: "Stage name (add_stage, rename_stage)" }
+                type: { type: string, enum: [apply, screen, review, interview, offer], description: "add_stage; default interview" }
+                after: { type: string, description: "add_stage: key to insert after; default the last stage before Hired" }
+                direction: { type: string, enum: [up, down], description: "move_stage" }
+                interview_key: { type: string, description: "remove_interview" }
+                required: { type: boolean, description: "add_interview; default true" }
+                rubric_key: { type: string, description: "add_interview: scorecard rubric; omit for an overall rating only" }
+                duration_minutes: { type: integer, description: "add_interview" }
+      responses:
+        "200": { description: The job, with its updated pipeline }
+        "422": { $ref: "#/components/responses/Problem" }
+  /jobs/{id}:
+    get:
+      operationId: getJob
+      summary: Get a job
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        "200":
+          description: Job
+        "404":
+          $ref: "#/components/responses/Problem"
+    patch:
+      operationId: updateJob
+      summary: Update job openings, careers audience, and publication
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - $ref: "#/components/parameters/IdempotencyKey"
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                job:
+                  type: object
+                  properties:
+                    openings: { type: integer, minimum: 0 }
+                    careers_visibility: { type: string, enum: [public, internal, both, hidden] }
+                    careers_published:
+                      type: boolean
+                      description: Publish or unpublish job postings. Publishing requires an active job.
+      responses:
+        "200":
+          description: Updated job
+        "422":
+          $ref: "#/components/responses/Problem"
+  /applications:
+    get:
+      operationId: listApplications
+      summary: List applications across jobs (filter with status and stage)
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - name: job_id
+          in: query
+          schema: { type: string, format: uuid }
+        - name: person_id
+          in: query
+          schema: { type: string, format: uuid }
+        - name: status
+          in: query
+          description: archived returns rejected and withdrawn applications, each with closed_reason and closed_at
+          schema: { type: string, enum: [active, rejected, withdrawn, hired, archived] }
+        - name: stage
+          in: query
+          description: current_stage_key
+          schema: { type: string }
+        - name: sort
+          in: query
+          description: mine puts the caller's hiring-team jobs and owned people first
+          schema: { type: string, enum: [mine] }
+        - name: page
+          in: query
+          schema: { type: integer, minimum: 1 }
+        - name: per_page
+          in: query
+          schema: { type: integer, minimum: 1, maximum: 100 }
+      responses:
+        "200":
+          description: Applications list
+        "401":
+          $ref: "#/components/responses/Problem"
+    post:
+      operationId: createApplication
+      summary: Create an application
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - $ref: "#/components/parameters/IdempotencyKey"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [application]
+              properties:
+                application:
+                  type: object
+                  required: [job_id, person_id]
+                  properties:
+                    job_id: { type: string, format: uuid }
+                    person_id: { type: string, format: uuid }
+                    locale: { type: string }
+                    consents:
+                      type: array
+                      items: { type: string }
+      responses:
+        "201":
+          description: Created
+        "401":
+          $ref: "#/components/responses/Problem"
+  /applications/{id}:
+    get:
+      operationId: getApplication
+      summary: Get an application (includes person, job, pipeline stages, offers)
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        "200":
+          description: Application
+        "404":
+          $ref: "#/components/responses/Problem"
+  /applications/{id}/transitions:
+    get:
+      operationId: listApplicationTransitions
+      summary: Stage transition history for an application
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        "200":
+          description: Transition history
+        "404":
+          $ref: "#/components/responses/Problem"
+    post:
+      operationId: createApplicationTransition
+      summary: Move, reject, withdraw, or hire an application
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - $ref: "#/components/parameters/IdempotencyKey"
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                command:
+                  type: string
+                  enum: [move, reject, withdraw, hire]
+                  default: move
+                to_stage_key: { type: string }
+                reason: { type: string }
+      responses:
+        "201":
+          description: Transition applied; returns updated application
+        "422":
+          $ref: "#/components/responses/Problem"
+        "404":
+          $ref: "#/components/responses/Problem"
+  /offers:
+    get:
+      operationId: listOffers
+      summary: List offers, with counts by status. status filters the rows; counts stay the breakdown before that filter.
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - name: application_id
+          in: query
+          schema: { type: string, format: uuid }
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [draft, pending_approval, changes_requested, approved, sent, accepted, declined, expired, rescinded]
+      responses:
+        "200":
+          description: Offers list
+        "401":
+          $ref: "#/components/responses/Problem"
+  /offers/{id}:
+    get:
+      operationId: getOffer
+      summary: Get an offer
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        "200":
+          description: Offer
+        "404":
+          $ref: "#/components/responses/Problem"
+  /offers/{id}/submit:
+    post:
+      operationId: submitOffer
+      summary: Submit offer for approval
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - $ref: "#/components/parameters/IdempotencyKey"
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        "200":
+          description: Submitted
+  /offers/{id}/approve:
+    post:
+      operationId: approveOffer
+      summary: Approve a pending offer approval
+      description: The assigned approver approves their step. An organization owner may pass override=true to approve a step assigned to someone else; it is recorded as an override.
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - $ref: "#/components/parameters/IdempotencyKey"
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                override: { type: boolean, description: "Owner only" }
+      responses:
+        "200":
+          description: Approved
+        "403":
+          $ref: "#/components/responses/Problem"
+  /offers/{id}/send:
+    post:
+      operationId: sendOffer
+      summary: Send approved offer letter; returns candidate token
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - $ref: "#/components/parameters/IdempotencyKey"
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        "200":
+          description: Sent
+  /offers/{id}/record_response:
+    post:
+      operationId: recordOfferResponse
+      summary: Record the candidate's answer to a sent offer when it arrived outside the signed link
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - $ref: "#/components/parameters/IdempotencyKey"
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [response]
+              properties:
+                response: { type: string, enum: [accepted, declined] }
+                note: { type: string }
+      responses:
+        "201":
+          description: Recorded; returns the offer status and whether the candidate was hired
+  /interviews/awaiting_schedule:
+    get:
+      operationId: listAwaitingSchedule
+      summary: Candidates whose current stage plans interviews nobody has booked yet
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - { name: scope, in: query, schema: { type: string, enum: [mine, all] }, description: "mine = jobs where you are on the hiring team" }
+      responses:
+        "200": { description: "Rows with application_id, person, job, stage and the missing interviews" }
+  /team:
+    get:
+      operationId: listTeam
+      summary: Workspace members with their organization role, and each role's permissions (read-only)
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+      responses:
+        "200": { description: "data (members) and roles" }
+  /offers/{id}/checklist:
+    patch:
+      operationId: updateOfferChecklist
+      summary: Track reference checks and the verbal offer alongside an offer
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - $ref: "#/components/parameters/IdempotencyKey"
+        - { name: id, in: path, required: true, schema: { type: string, format: uuid } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [item, state]
+              properties:
+                item: { type: string, enum: [references, verbal] }
+                state: { type: string, enum: [not_started, in_progress, complete, waived, made, accepted], description: "references: not_started, in_progress, complete, waived; verbal: not_started, made, accepted" }
+                note: { type: string, maxLength: 2000 }
+      responses:
+        "200": { description: The offer with checklist, approvals and can_override }
+  /offers/{id}/rescind:
+    post:
+      operationId: rescindOffer
+      summary: Rescind an offer
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - $ref: "#/components/parameters/IdempotencyKey"
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        "200":
+          description: Rescinded
+  /offers/{id}/resend:
+    post:
+      operationId: resendOffer
+      summary: Issue a fresh candidate link for a sent offer (same letter and expiry)
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - $ref: "#/components/parameters/IdempotencyKey"
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        "200":
+          description: Offer with a new send token
+  /people/{id}/timeline:
+    get:
+      operationId: getPersonTimeline
+      summary: Timeline events for a person
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        "200":
+          description: Timeline
+  /people/{id}/communications:
+    get:
+      operationId: listPersonCommunications
+      summary: Conversation with a person
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        "200":
+          description: Messages
+    post:
+      operationId: sendPersonCommunication
+      summary: Send an email to a person
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - $ref: "#/components/parameters/IdempotencyKey"
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                template_key: { type: string, description: Use a template; subject/body, if given, override it. Merge fields are filled in for this person. }
+                subject: { type: string }
+                body: { type: string }
+                mailbox_id: { type: string }
+                message_type: { type: string }
+                thread_id: { type: string, description: Reply on an existing thread }
+                in_reply_to: { type: string, description: RFC 822 Message-ID being answered }
+      responses:
+        "201":
+          description: Sent
+  /applications/{id}/offers:
+    post:
+      operationId: createApplicationOffer
+      summary: Create a draft offer on an application
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - $ref: "#/components/parameters/IdempotencyKey"
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        "201":
+          description: Created
+  /applications/{id}/scheduling_links:
+    post:
+      operationId: createSchedulingLink
+      summary: Create a candidate self-schedule link
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - $ref: "#/components/parameters/IdempotencyKey"
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        "201":
+          description: Created
+  /applications/{id}/interviews:
+    get:
+      operationId: listApplicationInterviews
+      summary: List interviews for an application
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        "200":
+          description: Interviews
+  /applications/{id}/missing_feedback:
+    get:
+      operationId: getApplicationMissingFeedback
+      summary: Required interviews in the current stage still missing submitted feedback
+      description: >-
+        Missing feedback warns whoever moves the candidate and does not hold the move. `blocking` is
+        true only when the stage's exit rules name `scorecards_submitted`.
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        "200":
+          description: Missing feedback
+  /public/scheduling/{token}:
+    get:
+      operationId: getPublicScheduling
+      security: []
+      summary: Public scheduling link status
+      parameters:
+        - name: token
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Link
+  /public/offers/{token}/decline:
+    post:
+      operationId: declinePublicOffer
+      security: []
+      summary: Decline an offer via public token
+      parameters:
+        - name: token
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Declined
+
+  /organizations/{id}:
+    patch:
+      operationId: updateOrganization
+      summary: Update organization settings (including careers hero config)
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                organization:
+                  type: object
+                  properties:
+                    careers_hero_image_url: { type: string }
+                    careers_headline: { type: string }
+                    careers_subcopy: { type: string }
+                    careers_about_title: { type: string }
+                    careers_about_body: { type: string }
+                    careers_culture_title: { type: string }
+                    careers_culture_body: { type: string }
+                    careers_accent_color: { type: string, pattern: "^#[0-9A-Fa-f]{6}$", description: Employer accent for the public careers page }
+                    careers_culture:
+                      type: array
+                      description: Highlight cards shown on the careers page
+                      items:
+                        type: object
+                        properties:
+                          title: { type: string }
+                          body: { type: string }
+      responses:
+        "200":
+          description: Updated organization careers branding
+        "422": { $ref: "#/components/responses/Problem" }
+  /jobs/{job_id}/postings:
+    get:
+      operationId: listJobPostings
+      summary: List all postings and the mandatory organization form for a job
+      parameters:
+        - { name: job_id, in: path, required: true, schema: { type: string, format: uuid } }
+      responses:
+        "200": { description: Postings including audience, version, saved template questions, additional questions, and composed application form }
+    post:
+      operationId: createJobPosting
+      summary: Create an independently targeted posting for a job
+      parameters:
+        - { name: job_id, in: path, required: true, schema: { type: string, format: uuid } }
+        - $ref: "#/components/parameters/IdempotencyKey"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [posting]
+              properties:
+                posting: { $ref: "#/components/schemas/PostingInput" }
+      responses:
+        "201": { description: Posting created }
+        "422": { $ref: "#/components/responses/Problem" }
+  /postings/{id}:
+    patch:
+      operationId: updateJobPosting
+      summary: Update posting audience, publication, template snapshot, or custom questions
+      description: Organization questions cannot be overridden. Omit question_template_id to retain the saved template; send null to clear or an active template id to copy its current version.
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string, format: uuid } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [posting]
+              properties:
+                posting: { $ref: "#/components/schemas/PostingInput" }
+      responses:
+        "200": { description: Posting updated }
+        "409": { $ref: "#/components/responses/Problem" }
+        "422": { $ref: "#/components/responses/Problem" }
+  /application_question_templates:
+    get:
+      operationId: listApplicationQuestionTemplates
+      summary: List reusable application question templates and their owners
+      responses:
+        "200": { description: Templates with owner, questions, status, version, and can_edit }
+    post:
+      operationId: createApplicationQuestionTemplate
+      summary: Create a question template owned by the authenticated recruiter
+      parameters:
+        - $ref: "#/components/parameters/IdempotencyKey"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [question_template]
+              properties:
+                question_template: { $ref: "#/components/schemas/QuestionTemplateInput" }
+      responses:
+        "201": { description: Template created }
+        "422": { $ref: "#/components/responses/Problem" }
+  /application_question_templates/{id}:
+    patch:
+      operationId: updateApplicationQuestionTemplate
+      summary: Edit or archive a template as its owner or a settings administrator
+      description: Existing postings retain their copied template questions.
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string, format: uuid } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [question_template]
+              properties:
+                question_template: { $ref: "#/components/schemas/QuestionTemplateInput" }
+      responses:
+        "200": { description: Template updated }
+        "403": { $ref: "#/components/responses/Problem" }
+        "409": { $ref: "#/components/responses/Problem" }
+  /public/careers/{slug}:
+    get:
+      operationId: getPublicCareers
+      security: []
+      summary: Public careers page with independently published, non-confidential public postings
+      description: A job may have multiple entries. Each entry includes its posting ID and composed application form; organization questions precede template and posting questions.
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Careers branding, application form, and active jobs
+        "404":
+          $ref: "#/components/responses/Problem"
+  /public/careers/{slug}/apply/{posting_id}:
+    post:
+      operationId: submitPublicApplication
+      security: []
+      summary: Apply to a published posting. The path posting id wins over any body posting_id.
+      description: Organization question keys are unchanged. Template and posting answers use the returned namespaced keys (template.key and posting.key). All required questions are validated and the submitted form and typed answers are saved on the application.
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          schema: { type: string }
+        - name: posting_id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                answers:
+                  type: object
+                  additionalProperties: true
+                display_name: { type: string }
+                email: { type: string }
+                phone: { type: string }
+                linkedin: { type: string }
+                links: { type: string }
+                country: { type: string }
+                region: { type: string }
+      responses:
+        "201":
+          description: Application created
+        "422":
+          $ref: "#/components/responses/Problem"
+        "404":
+          $ref: "#/components/responses/Problem"
+  /internal/careers:
+    get:
+      operationId: getInternalCareers
+      summary: Careers page for the authenticated organization member
+      description: Active human membership required; integration and agent credentials are rejected. Returns independently published internal or both postings for active, non-confidential jobs, each with its composed application form.
+      responses:
+        "200":
+          description: Careers branding, application form, and employee opportunities
+        "401":
+          $ref: "#/components/responses/Problem"
+        "403":
+          $ref: "#/components/responses/Problem"
+  /internal/careers/apply/{posting_id}:
+    post:
+      operationId: submitInternalApplication
+      summary: Apply to an internal posting as the authenticated organization member
+      description: Name and email come from the member identity; caller-supplied identity fields are ignored. Uses the job hiring pipeline and validates the composed form. Template and posting answers use the returned template.key and posting.key namespaces.
+      parameters:
+        - name: posting_id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                answers: { type: object, additionalProperties: true }
+                phone: { type: string }
+                linkedin: { type: string }
+                links: { type: string }
+                country: { type: string }
+                region: { type: string }
+      responses:
+        "201":
+          description: Application created in the job pipeline
+        "401":
+          $ref: "#/components/responses/Problem"
+        "403":
+          $ref: "#/components/responses/Problem"
+        "404":
+          $ref: "#/components/responses/Problem"
+        "422":
+          $ref: "#/components/responses/Problem"
+  /public/offers/{token}:
+    get:
+      operationId: getPublicOffer
+      security: []
+      summary: Public offer letter by signed token
+      parameters:
+        - name: token
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Offer letter payload
+        "404":
+          $ref: "#/components/responses/Problem"
+  /public/offers/{token}/accept:
+    post:
+      operationId: acceptPublicOffer
+      security: []
+      summary: Accept an offer via public token
+      parameters:
+        - name: token
+          in: path
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [typed_name]
+              properties:
+                typed_name: { type: string }
+      responses:
+        "200":
+          description: Accepted
+        "404":
+          $ref: "#/components/responses/Problem"
+  /projects:
+    get:
+      operationId: listProjects
+      summary: List sourcing projects (talent pools)
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+      responses:
+        "200":
+          description: Projects list
+    post:
+      operationId: createProject
+      summary: Create a sourcing project
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - $ref: "#/components/parameters/IdempotencyKey"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [project]
+              properties:
+                project:
+                  type: object
+                  required: [name]
+                  properties:
+                    name: { type: string }
+                    job_id: { type: string, format: uuid }
+                    pipeline_id: { type: string, format: uuid }
+                    confidential: { type: boolean }
+                    description: { type: string }
+                    owner_user_id: { type: string, format: uuid }
+                    saved_search_id: { type: string, format: uuid, description: "Makes this a smart pool refreshed from the saved search" }
+      responses:
+        "201":
+          description: Created
+  /projects/{id}:
+    get:
+      operationId: getProject
+      summary: Get a sourcing project
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        "200":
+          description: Project
+    patch:
+      operationId: updateProject
+      summary: Update a pool's name, description, owner or smart-pool saved search
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - $ref: "#/components/parameters/IdempotencyKey"
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [project]
+              properties:
+                project:
+                  type: object
+                  properties:
+                    name: { type: string }
+                    description: { type: string }
+                    owner_user_id: { type: string, format: uuid }
+                    saved_search_id: { type: string, format: uuid }
+      responses:
+        "200":
+          description: Project
+  /projects/{id}/people:
+    post:
+      operationId: addPeopleToProject
+      summary: Add many people to a pool by ids, by search filters, or by the pool's saved search (smart pool refresh)
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - $ref: "#/components/parameters/IdempotencyKey"
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                person_ids: { type: array, items: { type: string, format: uuid } }
+                filters: { type: object, additionalProperties: true }
+                saved_search_id: { type: string, format: uuid }
+      responses:
+        "201":
+          description: Counts of people added and already in the pool
+  /projects/{id}/from_job:
+    post:
+      operationId: addJobApplicantsToProject
+      summary: Add a job's applicants (default rejected and withdrawn, the silver medalists) to a pool
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - $ref: "#/components/parameters/IdempotencyKey"
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [job_id]
+              properties:
+                job_id: { type: string, format: uuid }
+                statuses: { type: array, items: { type: string, enum: [active, rejected, withdrawn, hired] } }
+      responses:
+        "201":
+          description: Counts of people added and already in the pool
+  /projects/{id}/transitions:
+    post:
+      operationId: bulkMoveProjectMembers
+      summary: Move many pool members to one stage
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - $ref: "#/components/parameters/IdempotencyKey"
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [to_stage_key]
+              properties:
+                to_stage_key: { type: string }
+                reason: { type: string }
+                member_ids: { type: array, items: { type: string, format: uuid } }
+                person_ids: { type: array, items: { type: string, format: uuid } }
+      responses:
+        "200":
+          description: Number of members moved
+  /projects/{id}/members:
+    get:
+      operationId: listProjectMembers
+      summary: List members of a sourcing project
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        "200":
+          description: Members list
+    post:
+      operationId: addProjectMember
+      summary: Add a person to a sourcing project
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - $ref: "#/components/parameters/IdempotencyKey"
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [member]
+              properties:
+                member:
+                  type: object
+                  required: [person_id]
+                  properties:
+                    person_id: { type: string, format: uuid }
+      responses:
+        "201":
+          description: Created
+  /project_members/{id}/convert:
+    post:
+      operationId: convertProjectMember
+      summary: Convert a pool member into a job application
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - $ref: "#/components/parameters/IdempotencyKey"
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                job_id: { type: string, format: uuid }
+      responses:
+        "201":
+          description: Converted
+  /sequences:
+    get:
+      operationId: listSequences
+      summary: List outreach sequences
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+      responses:
+        "200":
+          description: Sequences list
+    post:
+      operationId: createSequence
+      summary: Create an outreach sequence
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - $ref: "#/components/parameters/IdempotencyKey"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [sequence]
+              properties:
+                sequence:
+                  type: object
+                  required: [key, name]
+                  properties:
+                    key: { type: string }
+                    name: { type: string }
+                    description: { type: string }
+                    owner_user_id: { type: string, format: uuid }
+                    steps:
+                      type: array
+                      description: "Step schema v2. email {template_key, channel: email, send_as_user_id}; wait {days|hours|minutes}; task {title, task_type: call|linkedin|email|other, assignee_user_id, due_in_days, pause_until_done}. Steps get stable ids."
+                      items: { type: object }
+      responses:
+        "201":
+          description: Created
+  /sequences/{id}/preview:
+    get:
+      operationId: previewSequence
+      summary: Render every step of a sequence for one person from a mailbox
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+        - { name: person_id, in: query, required: true, schema: { type: string, format: uuid } }
+        - { name: mailbox_id, in: query, schema: { type: string, format: uuid } }
+      responses:
+        "200":
+          description: Rendered steps
+  /sequences/{id}/stats:
+    get:
+      operationId: getSequenceStats
+      summary: Per-step message outcomes and replies, plus enrollment totals
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        "200":
+          description: Stats
+  /sequences/{id}/enrollments:
+    post:
+      operationId: enrollInSequence
+      summary: Enroll a person in a sequence (sends first step)
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - $ref: "#/components/parameters/IdempotencyKey"
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [enrollment]
+              properties:
+                enrollment:
+                  type: object
+                  required: [person_id]
+                  properties:
+                    person_id: { type: string, format: uuid }
+                    mailbox_id: { type: string, format: uuid }
+      responses:
+        "201":
+          description: Enrolled
+    get:
+      operationId: listSequenceEnrollments
+      summary: List enrollments in a sequence
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: OK
+        "403":
+          $ref: "#/components/responses/Problem"
+  /enrollments:
+    get:
+      operationId: listEnrollments
+      summary: List sequence enrollments
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - name: person_id
+          in: query
+          schema: { type: string, format: uuid }
+      responses:
+        "200":
+          description: Enrollments list
+  /scorecards:
+    post:
+      operationId: createScorecard
+      summary: Submit an interview scorecard
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - $ref: "#/components/parameters/IdempotencyKey"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [scorecard]
+              properties:
+                scorecard:
+                  type: object
+                  required: [interview_id, rating]
+                  properties:
+                    interview_id: { type: string, format: uuid }
+                    rating: { type: string }
+                    notes: { type: string }
+      responses:
+        "201":
+          description: Created
+    get:
+      operationId: listScorecards
+      summary: List the scorecards you may read (filter with interview_id or application_id)
+      description: >-
+        scorecard.read_all returns every scorecard. Otherwise you get your own, the panel's for
+        interviews you have already submitted on, and all of them for jobs where you are the hiring manager.
+      parameters:
+        - name: interview_id
+          in: query
+          schema: { type: string, format: uuid }
+        - name: application_id
+          in: query
+          schema: { type: string, format: uuid }
+      responses:
+        "200":
+          description: OK
+        "403":
+          $ref: "#/components/responses/Problem"
+  /scorecards/{id}:
+    patch:
+      operationId: updateScorecard
+      summary: Correct a submitted scorecard (your own, or anyone's with scorecard.manage)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+        - $ref: "#/components/parameters/OrganizationId"
+        - $ref: "#/components/parameters/IdempotencyKey"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [scorecard]
+              properties:
+                scorecard:
+                  type: object
+                  required: [rating]
+                  properties:
+                    rating: { type: string, enum: [strong_yes, "yes", mixed, "no"] }
+                    notes: { type: string }
+                    attribute_ratings: { type: object, additionalProperties: true }
+      responses:
+        "200":
+          description: Updated
+        "403":
+          $ref: "#/components/responses/Problem"
+        "422":
+          $ref: "#/components/responses/Problem"
+  /companies:
+    get:
+      operationId: listCompanies
+      summary: List companies
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+      responses:
+        "200":
+          description: Companies list
+    post:
+      operationId: createCompany
+      summary: Create a company
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - $ref: "#/components/parameters/IdempotencyKey"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [company]
+              properties:
+                company:
+                  type: object
+                  required: [name]
+                  properties:
+                    name: { type: string }
+                    domain: { type: string }
+      responses:
+        "201":
+          description: Created
+  /events:
+    get:
+      operationId: listEvents
+      summary: List recent outbox events
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - name: event_type
+          in: query
+          schema: { type: string }
+      responses:
+        "200":
+          description: Events list
+  /sync/people:
+    get:
+      operationId: syncPeople
+      summary: Incremental people sync feed
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - name: sync_token
+          in: query
+          schema: { type: string }
+      responses:
+        "200":
+          description: Sync page
+  /webhooks:
+    get:
+      operationId: listWebhooks
+      summary: List webhook endpoints
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+      responses:
+        "200":
+          description: Webhooks list
+    post:
+      operationId: createWebhook
+      summary: Create a webhook endpoint
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - $ref: "#/components/parameters/IdempotencyKey"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [webhook]
+              properties:
+                webhook:
+                  type: object
+                  required: [key, url]
+                  properties:
+                    key: { type: string }
+                    url: { type: string, format: uri }
+      responses:
+        "201":
+          description: Created
+  /sessions:
+    post:
+      operationId: createSession
+      summary: Demo email sign-in (demo deployments only); returns a short-lived session token
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email]
+              properties:
+                email: { type: string, format: email }
+                organization_id: { type: string, format: uuid }
+                slug: { type: string }
+      responses:
+        "201":
+          description: Session
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SessionResponse" }
+        "403":
+          $ref: "#/components/responses/Problem"
+  /sessions/exchange:
+    post:
+      operationId: exchangeSessionCode
+      summary: Trade the one-time code from Google sign-in for a session token
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [code]
+              properties:
+                code: { type: string }
+      responses:
+        "201":
+          description: Session
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SessionResponse" }
+        "401":
+          $ref: "#/components/responses/Problem"
+  /sessions/demo_memberships:
+    get:
+      operationId: listDemoMemberships
+      summary: Existing memberships for the demo role picker. Does not create users or memberships.
+      security: []
+      parameters:
+        - name: slug
+          in: query
+          schema: { type: string }
+      responses:
+        "200":
+          description: Memberships
+        "403":
+          $ref: "#/components/responses/Problem"
+  /sessions/current:
+    get:
+      operationId: getCurrentSession
+      summary: Who this credential acts as (user, agent, organization, effective permissions)
+      responses:
+        "200":
+          description: Principal
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Principal" }
+        "401":
+          $ref: "#/components/responses/Problem"
+    delete:
+      operationId: deleteCurrentSession
+      summary: Sign out (revokes a session token)
+      responses:
+        "204":
+          description: Signed out
+  /agents:
+    get:
+      operationId: listAgents
+      summary: List your agents (everyone's with agent.manage)
+      responses:
+        "200":
+          description: Agents
+    post:
+      operationId: createAgent
+      summary: Create an agent you own. It acts with its scopes intersected with your role
+      parameters:
+        - $ref: "#/components/parameters/IdempotencyKey"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [agent]
+              properties:
+                agent:
+                  type: object
+                  required: [name, scopes]
+                  properties:
+                    name: { type: string }
+                    description: { type: string }
+                    scopes: { type: array, items: { type: string } }
+                    owner_membership_id: { type: string, format: uuid, description: "Needs agent.manage" }
+      responses:
+        "201":
+          description: Agent
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Agent" }
+        "403":
+          $ref: "#/components/responses/Problem"
+  /agents/{id}:
+    get:
+      operationId: getAgent
+      summary: Get an agent
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        "200":
+          description: Agent
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Agent" }
+  /agents/{id}/pause:
+    post:
+      operationId: pauseAgent
+      summary: Pause an agent (its tokens stop working until resumed)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        "200":
+          description: Agent
+  /agents/{id}/resume:
+    post:
+      operationId: resumeAgent
+      summary: Resume a paused agent
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        "200":
+          description: Agent
+  /agents/{id}/revoke:
+    post:
+      operationId: revokeAgent
+      summary: Revoke an agent and all its tokens
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        "200":
+          description: Agent
+  /agents/{id}/credentials:
+    post:
+      operationId: createAgentCredential
+      summary: Issue a bearer token for an agent. The token is returned once
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name: { type: string }
+                expires_at: { type: string, format: date-time }
+      responses:
+        "201":
+          description: Credential with its token
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Credential" }
+  /oauth_identities:
+    get:
+      operationId: listOauthIdentities
+      summary: List provisioned OAuth identities (requires integration.manage)
+      responses:
+        "200": { description: OAuth identities }
+    post:
+      operationId: createOauthIdentity
+      summary: Bind an external subject and client to a tenant identity (requires integration.manage)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [oauth_identity]
+              properties:
+                oauth_identity:
+                  type: object
+                  required: [name, subject, client_id, kind, scopes]
+                  properties:
+                    name: { type: string, maxLength: 255 }
+                    subject: { type: string, maxLength: 255 }
+                    client_id: { type: string, maxLength: 255 }
+                    kind: { type: string, enum: [human, service] }
+                    membership_id: { type: string, format: uuid }
+                    scopes: { type: array, items: { type: string } }
+      responses:
+        "201": { description: Provisioned OAuth identity }
+        "403": { description: Permission denied }
+        "503": { description: OAuth issuer not configured }
+  /oauth_identities/{id}/revoke:
+    post:
+      operationId: revokeOauthIdentity
+      summary: Disable an identity immediately for all issued access tokens (requires integration.manage)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        "200": { description: Revoked OAuth identity }
+  /credentials:
+    get:
+      operationId: listCredentials
+      summary: List your credentials and your agents' (all with integration.manage). Tokens are never returned
+      responses:
+        "200":
+          description: Credentials
+    post:
+      operationId: createCredential
+      summary: Create a personal token (scopes ∩ your role) or an integration token (needs integration.manage)
+      parameters:
+        - $ref: "#/components/parameters/IdempotencyKey"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [kind, name, scopes]
+              properties:
+                kind: { type: string, enum: [personal, integration] }
+                name: { type: string }
+                scopes: { type: array, items: { type: string } }
+                expires_at: { type: string, format: date-time }
+      responses:
+        "201":
+          description: Credential with its token
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Credential" }
+  /credentials/{id}/revoke:
+    post:
+      operationId: revokeCredential
+      summary: Revoke a credential
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        "200":
+          description: Credential
+  /config/plans:
+    get:
+      operationId: listConfigPlans
+      summary: List recent config plans
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+      responses:
+        "200":
+          description: Plans list
+    post:
+      operationId: createConfigPlan
+      summary: Plan a config apply from documents (kind/key/spec)
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - $ref: "#/components/parameters/IdempotencyKey"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [documents]
+              properties:
+                documents:
+                  type: array
+                  items:
+                    type: object
+                    required: [kind, key, spec]
+                    properties:
+                      kind: { type: string }
+                      key: { type: string }
+                      spec: { type: object, additionalProperties: true }
+      responses:
+        "201":
+          description: Plan created
+  /config/apply:
+    post:
+      operationId: applyConfigPlan
+      summary: Apply a previously created config plan
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - $ref: "#/components/parameters/IdempotencyKey"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [plan_id]
+              properties:
+                plan_id: { type: string, format: uuid }
+      responses:
+        "200":
+          description: Applied
+  /imports:
+    get:
+      operationId: listImports
+      summary: List recent CSV import runs
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+      responses:
+        "200":
+          description: Import runs
+    post:
+      operationId: createImport
+      summary: Import people from CSV (field mapping + dry run)
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - $ref: "#/components/parameters/IdempotencyKey"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [import]
+              properties:
+                import:
+                  type: object
+                  required: [csv]
+                  properties:
+                    entity: { type: string, enum: [people] }
+                    csv: { type: string, description: Raw CSV text with header row }
+                    dry_run: { type: boolean }
+                    source_system: { type: string }
+                    field_mapping:
+                      type: object
+                      additionalProperties: { type: string }
+      responses:
+        "201":
+          description: Import run created
+  /imports/{id}:
+    get:
+      operationId: getImport
+      summary: Get an import run and its rows
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        "200":
+          description: Import run
+        "404":
+          $ref: "#/components/responses/Problem"
+  /affiliations:
+    get:
+      operationId: listAffiliations
+      summary: List person–company affiliations (filter with person_id)
+      responses:
+        "200":
+          description: OK
+        "403":
+          $ref: "#/components/responses/Problem"
+    post:
+      operationId: createAffiliation
+      summary: Link a person to a company with a title
+      parameters:
+        - $ref: "#/components/parameters/IdempotencyKey"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [affiliation]
+              properties:
+                affiliation: { type: object, additionalProperties: true }
+      responses:
+        "201":
+          description: OK
+        "403":
+          $ref: "#/components/responses/Problem"
+  /companies/{id}:
+    get:
+      operationId: getCompany
+      summary: Get a company
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: OK
+        "403":
+          $ref: "#/components/responses/Problem"
+  /compliance_policies:
+    get:
+      operationId: listCompliancePolicies
+      summary: List compliance policies
+      responses:
+        "200":
+          description: OK
+        "403":
+          $ref: "#/components/responses/Problem"
+  /compliance_policies/{id}:
+    get:
+      operationId: getCompliancePolicy
+      summary: Get a compliance policy
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: OK
+        "403":
+          $ref: "#/components/responses/Problem"
+  /custom_fields:
+    get:
+      operationId: listCustomFields
+      summary: List custom field definitions (entity, include_archived)
+      responses:
+        "200":
+          description: OK
+        "403":
+          $ref: "#/components/responses/Problem"
+    post:
+      operationId: createCustomField
+      summary: Add a custom field definition (version 1)
+      parameters:
+        - $ref: "#/components/parameters/IdempotencyKey"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [custom_field]
+              properties:
+                custom_field: { type: object, additionalProperties: true }
+      responses:
+        "201":
+          description: OK
+        "403":
+          $ref: "#/components/responses/Problem"
+  /custom_fields/{id}:
+    get:
+      operationId: getCustomField
+      summary: Get a custom field definition with its version history
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: OK
+        "403":
+          $ref: "#/components/responses/Problem"
+    patch:
+      operationId: updateCustomField
+      summary: Change label, options, flags or data class (send expected_version)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+        - $ref: "#/components/parameters/IdempotencyKey"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [custom_field]
+              properties:
+                custom_field: { type: object, additionalProperties: true }
+      responses:
+        "200":
+          description: OK
+        "403":
+          $ref: "#/components/responses/Problem"
+  /custom_fields/{id}/archive:
+    post:
+      operationId: archiveCustomField
+      summary: Archive a field; its values are kept
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+        - $ref: "#/components/parameters/IdempotencyKey"
+      responses:
+        "200":
+          description: OK
+        "403":
+          $ref: "#/components/responses/Problem"
+  /custom_fields/{id}/restore:
+    post:
+      operationId: restoreCustomField
+      summary: Restore an archived field
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+        - $ref: "#/components/parameters/IdempotencyKey"
+      responses:
+        "200":
+          description: OK
+        "403":
+          $ref: "#/components/responses/Problem"
+  /custom_fields/{id}/type_change:
+    post:
+      operationId: changeCustomFieldType
+      summary: Convert a field and its values to another type (dry_run previews counts)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+        - $ref: "#/components/parameters/IdempotencyKey"
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema: { type: object, additionalProperties: true }
+      responses:
+        "200":
+          description: OK
+        "403":
+          $ref: "#/components/responses/Problem"
+  /custom_field_values:
+    put:
+      operationId: setCustomFieldValue
+      summary: Set or clear one custom field value on a record
+      parameters:
+        - $ref: "#/components/parameters/IdempotencyKey"
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema: { type: object, additionalProperties: true }
+      responses:
+        "200":
+          description: OK
+        "403":
+          $ref: "#/components/responses/Problem"
+  /data_requests:
+    get:
+      operationId: listDataRequests
+      summary: List data-subject requests, soonest due first
+      responses:
+        "200":
+          description: OK
+        "403":
+          $ref: "#/components/responses/Problem"
+    post:
+      operationId: createDataRequest
+      summary: Log a data-subject request (access, correction, erasure)
+      parameters:
+        - $ref: "#/components/parameters/IdempotencyKey"
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema: { type: object, additionalProperties: true }
+      responses:
+        "201":
+          description: OK
+        "403":
+          $ref: "#/components/responses/Problem"
+  /data_requests/{id}/complete:
+    post:
+      operationId: completeDataRequest
+      summary: Fulfil a request — access packet or erasure (legal holds refuse)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+        - $ref: "#/components/parameters/IdempotencyKey"
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema: { type: object, additionalProperties: true }
+      responses:
+        "200":
+          description: OK
+        "403":
+          $ref: "#/components/responses/Problem"
+  /data_requests/{id}/reject:
+    post:
+      operationId: rejectDataRequest
+      summary: Reject a data-subject request with a note
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+        - $ref: "#/components/parameters/IdempotencyKey"
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema: { type: object, additionalProperties: true }
+      responses:
+        "200":
+          description: OK
+        "403":
+          $ref: "#/components/responses/Problem"
+  /enrollments/{id}:
+    get:
+      operationId: getEnrollment
+      summary: Get a sequence enrollment
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: OK
+        "403":
+          $ref: "#/components/responses/Problem"
+  /enrollments/{id}/stop:
+    post:
+      operationId: stopEnrollment
+      summary: Stop a sequence enrollment
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+        - $ref: "#/components/parameters/IdempotencyKey"
+      responses:
+        "200":
+          description: OK
+        "403":
+          $ref: "#/components/responses/Problem"
+  /message_templates:
+    get:
+      operationId: listMessageTemplates
+      summary: List message templates (filter with status active, archived or all)
+      parameters:
+        - name: status
+          in: query
+          required: false
+          schema: { type: string, enum: [active, archived, all] }
+      responses:
+        "200":
+          description: OK
+        "403":
+          $ref: "#/components/responses/Problem"
+        "422":
+          $ref: "#/components/responses/Problem"
+    post:
+      operationId: createMessageTemplate
+      summary: Create a message template
+      parameters:
+        - $ref: "#/components/parameters/IdempotencyKey"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [message_template]
+              properties:
+                message_template:
+                  type: object
+                  required: [key, message_type, subject, body]
+                  properties:
+                    key: { type: string }
+                    message_type: { type: string }
+                    locale: { type: string, description: "Defaults to en" }
+                    subject: { type: string }
+                    body: { type: string }
+      responses:
+        "201":
+          description: Created
+        "403":
+          $ref: "#/components/responses/Problem"
+        "422":
+          $ref: "#/components/responses/Problem"
+  /message_templates/{id}:
+    patch:
+      operationId: updateMessageTemplate
+      summary: Edit a template's subject, body or type
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - { name: id, in: path, required: true, schema: { type: string, format: uuid } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [message_template]
+              properties:
+                message_template:
+                  type: object
+                  properties:
+                    subject: { type: string }
+                    body: { type: string }
+                    message_type: { type: string }
+      responses:
+        "200": { description: The updated template }
+        "422": { $ref: "#/components/responses/Problem" }
+  /message_templates/{id}/archive:
+    post:
+      operationId: archiveMessageTemplate
+      summary: Archive a message template (hidden from lists; sequences already using it keep working)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+        - $ref: "#/components/parameters/IdempotencyKey"
+      responses:
+        "200":
+          description: OK
+        "403":
+          $ref: "#/components/responses/Problem"
+        "422":
+          $ref: "#/components/responses/Problem"
+  /application_form:
+    get:
+      operationId: getApplicationForm
+      summary: Get the careers application form (required fields, standard fields, screening questions)
+      responses:
+        "200":
+          description: OK
+        "403":
+          $ref: "#/components/responses/Problem"
+    patch:
+      operationId: updateApplicationForm
+      summary: Set which standard fields the careers application form requires
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [application_form]
+              properties:
+                application_form:
+                  type: object
+                  required: [required_fields]
+                  properties:
+                    required_fields:
+                      type: array
+                      items: { type: string, enum: [display_name, email, phone, linkedin, links, country, region] }
+                    screening_field_ids:
+                      type: array
+                      description: Full set of application custom field ids to show on the careers form. Omit to leave flags alone. An empty array clears them.
+                      items: { type: string, format: uuid }
+      responses:
+        "200":
+          description: OK
+        "403":
+          $ref: "#/components/responses/Problem"
+        "422":
+          $ref: "#/components/responses/Problem"
+  /today:
+    get:
+      operationId: getToday
+      summary: Recruiter home (feedback owed, new applicants, this week's interviews, pending offers, active jobs). Ids only.
+      responses:
+        "200":
+          description: OK
+        "403":
+          $ref: "#/components/responses/Problem"
+  /calendar_connections:
+    get:
+      operationId: listCalendarConnections
+      summary: List calendar connections. Grants are not returned.
+      responses:
+        "200":
+          description: OK
+        "403":
+          $ref: "#/components/responses/Problem"
+    post:
+      operationId: createCalendarConnection
+      summary: Connect a calendar. Unverified domains are refused. Without a real grant the connection stays pending.
+      parameters:
+        - $ref: "#/components/parameters/IdempotencyKey"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [calendar_connection]
+              properties:
+                calendar_connection:
+                  type: object
+                  required: [calendar_id]
+                  properties:
+                    calendar_id: { type: string }
+                    kind: { type: string, enum: [user, domain], description: "domain needs settings.manage" }
+                    user_id: { type: string, format: uuid }
+                    secret_ref: { type: string, description: "Real grant. sm://demo stays pending and is not returned." }
+      responses:
+        "201":
+          description: Created
+        "403":
+          $ref: "#/components/responses/Problem"
+        "422":
+          $ref: "#/components/responses/Problem"
+  /scorecard_rubrics:
+    get:
+      operationId: listScorecardRubrics
+      summary: List scorecard rubrics
+      responses:
+        "200":
+          description: OK
+        "403":
+          $ref: "#/components/responses/Problem"
+    post:
+      operationId: createScorecardRubric
+      summary: Create a scorecard rubric
+      parameters:
+        - $ref: "#/components/parameters/IdempotencyKey"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [scorecard_rubric]
+              properties:
+                scorecard_rubric:
+                  type: object
+                  required: [key, name, attributes_spec]
+                  properties:
+                    key: { type: string }
+                    name: { type: string }
+                    guidance: { type: string }
+                    attributes_spec:
+                      type: array
+                      items:
+                        type: object
+                        required: [key]
+                        properties:
+                          key: { type: string }
+                          label: { type: string }
+                          guidance: { type: string }
+                          required: { type: boolean }
+      responses:
+        "201":
+          description: Created
+        "403":
+          $ref: "#/components/responses/Problem"
+        "422":
+          $ref: "#/components/responses/Problem"
+  /scorecard_rubrics/{id}:
+    patch:
+      operationId: updateScorecardRubric
+      summary: Edit a scorecard rubric (name, guidance, attributes; the key is fixed)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+        - $ref: "#/components/parameters/IdempotencyKey"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [scorecard_rubric]
+              properties:
+                scorecard_rubric:
+                  type: object
+                  properties:
+                    name: { type: string }
+                    guidance: { type: string }
+                    attributes_spec:
+                      type: array
+                      items:
+                        type: object
+                        required: [key]
+                        properties:
+                          key: { type: string }
+                          label: { type: string }
+                          guidance: { type: string }
+                          required: { type: boolean }
+      responses:
+        "200":
+          description: Updated
+        "403":
+          $ref: "#/components/responses/Problem"
+        "422":
+          $ref: "#/components/responses/Problem"
+  /interviews:
+    get:
+      operationId: listInterviews
+      summary: List interviews across jobs (filter with tab upcoming, schedule, feedback or mine)
+      parameters:
+        - name: tab
+          in: query
+          required: false
+          schema: { type: string, enum: [upcoming, schedule, feedback, mine] }
+      responses:
+        "200":
+          description: OK
+        "403":
+          $ref: "#/components/responses/Problem"
+        "422":
+          $ref: "#/components/responses/Problem"
+  /interviews/{id}:
+    get:
+      operationId: getInterview
+      summary: Get an interview
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: OK
+        "403":
+          $ref: "#/components/responses/Problem"
+  /interviews/{id}/cancel:
+    post:
+      operationId: cancelInterview
+      summary: Cancel an interview
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+        - $ref: "#/components/parameters/IdempotencyKey"
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema: { type: object, additionalProperties: true }
+      responses:
+        "200":
+          description: OK
+        "403":
+          $ref: "#/components/responses/Problem"
+  /interviews/{id}/reschedule:
+    post:
+      operationId: rescheduleInterview
+      summary: Reschedule an interview
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+        - $ref: "#/components/parameters/IdempotencyKey"
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema: { type: object, additionalProperties: true }
+      responses:
+        "200":
+          description: OK
+        "403":
+          $ref: "#/components/responses/Problem"
+  /legal_holds:
+    get:
+      operationId: listLegalHolds
+      summary: List legal holds (active=true for current holds)
+      responses:
+        "200":
+          description: OK
+        "403":
+          $ref: "#/components/responses/Problem"
+    post:
+      operationId: createLegalHold
+      summary: Place a legal hold on a person, application or job
+      parameters:
+        - $ref: "#/components/parameters/IdempotencyKey"
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema: { type: object, additionalProperties: true }
+      responses:
+        "201":
+          description: OK
+        "403":
+          $ref: "#/components/responses/Problem"
+  /legal_holds/{id}/release:
+    post:
+      operationId: releaseLegalHold
+      summary: Release a legal hold
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+        - $ref: "#/components/parameters/IdempotencyKey"
+      responses:
+        "200":
+          description: OK
+        "403":
+          $ref: "#/components/responses/Problem"
+  /mailboxes:
+    get:
+      operationId: listMailboxes
+      summary: List connected mailboxes
+      responses:
+        "200":
+          description: OK
+        "403":
+          $ref: "#/components/responses/Problem"
+    post:
+      operationId: createMailbox
+      summary: Connect a personal or shared mailbox
+      parameters:
+        - $ref: "#/components/parameters/IdempotencyKey"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [mailbox]
+              properties:
+                mailbox:
+                  type: object
+                  required: [email]
+                  properties:
+                    email: { type: string }
+                    kind: { type: string, enum: [personal, shared] }
+                    provider:
+                      type: string
+                      enum: [gmail, sandbox]
+                      description: sandbox is a Test mailbox that keeps mail inside Bigbuck (connected immediately, no domain check or grant). gmail needs a verified domain and a grant.
+                    user_id: { type: string, format: uuid }
+                    secret_ref: { type: string }
+      responses:
+        "201":
+          description: OK
+        "403":
+          $ref: "#/components/responses/Problem"
+  /mailboxes/{id}:
+    patch:
+      operationId: updateMailbox
+      summary: Change a mailbox's daily sending cap, or pause, resume or disconnect it (only connected mailboxes send)
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - { name: id, in: path, required: true, schema: { type: string, format: uuid } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [mailbox]
+              properties:
+                mailbox:
+                  type: object
+                  properties:
+                    daily_cap: { type: integer, minimum: 1, maximum: 10000 }
+                    status: { type: string, enum: [connected, paused, disconnected] }
+      responses:
+        "200": { description: The mailbox with sent_today }
+        "422": { $ref: "#/components/responses/Problem" }
+  /mailboxes/{id}/inbound:
+    post:
+      operationId: ingestInboundMessage
+      summary: Record an inbound message (reply detection stops sequences)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+        - $ref: "#/components/parameters/IdempotencyKey"
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                from: { type: string }
+                subject: { type: string }
+                body: { type: string }
+                thread_id: { type: string }
+                provider_message_id: { type: string }
+                rfc822_message_id: { type: string }
+                in_reply_to: { type: string, description: "Matched before thread_id and the sender, so a reply from a new address on a known thread still lands." }
+                kind: { type: string, enum: [reply, bounce, auto_reply], default: reply }
+      responses:
+        "200":
+          description: OK
+        "403":
+          $ref: "#/components/responses/Problem"
+  /people/{id}/access_packet:
+    get:
+      operationId: getAccessPacket
+      summary: Export everything held about a person (needs person.export; audited)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: OK
+        "403":
+          $ref: "#/components/responses/Problem"
+  /people/{id}/consents:
+    get:
+      operationId: listPersonConsents
+      summary: List a person's consent records, newest first
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: OK
+        "403":
+          $ref: "#/components/responses/Problem"
+    post:
+      operationId: recordPersonConsent
+      summary: Record a consent grant or withdrawal (append-only)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+        - $ref: "#/components/parameters/IdempotencyKey"
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema: { type: object, additionalProperties: true }
+      responses:
+        "201":
+          description: OK
+        "403":
+          $ref: "#/components/responses/Problem"
+  /people/{id}/erase:
+    post:
+      operationId: erasePerson
+      summary: Erase or anonymize a person (legal holds refuse)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+        - $ref: "#/components/parameters/IdempotencyKey"
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema: { type: object, additionalProperties: true }
+      responses:
+        "200":
+          description: OK
+        "403":
+          $ref: "#/components/responses/Problem"
+  /project_members:
+    get:
+      operationId: listAllProjectMembers
+      summary: List pool members (filter with person_id or project_id)
+      responses:
+        "200":
+          description: OK
+        "403":
+          $ref: "#/components/responses/Problem"
+  /project_members/{id}:
+    get:
+      operationId: getProjectMember
+      summary: Get a pool member
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: OK
+        "403":
+          $ref: "#/components/responses/Problem"
+    patch:
+      operationId: updateProjectMember
+      summary: Set the per-member note on a pool member
+      parameters:
+        - $ref: "#/components/parameters/IdempotencyKey"
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [member]
+              properties:
+                member:
+                  type: object
+                  properties:
+                    note: { type: string }
+      responses:
+        "200":
+          description: OK
+        "403":
+          $ref: "#/components/responses/Problem"
+  /project_members/{id}/transitions:
+    get:
+      operationId: listProjectMemberTransitions
+      summary: Stage history for a pool member
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: OK
+        "403":
+          $ref: "#/components/responses/Problem"
+    post:
+      operationId: transitionProjectMember
+      summary: Move a pool member to another stage
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+        - $ref: "#/components/parameters/IdempotencyKey"
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema: { type: object, additionalProperties: true }
+      responses:
+        "200":
+          description: OK
+        "403":
+          $ref: "#/components/responses/Problem"
+  /sequences/{id}:
+    get:
+      operationId: getSequence
+      summary: Get a sequence
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: OK
+        "403":
+          $ref: "#/components/responses/Problem"
+    patch:
+      operationId: updateSequence
+      summary: Update a sequence's name, description, owner, status or steps
+      parameters:
+        - $ref: "#/components/parameters/IdempotencyKey"
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [sequence]
+              properties:
+                sequence:
+                  type: object
+                  properties:
+                    name: { type: string }
+                    description: { type: string }
+                    owner_user_id: { type: string, format: uuid }
+                    status: { type: string }
+                    steps: { type: array, items: { type: object } }
+      responses:
+        "200":
+          description: OK
+        "403":
+          $ref: "#/components/responses/Problem"
+  /applications/{id}/booking_options:
+    post:
+      operationId: previewPanel
+      summary: Preview available interview times without booking
+      description: Returns signed options valid for ten minutes. Requires interview.schedule. No calendar events or interviews are created.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PanelBookingInput"
+      responses:
+        "200":
+          description: Available options; an empty list means no available time in the search window
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  options:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        token: { type: string, description: Signed booking proposal }
+                        starts_at: { type: string, format: date-time }
+                        ends_at: { type: string, format: date-time }
+                        blocks: { type: array, items: { type: object, additionalProperties: true } }
+        "403":
+          $ref: "#/components/responses/Problem"
+        "422":
+          $ref: "#/components/responses/Problem"
+  /applications/{id}/bookings:
+    post:
+      operationId: bookPanel
+      summary: Book an interview panel for an application
+      description: Submit booking_token from previewPanel to book exactly the reviewed option, with a fresh availability check. Expired or unavailable proposals return 422 without choosing another time. Legacy automatic booking inputs remain supported.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+        - $ref: "#/components/parameters/IdempotencyKey"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - type: object
+                  required: [booking_token]
+                  properties:
+                    booking_token: { type: string }
+                - $ref: "#/components/schemas/PanelBookingInput"
+      responses:
+        "201":
+          description: Interview panel booked
+        "403":
+          $ref: "#/components/responses/Problem"
+        "422":
+          $ref: "#/components/responses/Problem"
+  /jobs/{id}/rediscovery:
+    get:
+      operationId: rediscoverTalent
+      summary: Surface past applicants and silver medalists for a job
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+        - name: limit
+          in: query
+          schema: { type: integer }
+      responses:
+        "200":
+          description: Rediscovery candidates
+  /sequences/{id}/enrollment_plan:
+    post:
+      operationId: planSequenceEnrollment
+      summary: "Dry run: who would be enrolled and why others are skipped (no_email, do_not_contact, opted_out, active_enrollment, company_dnc, cooldown, consent_blocked). Selects by person_ids, project_id, saved_search_id or filters."
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                mailbox_id: { type: string, format: uuid }
+                person_ids: { type: array, items: { type: string, format: uuid } }
+                project_id: { type: string, format: uuid }
+                saved_search_id: { type: string, format: uuid }
+                filters: { type: object, additionalProperties: true }
+                exclude_person_ids: { type: array, items: { type: string, format: uuid } }
+      responses:
+        "200":
+          description: Plan with counts, will_enroll and skipped lists
+  /sequences/{id}/enroll_planned:
+    post:
+      operationId: enrollPlannedPeople
+      summary: Enroll the eligible people from a reviewed selection (re-plans at commit time, up to 500)
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - $ref: "#/components/parameters/IdempotencyKey"
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                mailbox_id: { type: string, format: uuid }
+                person_ids: { type: array, items: { type: string, format: uuid } }
+                project_id: { type: string, format: uuid }
+                saved_search_id: { type: string, format: uuid }
+                filters: { type: object, additionalProperties: true }
+                exclude_person_ids: { type: array, items: { type: string, format: uuid } }
+      responses:
+        "200":
+          description: Enrolled and skipped counts with per-person results
+  /sequences/{id}/bulk_enroll:
+    post:
+      operationId: bulkEnrollSequence
+      summary: Enroll many people in a sequence
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - $ref: "#/components/parameters/IdempotencyKey"
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [person_ids]
+              properties:
+                person_ids: { type: array, items: { type: string, format: uuid } }
+                mailbox_id: { type: string, format: uuid }
+      responses:
+        "200":
+          description: Bulk enroll results
+  /saved_searches:
+    get:
+      operationId: listSavedSearches
+      summary: List saved people searches for the current user
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+      responses:
+        "200":
+          description: Saved searches
+    post:
+      operationId: createSavedSearch
+      summary: Save a people search filter set
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - $ref: "#/components/parameters/IdempotencyKey"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [saved_search]
+              properties:
+                saved_search:
+                  type: object
+                  required: [name, filters]
+                  properties:
+                    name: { type: string }
+                    entity_type: { type: string }
+                    filters: { type: object }
+      responses:
+        "201":
+          description: Created
+  /saved_searches/{id}:
+    patch:
+      operationId: updateSavedSearch
+      summary: Rename a saved search or change its filters
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [saved_search]
+              properties:
+                saved_search:
+                  type: object
+                  properties:
+                    name: { type: string }
+                    filters: { type: object }
+      responses:
+        "200":
+          description: Updated
+    delete:
+      operationId: deleteSavedSearch
+      summary: Delete a saved search
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        "204":
+          description: Deleted
+  /saved_searches/{id}/people:
+    get:
+      operationId: runSavedSearch
+      summary: Run a saved search now and return the matching people
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+        - name: limit
+          in: query
+          schema: { type: integer }
+      responses:
+        "200":
+          description: People with meta.total
+  /analytics/funnel:
+    get:
+      operationId: getFunnelAnalytics
+      summary: Application funnel analytics
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - name: job_id
+          in: query
+          schema: { type: string, format: uuid }
+      responses:
+        "200":
+          description: Funnel metrics
+  /analytics/sourcing:
+    get:
+      operationId: getSourcingAnalytics
+      summary: Sequence and outreach analytics
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+      responses:
+        "200":
+          description: Sourcing metrics
+  /analytics/outreach:
+    get:
+      operationId: getOutreachFunnel
+      summary: "Outreach funnel for a window (default last 30 days): enrolled, contacted, replied, reply classification, applied, hired"
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - { name: from, in: query, schema: { type: string, format: date-time } }
+        - { name: to, in: query, schema: { type: string, format: date-time } }
+        - { name: sequence_id, in: query, schema: { type: string, format: uuid } }
+      responses:
+        "200":
+          description: Funnel
+  /analytics/outreach_snapshots:
+    get:
+      operationId: listOutreachSnapshots
+      summary: Daily outreach funnel snapshots, org-wide or for one sequence
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - { name: from, in: query, schema: { type: string, format: date } }
+        - { name: to, in: query, schema: { type: string, format: date } }
+        - { name: sequence_id, in: query, schema: { type: string, format: uuid } }
+      responses:
+        "200":
+          description: Daily snapshots
+  /communications/{id}:
+    patch:
+      operationId: classifyCommunication
+      summary: "Reclassify an inbound message (interested, not_interested, question, unsubscribe, out_of_office, other); unsubscribe opts the person out"
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - $ref: "#/components/parameters/IdempotencyKey"
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [communication]
+              properties:
+                communication:
+                  type: object
+                  required: [classification]
+                  properties:
+                    classification: { type: string, enum: [interested, not_interested, question, unsubscribe, out_of_office, other] }
+      responses:
+        "200":
+          description: Updated message
+  /jobs/{job_id}/rediscovery/criteria:
+    get:
+      operationId: getRediscoveryCriteria
+      summary: A job's rediscovery criteria (must / nice-to-have)
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - name: job_id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        "200":
+          description: Criteria
+    put:
+      operationId: setRediscoveryCriteria
+      summary: "Replace a job's criteria. Each: {id?, label, kind: must|nice, match: {q|tag|location|title|company|source}}"
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - $ref: "#/components/parameters/IdempotencyKey"
+        - name: job_id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [criteria]
+              properties:
+                criteria:
+                  type: array
+                  items: { type: object }
+      responses:
+        "200":
+          description: Criteria saved
+  /jobs/{job_id}/rediscovery/run:
+    post:
+      operationId: runRediscovery
+      summary: Evaluate known people against the job's criteria and fill the review queue (people already decided on are left alone)
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - $ref: "#/components/parameters/IdempotencyKey"
+        - name: job_id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        "200":
+          description: Counts created, refreshed, skipped and per bucket
+  /jobs/{job_id}/rediscovery/queue:
+    get:
+      operationId: listRediscoveryQueue
+      summary: The rediscovery review queue with per-criterion verdicts and evidence
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - name: job_id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+        - { name: status, in: query, schema: { type: string, enum: [pending, considering, added_to_pool, enrolled, not_a_fit, review_later] } }
+        - { name: bucket, in: query, schema: { type: string, enum: [silver_medalist, high_fit, internal_transfer, warm_lead] } }
+      responses:
+        "200":
+          description: Queue
+  /rediscovery_candidates/{id}/review:
+    post:
+      operationId: reviewRediscoveryCandidate
+      summary: Act on a queued person (consider, add_to_pool, enroll, not_a_fit, review_later), with optional feedback
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - $ref: "#/components/parameters/IdempotencyKey"
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [review_action]
+              properties:
+                review_action: { type: string, enum: [consider, add_to_pool, enroll, not_a_fit, review_later] }
+                feedback: { type: string }
+                project_id: { type: string, format: uuid }
+                sequence_id: { type: string, format: uuid }
+                mailbox_id: { type: string, format: uuid }
+      responses:
+        "200":
+          description: Updated queue row with the action's outcome
+  /jobs/{job_id}/sourcing_agent/run:
+    post:
+      operationId: runSourcingAgent
+      summary: "Run the sourcing agent for a job: refresh rediscovery from the job's criteria and propose enrollments with drafted openers (pending approval unless org policy is unattended)"
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - $ref: "#/components/parameters/IdempotencyKey"
+        - name: job_id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [sequence_id]
+              properties:
+                sequence_id: { type: string, format: uuid }
+                agent_id: { type: string, format: uuid }
+                mailbox_id: { type: string, format: uuid }
+                limit: { type: integer, minimum: 1, maximum: 50 }
+      responses:
+        "200":
+          description: Proposed ids, counts and skip reasons
+  /agent_proposals:
+    get:
+      operationId: listAgentProposals
+      summary: What agents have proposed and what was decided
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - { name: status, in: query, schema: { type: string, enum: [pending, approved, rejected] } }
+        - { name: job_id, in: query, schema: { type: string, format: uuid } }
+      responses:
+        "200":
+          description: Proposals
+  /agent_proposals/bulk_approve:
+    post:
+      operationId: bulkApproveAgentProposals
+      summary: Approve several proposals with their drafted openers (people only; agents cannot approve)
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - $ref: "#/components/parameters/IdempotencyKey"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [ids]
+              properties:
+                ids: { type: array, items: { type: string, format: uuid } }
+      responses:
+        "200":
+          description: Per-proposal results
+  /agent_proposals/{id}/approve:
+    post:
+      operationId: approveAgentProposal
+      summary: Approve a proposal, optionally with an edited opener; enrolls through the normal outreach checks
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - $ref: "#/components/parameters/IdempotencyKey"
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                opener: { type: string }
+                reason: { type: string }
+      responses:
+        "200":
+          description: Approved proposal
+  /agent_proposals/{id}/reject:
+    post:
+      operationId: rejectAgentProposal
+      summary: Reject a proposal (the person is marked not a fit in the review queue)
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - $ref: "#/components/parameters/IdempotencyKey"
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                reason: { type: string }
+      responses:
+        "200":
+          description: Rejected proposal
+  /dnc_companies:
+    get:
+      operationId: listDncCompanies
+      summary: List do-not-contact companies and domains
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+      responses:
+        "200":
+          description: DNC list
+    post:
+      operationId: createDncCompany
+      summary: Add a company or domain to the DNC list
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - $ref: "#/components/parameters/IdempotencyKey"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [dnc_company]
+              properties:
+                dnc_company:
+                  type: object
+                  properties:
+                    company_id: { type: string, format: uuid }
+                    domain: { type: string }
+                    reason: { type: string }
+      responses:
+        "201":
+          description: Created
+  /dnc_companies/{id}:
+    delete:
+      operationId: deleteDncCompany
+      summary: Remove a DNC company entry
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        "204":
+          description: Deleted
+  /referrals:
+    get:
+      operationId: listReferrals
+      summary: List employee referrals
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - name: job_id
+          in: query
+          schema: { type: string, format: uuid }
+      responses:
+        "200":
+          description: Referrals
+    post:
+      operationId: createReferral
+      summary: Submit a referral (creates or attaches a person)
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - $ref: "#/components/parameters/IdempotencyKey"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [referral]
+              properties:
+                referral:
+                  type: object
+                  required: [display_name]
+                  properties:
+                    display_name: { type: string }
+                    email: { type: string }
+                    job_id: { type: string, format: uuid }
+                    note: { type: string }
+      responses:
+        "201":
+          description: Created
+  /referrals/{id}:
+    get:
+      operationId: getReferral
+      summary: Get a referral
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        "200":
+          description: Referral
+  /requisitions:
+    get:
+      operationId: listRequisitions
+      summary: List requisitions / openings
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - name: status
+          in: query
+          schema: { type: string }
+      responses:
+        "200":
+          description: Requisitions
+    post:
+      operationId: createRequisition
+      summary: Create a draft requisition with headcount
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - $ref: "#/components/parameters/IdempotencyKey"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [requisition]
+              properties:
+                requisition:
+                  type: object
+                  required: [code, title]
+                  properties:
+                    code: { type: string }
+                    title: { type: string }
+                    employment_type: { type: string }
+                    headcount: { type: integer }
+                    owner_user_id: { type: string, format: uuid }
+      responses:
+        "201":
+          description: Created
+  /requisitions/{id}:
+    get:
+      operationId: getRequisition
+      summary: Get a requisition with filled headcount
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        "200":
+          description: Requisition
+  /requisitions/{id}/open:
+    post:
+      operationId: openRequisition
+      summary: Open an approved requisition for hiring
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - $ref: "#/components/parameters/IdempotencyKey"
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        "200":
+          description: Opened
+  /requisitions/{id}/close:
+    post:
+      operationId: closeRequisition
+      summary: Close a requisition
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - $ref: "#/components/parameters/IdempotencyKey"
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        "200":
+          description: Closed
+  /sourcing_tasks:
+    get:
+      operationId: listSourcingTasks
+      summary: List open sourcing tasks from sequence steps
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - name: status
+          in: query
+          schema: { type: string }
+        - name: person_id
+          in: query
+          schema: { type: string, format: uuid }
+      responses:
+        "200":
+          description: Tasks
+  /sourcing_tasks/{id}/complete:
+    post:
+      operationId: completeSourcingTask
+      summary: Mark a sourcing task complete
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - $ref: "#/components/parameters/IdempotencyKey"
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        "200":
+          description: Completed
+  /webhooks/{id}:
+    patch:
+      operationId: updateWebhook
+      summary: Change a webhook's URL, the events it receives (empty list = all), or turn it off and on
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - { name: id, in: path, required: true, schema: { type: string, format: uuid } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [webhook]
+              properties:
+                webhook:
+                  type: object
+                  properties:
+                    url: { type: string, format: uri }
+                    event_types: { type: array, items: { type: string } }
+                    active: { type: boolean }
+      responses:
+        "200": { description: The webhook with its ten most recent deliveries }
+        "422": { $ref: "#/components/responses/Problem" }
+  /webhooks/{id}/rotate_secret:
+    post:
+      operationId: rotateWebhookSecret
+      summary: Rotate the endpoint signing key and return it once
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Endpoint metadata and one-time signing_secret; previous key stops working immediately
+        "403":
+          $ref: "#/components/responses/Problem"
+        "404":
+          $ref: "#/components/responses/Problem"
+  /webhooks/drain:
+    post:
+      operationId: drainWebhooks
+      summary: Relay pending events and deliver due webhooks now
+      parameters:
+        - $ref: "#/components/parameters/IdempotencyKey"
+      responses:
+        "200":
+          description: OK
+        "403":
+          $ref: "#/components/responses/Problem"
+  /oauth/google:
+    get:
+      operationId: startGoogleSignIn
+      summary: Start Google sign-in (browser redirect)
+      security: []
+      responses:
+        "302":
+          description: OK
+  /oauth/google/callback:
+    get:
+      operationId: finishGoogleSignIn
+      summary: Google sign-in callback (browser redirect with a one-time code)
+      security: []
+      responses:
+        "302":
+          description: OK
+  /oauth/google/status:
+    get:
+      operationId: getGoogleSignInStatus
+      summary: Whether Google sign-in is configured
+      security: []
+      responses:
+        "200":
+          description: OK
+  /public/scheduling/{token}/book:
+    post:
+      operationId: bookPublicSlot
+      summary: Candidate books a slot from a scheduling link
+      security: []
+      parameters:
+        - name: token
+          in: path
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema: { type: object, additionalProperties: true }
+      responses:
+        "200":
+          description: OK
+  /public/unsubscribe/{token}:
+    get:
+      operationId: getPublicUnsubscribe
+      summary: Show an unsubscribe link's recipient (masked)
+      security: []
+      parameters:
+        - name: token
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: OK
+    post:
+      operationId: confirmPublicUnsubscribe
+      summary: Opt out via an unsubscribe link (also the RFC 8058 one-click target)
+      security: []
+      parameters:
+        - name: token
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: OK
+  /mailboxes/{id}/messages:
+    get:
+      operationId: listMailboxMessages
+      summary: List what a Test mailbox sent and received
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: OK
+  /mailboxes/{id}/simulate:
+    post:
+      operationId: simulateMailboxReply
+      summary: Answer a message sent from a Test mailbox as the candidate (reply, bounce or auto_reply)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [message_id]
+              properties:
+                message_id: { type: string }
+                kind: { type: string, enum: [reply, bounce, auto_reply] }
+                body: { type: string }
+      responses:
+        "201":
+          description: Created
+  /people/{person_id}/notes:
+    get:
+      operationId: listPersonNotes
+      summary: List a person's notes, pinned first
+      parameters:
+        - name: person_id
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: OK
+    post:
+      operationId: createPersonNote
+      summary: Add a note to a person
+      parameters:
+        - name: person_id
+          in: path
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { type: object, required: [note], properties: { note: { type: object, required: [body], properties: { body: { type: string }, pinned: { type: boolean } } } } }
+      responses:
+        "201":
+          description: OK
+  /notes/{id}:
+    patch:
+      operationId: updatePersonNote
+      summary: Edit or pin a note
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { type: object, required: [note], properties: { note: { type: object, properties: { body: { type: string }, pinned: { type: boolean } } } } }
+      responses:
+        "200":
+          description: OK
+    delete:
+      operationId: deletePersonNote
+      summary: Delete a note (author only)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "204":
+          description: OK
+  /tags:
+    get:
+      operationId: listTags
+      summary: List the tag vocabulary with person counts
+      responses:
+        "200":
+          description: OK
+    post:
+      operationId: createTag
+      summary: Create a tag
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { type: object, required: [tag], properties: { tag: { type: object, required: [name], properties: { name: { type: string }, color: { type: string, description: 'Hex like #16a34a' } } } } }
+      responses:
+        "201":
+          description: OK
+  /tags/{id}:
+    patch:
+      operationId: updateTag
+      summary: Rename or recolor a tag
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { type: object, required: [tag], properties: { tag: { type: object, properties: { name: { type: string }, color: { type: string } } } } }
+      responses:
+        "200":
+          description: OK
+  /tags/{id}/merge:
+    post:
+      operationId: mergeTag
+      summary: Merge this tag into another; people keep the target tag
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { type: object, required: [into_tag_id], properties: { into_tag_id: { type: string } } }
+      responses:
+        "200":
+          description: OK
+  /people/{person_id}/tags:
+    get:
+      operationId: listPersonTags
+      summary: List a person's tags
+      parameters:
+        - name: person_id
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: OK
+    post:
+      operationId: tagPerson
+      summary: Tag a person by tag_id or name (created on first use); idempotent
+      parameters:
+        - name: person_id
+          in: path
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { type: object, properties: { tag_id: { type: string }, name: { type: string } } }
+      responses:
+        "201":
+          description: OK
+  /people/{person_id}/tags/{id}:
+    delete:
+      operationId: untagPerson
+      summary: Remove a tag from a person
+      parameters:
+        - name: person_id
+          in: path
+          required: true
+          schema: { type: string }
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "204":
+          description: OK
+  /tasks:
+    get:
+      operationId: listTasks
+      summary: "List follow-up tasks. The Today panel is assignee=me&due=today (overdue included)."
+      parameters:
+        - { name: assignee, in: query, schema: { type: string }, description: me or a user id }
+        - { name: due, in: query, schema: { type: string, enum: [overdue, today, upcoming, none] } }
+        - { name: status, in: query, schema: { type: string, enum: [open, completed, cancelled, all] } }
+        - { name: person_id, in: query, schema: { type: string } }
+        - { name: task_type, in: query, schema: { type: string, enum: [call, linkedin, email, other] } }
+      responses:
+        "200":
+          description: OK
+    post:
+      operationId: createTask
+      summary: Create a follow-up task for a person
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [task]
+              properties:
+                task:
+                  type: object
+                  required: [person_id, title]
+                  properties:
+                    person_id: { type: string }
+                    title: { type: string }
+                    description: { type: string }
+                    task_type: { type: string, enum: [call, linkedin, email, other] }
+                    due_at: { type: string, format: date-time }
+                    assignee_user_id: { type: string }
+                    assignee_agent_id: { type: string }
+                    application_id: { type: string }
+                    project_member_id: { type: string }
+      responses:
+        "201":
+          description: Created
+  /tasks/{id}:
+    patch:
+      operationId: updateTask
+      summary: Edit an open task
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [task]
+              properties:
+                task:
+                  type: object
+                  properties:
+                    title: { type: string }
+                    description: { type: string }
+                    task_type: { type: string }
+                    due_at: { type: string, format: date-time }
+                    assignee_user_id: { type: string }
+      responses:
+        "200":
+          description: OK
+  /tasks/{id}/complete:
+    post:
+      operationId: completeTask
+      summary: Complete a task; a task that paused a sequence resumes it
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: OK
+  /tasks/{id}/cancel:
+    post:
+      operationId: cancelTask
+      summary: Cancel an open task
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: OK
+  /people/{id}/feed:
+    get:
+      operationId: getPersonFeed
+      summary: The person's activity feed - emails, notes, tasks, tags, stage moves - newest first
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: OK
+  /people/{id}/preview_message:
+    post:
+      operationId: previewPersonMessage
+      summary: Render a template or typed message for this person without sending it
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                template_key: { type: string }
+                subject: { type: string }
+                body: { type: string }
+                mailbox_id: { type: string }
+      responses:
+        "200":
+          description: OK
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: >-
+        bb_live_ (personal, agent, integration) or bb_sess_ (browser session) token. Optional headers:
+        X-Bigbuck-Act-As-Agent (act as one of your agents with a session or personal token) and
+        X-Bigbuck-Surface (web, api, cli, mcp, agent) recorded in audit.
+  parameters:
+    OrganizationId:
+      name: X-Organization-Id
+      in: header
+      required: false
+      description: Optional. The organization comes from the bearer credential; if sent, it must match.
+      schema: { type: string, format: uuid }
+    IdempotencyKey:
+      name: Idempotency-Key
+      in: header
+      required: false
+      schema: { type: string }
+  responses:
+    Problem:
+      description: RFC 9457 problem+json
+      content:
+        application/problem+json:
+          schema:
+            type: object
+            required: [type, title, status, code, request_id]
+            properties:
+              type: { type: string, format: uri }
+              title: { type: string }
+              status: { type: integer }
+              code: { type: string }
+              detail: { type: string }
+              param: { type: string }
+              request_id: { type: string }
+  schemas:
+    PanelBookingInput:
+      type: object
+      required: [organizer_calendar, search_start, search_end, interview_defs, profiles, user_emails]
+      properties:
+        organizer_calendar: { type: string }
+        search_start: { type: string, format: date-time }
+        search_end: { type: string, format: date-time, description: At most fourteen days after search_start }
+        interview_defs:
+          type: array
+          minItems: 1
+          items:
+            type: object
+            required: [key, duration_minutes, count, candidate_user_ids]
+            properties:
+              key: { type: string }
+              duration_minutes: { type: integer, minimum: 15, maximum: 480 }
+              count: { type: integer, minimum: 1, maximum: 10 }
+              candidate_user_ids: { type: array, minItems: 1, items: { type: string } }
+        profiles:
+          type: array
+          items:
+            type: object
+            required: [user_id]
+            properties:
+              user_id: { type: string }
+              paused: { type: boolean }
+        user_emails: { type: object, additionalProperties: { type: string, format: email } }
+    PostingQuestion:
+      type: object
+      required: [key, label, field_type]
+      properties:
+        key: { type: string, pattern: "^[a-z][a-z0-9_]{0,63}$" }
+        label: { type: string, maxLength: 500 }
+        field_type: { type: string, enum: [text, long_text, number, boolean, email, url, select, multi_select] }
+        required: { type: boolean }
+        options: { type: array, maxItems: 100, items: { type: string }, uniqueItems: true }
+    PostingInput:
+      type: object
+      properties:
+        title: { type: string, maxLength: 255 }
+        audience: { type: string, enum: [public, internal, both, hidden] }
+        status: { type: string, enum: [draft, published, archived] }
+        expected_version: { type: integer }
+        description: { type: string, maxLength: 20000, description: "Plain-text job description shown on careers and the apply page" }
+        location: { type: string, maxLength: 255 }
+        employment_type: { type: string, enum: [full_time, part_time, contract, internship, temporary], nullable: true }
+        question_template_id: { type: string, format: uuid, nullable: true }
+        questions: { type: array, maxItems: 50, items: { $ref: "#/components/schemas/PostingQuestion" } }
+    QuestionTemplateInput:
+      type: object
+      properties:
+        name: { type: string, maxLength: 200 }
+        status: { type: string, enum: [active, archived] }
+        expected_version: { type: integer }
+        questions: { type: array, maxItems: 50, items: { $ref: "#/components/schemas/PostingQuestion" } }
+    SessionResponse:
+      type: object
+      properties:
+        organization:
+          type: object
+          properties: { id: { type: string }, name: { type: string }, slug: { type: string } }
+        user:
+          type: object
+          properties: { id: { type: string }, email: { type: string }, name: { type: string } }
+        membership:
+          type: object
+          properties: { id: { type: string }, role_id: { type: string } }
+        session:
+          type: object
+          properties:
+            token: { type: string }
+            expires_at: { type: string, format: date-time }
+    Principal:
+      type: object
+      properties:
+        organization_id: { type: string }
+        actor_type: { type: string, enum: [user, agent, integration] }
+        user: { type: [object, "null"] }
+        membership: { type: [object, "null"] }
+        agent: { type: [object, "null"] }
+        credential: { type: [object, "null"] }
+        permissions: { type: array, items: { type: string } }
+        api_version: { type: string }
+    Agent:
+      type: object
+      properties:
+        id: { type: string }
+        owner_membership_id: { type: string }
+        owner_user_id: { type: string }
+        name: { type: string }
+        description: { type: [string, "null"] }
+        status: { type: string, enum: [active, paused, revoked] }
+        scopes: { type: array, items: { type: string } }
+        version: { type: integer }
+    Credential:
+      type: object
+      properties:
+        id: { type: string }
+        kind: { type: string, enum: [personal, integration, agent, session] }
+        name: { type: string }
+        token_prefix: { type: string }
+        token: { type: string, description: "Only in the create response" }
+        scopes: { type: array, items: { type: string } }
+        user_id: { type: [string, "null"] }
+        agent_id: { type: [string, "null"] }
+        status: { type: string }
+        expires_at: { type: [string, "null"], format: date-time }

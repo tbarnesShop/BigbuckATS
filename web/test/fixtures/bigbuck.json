@@ -1,0 +1,3573 @@
+{
+  "organization": {
+    "id": "org-bigbuck-fixture-0001",
+    "name": "Big Buck",
+    "slug": "big-buck-fixture",
+    "careers": {
+      "hero_image_url": "/careers-canopy.avif",
+      "headline": "Open roles",
+      "subcopy": "Build with us at Big Buck."
+    }
+  },
+  "users": {
+    "owner": {
+      "id": "user-bigbuck-owner-0001",
+      "email": "owner@bigbuck.test",
+      "name": "Big Buck Owner"
+    },
+    "admin": {
+      "id": "user-bigbuck-admin-0001",
+      "email": "admin@bigbuck.test",
+      "name": "Ada Admin"
+    },
+    "recruiter": {
+      "id": "user-bigbuck-recruiter-0001",
+      "email": "recruiter@bigbuck.test",
+      "name": "Riley Recruiter"
+    },
+    "hiring_manager": {
+      "id": "user-bigbuck-hiring-manager-0001",
+      "email": "hm@bigbuck.test",
+      "name": "Harper Manager"
+    },
+    "sales_hm": {
+      "id": "user-bigbuck-sales-hm-0001",
+      "email": "sales.hm@bigbuck.test",
+      "name": "Sasha Sales Manager"
+    },
+    "interviewer_eng": {
+      "id": "user-bigbuck-interviewer-eng-0001",
+      "email": "ivy.interviewer@bigbuck.test",
+      "name": "Ivy Interviewer"
+    },
+    "interviewer_sales": {
+      "id": "user-bigbuck-interviewer-sales-0001",
+      "email": "owen.interviewer@bigbuck.test",
+      "name": "Owen Interviewer"
+    },
+    "non_user": {
+      "id": "user-bigbuck-non-user-0001",
+      "email": "outsider@example.com",
+      "name": "No Membership"
+    }
+  },
+  "people": [
+    {
+      "id": "person-ava-0001",
+      "key": "ava",
+      "display_name": "Ava Chen",
+      "primary_email": "ava.chen@example.com",
+      "primary_phone": "+14155550101",
+      "lifecycle_stage": "candidate",
+      "visibility": "public",
+      "country": "US",
+      "region": "us",
+      "department": "engineering",
+      "location": "sf",
+      "title": "Software Engineer",
+      "company": "acme",
+      "years_experience": 4,
+      "source": "careers",
+      "willing_to_relocate": false
+    },
+    {
+      "id": "person-ben-0001",
+      "key": "ben",
+      "display_name": "Ben Ortiz",
+      "primary_email": "ben.ortiz@example.com",
+      "primary_phone": "+14155550102",
+      "lifecycle_stage": "candidate",
+      "visibility": "public",
+      "country": "US",
+      "region": "us",
+      "department": "engineering",
+      "location": "sf",
+      "title": "Senior Engineer",
+      "company": "northwind",
+      "years_experience": 7,
+      "source": "referral",
+      "willing_to_relocate": true
+    },
+    {
+      "id": "person-cara-0001",
+      "key": "cara",
+      "display_name": "Cara Nguyen",
+      "primary_email": "cara.nguyen@example.com",
+      "primary_phone": "+16285550103",
+      "lifecycle_stage": "prospect",
+      "visibility": "public",
+      "country": "US",
+      "region": "us",
+      "department": "engineering",
+      "location": "nyc",
+      "title": "Staff Engineer",
+      "company": "globex",
+      "years_experience": 9,
+      "source": "linkedin",
+      "willing_to_relocate": false
+    },
+    {
+      "id": "person-diego-0001",
+      "key": "diego",
+      "display_name": "Diego Santos",
+      "primary_email": "diego.santos@example.com",
+      "primary_phone": "+12125550104",
+      "lifecycle_stage": "candidate",
+      "visibility": "restricted",
+      "country": "US",
+      "region": "us",
+      "department": "engineering",
+      "location": "nyc",
+      "title": "Engineering Manager",
+      "company": "initech",
+      "years_experience": 11,
+      "source": "agency",
+      "willing_to_relocate": true
+    },
+    {
+      "id": "person-elena-0001",
+      "key": "elena",
+      "display_name": "Elena Rossi",
+      "primary_email": "elena.rossi@example.com",
+      "primary_phone": "+14155550105",
+      "lifecycle_stage": "employee",
+      "visibility": "public",
+      "country": "US",
+      "region": "us",
+      "department": "engineering",
+      "location": "sf",
+      "title": "Senior Engineer",
+      "company": "acme",
+      "years_experience": 6,
+      "source": "campus",
+      "willing_to_relocate": false
+    },
+    {
+      "id": "person-farah-0001",
+      "key": "farah",
+      "display_name": "Farah Khan",
+      "primary_email": "farah.khan@example.com",
+      "primary_phone": "+442079460106",
+      "lifecycle_stage": "candidate",
+      "visibility": "public",
+      "country": "GB",
+      "region": "uk",
+      "department": "engineering",
+      "location": "london",
+      "title": "SRE",
+      "company": "hooli",
+      "years_experience": 5,
+      "source": "linkedin",
+      "willing_to_relocate": true
+    },
+    {
+      "id": "person-gabe-0001",
+      "key": "gabe",
+      "display_name": "Gabe Miller",
+      "primary_email": "gabe.miller@example.com",
+      "primary_phone": "+15125550107",
+      "lifecycle_stage": "alumni",
+      "visibility": "public",
+      "country": "US",
+      "region": "us",
+      "department": "engineering",
+      "location": "austin",
+      "title": "Software Engineer",
+      "company": "umbrella",
+      "years_experience": 8,
+      "source": "referral",
+      "willing_to_relocate": false
+    },
+    {
+      "id": "person-hana-0001",
+      "key": "hana",
+      "display_name": "Hana Park",
+      "primary_email": "hana.park@example.com",
+      "primary_phone": "+16465550108",
+      "lifecycle_stage": "candidate",
+      "visibility": "public",
+      "country": "US",
+      "region": "us",
+      "department": "engineering",
+      "location": "nyc",
+      "title": "Product Manager",
+      "company": "piedpiper",
+      "years_experience": 3,
+      "source": "careers",
+      "willing_to_relocate": false
+    },
+    {
+      "id": "person-ian-0001",
+      "key": "ian",
+      "display_name": "Ian Brooks",
+      "primary_email": "ian.brooks@example.com",
+      "primary_phone": "+49305550109",
+      "lifecycle_stage": "prospect",
+      "visibility": "restricted",
+      "country": "DE",
+      "region": "eu",
+      "department": "engineering",
+      "location": "berlin",
+      "title": "Security Engineer",
+      "company": "stark",
+      "years_experience": 10,
+      "source": "outbound",
+      "willing_to_relocate": true
+    },
+    {
+      "id": "person-jade-0001",
+      "key": "jade",
+      "display_name": "Jade Thompson",
+      "primary_email": "jade.thompson@example.com",
+      "primary_phone": "+14155550110",
+      "lifecycle_stage": "candidate",
+      "visibility": "public",
+      "country": "US",
+      "region": "us",
+      "department": "engineering",
+      "location": "remote",
+      "title": "Designer",
+      "company": "acme",
+      "years_experience": 2,
+      "source": "careers",
+      "willing_to_relocate": false
+    },
+    {
+      "id": "person-kai-0001",
+      "key": "kai",
+      "display_name": "Kai Nakamura",
+      "primary_email": "kai.nakamura@example.com",
+      "primary_phone": "+12125550111",
+      "lifecycle_stage": "candidate",
+      "visibility": "public",
+      "country": "US",
+      "region": "us",
+      "department": "sales",
+      "location": "nyc",
+      "title": "Account Executive",
+      "company": "northwind",
+      "years_experience": 5,
+      "source": "linkedin",
+      "willing_to_relocate": false
+    },
+    {
+      "id": "person-lena-0001",
+      "key": "lena",
+      "display_name": "Lena Hofmann",
+      "primary_email": "lena.hofmann@example.com",
+      "primary_phone": "+49305550112",
+      "lifecycle_stage": "candidate",
+      "visibility": "public",
+      "country": "DE",
+      "region": "eu",
+      "department": "sales",
+      "location": "berlin",
+      "title": "Senior AE",
+      "company": "globex",
+      "years_experience": 6,
+      "source": "referral",
+      "willing_to_relocate": true
+    },
+    {
+      "id": "person-marco-0001",
+      "key": "marco",
+      "display_name": "Marco Silva",
+      "primary_email": "marco.silva@example.com",
+      "primary_phone": "+3315550113",
+      "lifecycle_stage": "prospect",
+      "visibility": "public",
+      "country": "FR",
+      "region": "eu",
+      "department": "sales",
+      "location": "paris",
+      "title": "Solutions Consultant",
+      "company": "initech",
+      "years_experience": 4,
+      "source": "outbound",
+      "willing_to_relocate": false
+    },
+    {
+      "id": "person-nina-0001",
+      "key": "nina",
+      "display_name": "Nina Patel",
+      "primary_email": "nina.patel@example.com",
+      "primary_phone": "+91805550114",
+      "lifecycle_stage": "candidate",
+      "visibility": "restricted",
+      "country": "IN",
+      "region": "apac",
+      "department": "sales",
+      "location": "bangalore",
+      "title": "Account Executive",
+      "company": "hooli",
+      "years_experience": 3,
+      "source": "agency",
+      "willing_to_relocate": true
+    },
+    {
+      "id": "person-omar-0001",
+      "key": "omar",
+      "display_name": "Omar Hassan",
+      "primary_email": "omar.hassan@example.com",
+      "primary_phone": "+14165550115",
+      "lifecycle_stage": "employee",
+      "visibility": "public",
+      "country": "CA",
+      "region": "us",
+      "department": "sales",
+      "location": "toronto",
+      "title": "Senior AE",
+      "company": "umbrella",
+      "years_experience": 9,
+      "source": "referral",
+      "willing_to_relocate": false
+    },
+    {
+      "id": "person-priya-0001",
+      "key": "priya",
+      "display_name": "Priya Shah",
+      "primary_email": "priya.shah@example.com",
+      "primary_phone": "+15125550116",
+      "lifecycle_stage": "candidate",
+      "visibility": "public",
+      "country": "US",
+      "region": "us",
+      "department": "sales",
+      "location": "austin",
+      "title": "Account Executive",
+      "company": "piedpiper",
+      "years_experience": 4,
+      "source": "careers",
+      "willing_to_relocate": false
+    },
+    {
+      "id": "person-quinn-0001",
+      "key": "quinn",
+      "display_name": "Quinn Adler",
+      "primary_email": "quinn.adler@example.com",
+      "primary_phone": "+14155550117",
+      "lifecycle_stage": "alumni",
+      "visibility": "public",
+      "country": "US",
+      "region": "us",
+      "department": "sales",
+      "location": "sf",
+      "title": "Account Executive",
+      "company": "stark",
+      "years_experience": 7,
+      "source": "linkedin",
+      "willing_to_relocate": false
+    },
+    {
+      "id": "person-rosa-0001",
+      "key": "rosa",
+      "display_name": "Rosa Alvarez",
+      "primary_email": "rosa.alvarez@example.com",
+      "primary_phone": "+13055550118",
+      "lifecycle_stage": "candidate",
+      "visibility": "public",
+      "country": "US",
+      "region": "us",
+      "department": null,
+      "location": "remote",
+      "title": "Data Scientist",
+      "company": "acme",
+      "years_experience": 5,
+      "source": "campus",
+      "willing_to_relocate": true
+    },
+    {
+      "id": "person-sam-0001",
+      "key": "sam",
+      "display_name": "Sam Okonkwo",
+      "primary_email": "sam.okonkwo@example.com",
+      "primary_phone": "+442079460119",
+      "lifecycle_stage": "prospect",
+      "visibility": "public",
+      "country": "GB",
+      "region": "uk",
+      "department": null,
+      "location": "london",
+      "title": "Software Engineer",
+      "company": "northwind",
+      "years_experience": 6,
+      "source": "outbound",
+      "willing_to_relocate": true
+    },
+    {
+      "id": "person-tess-0001",
+      "key": "tess",
+      "display_name": "Tess Bergman",
+      "primary_email": "tess.bergman@example.com",
+      "primary_phone": "+16175550120",
+      "lifecycle_stage": "candidate",
+      "visibility": "public",
+      "country": "US",
+      "region": "us",
+      "department": null,
+      "location": "nyc",
+      "title": "Designer",
+      "company": "globex",
+      "years_experience": 3,
+      "source": "careers",
+      "willing_to_relocate": false
+    },
+    {
+      "id": "person-uma-0001",
+      "key": "uma",
+      "display_name": "Uma Sharma",
+      "primary_email": "uma.sharma@example.com",
+      "primary_phone": "+91225550121",
+      "lifecycle_stage": "candidate",
+      "visibility": "restricted",
+      "country": "IN",
+      "region": "apac",
+      "department": null,
+      "location": "bangalore",
+      "title": "SRE",
+      "company": "initech",
+      "years_experience": 8,
+      "source": "agency",
+      "willing_to_relocate": false
+    },
+    {
+      "id": "person-victor-0001",
+      "key": "victor",
+      "display_name": "Victor Lang",
+      "primary_email": "victor.lang@example.com",
+      "primary_phone": "+15035550122",
+      "lifecycle_stage": "candidate",
+      "visibility": "public",
+      "country": "US",
+      "region": "us",
+      "department": "engineering",
+      "location": "remote",
+      "title": "Staff Engineer",
+      "company": "hooli",
+      "years_experience": 12,
+      "source": "referral",
+      "willing_to_relocate": true
+    },
+    {
+      "id": "person-wren-0001",
+      "key": "wren",
+      "display_name": "Wren Cole",
+      "primary_email": "wren.cole@example.com",
+      "primary_phone": "+12065550123",
+      "lifecycle_stage": "candidate",
+      "visibility": "public",
+      "country": "US",
+      "region": "us",
+      "department": "engineering",
+      "location": "sf",
+      "title": "Software Engineer",
+      "company": "umbrella",
+      "years_experience": 4,
+      "source": "linkedin",
+      "willing_to_relocate": false
+    },
+    {
+      "id": "person-yasmin-0001",
+      "key": "yasmin",
+      "display_name": "Yasmin Farouk",
+      "primary_email": "yasmin.farouk@example.com",
+      "primary_phone": "+3315550124",
+      "lifecycle_stage": "candidate",
+      "visibility": "public",
+      "country": "FR",
+      "region": "eu",
+      "department": "sales",
+      "location": "paris",
+      "title": "Senior AE",
+      "company": "piedpiper",
+      "years_experience": 5,
+      "source": "outbound",
+      "willing_to_relocate": true
+    },
+    {
+      "id": "person-zachary-0001",
+      "key": "zachary",
+      "display_name": "Zachary Kim",
+      "primary_email": "zachary.kim@example.com",
+      "primary_phone": "+14085550125",
+      "lifecycle_stage": "prospect",
+      "visibility": "public",
+      "country": "US",
+      "region": "us",
+      "department": "engineering",
+      "location": "sf",
+      "title": "Software Engineer",
+      "company": "stark",
+      "years_experience": 2,
+      "source": "campus",
+      "willing_to_relocate": false
+    },
+    {
+      "id": "person-c026-0001",
+      "key": "c026",
+      "display_name": "Alex Zimmerman",
+      "primary_email": "c026@bigbuck.test",
+      "primary_phone": "+15552026",
+      "lifecycle_stage": "candidate",
+      "visibility": "public",
+      "country": "IN",
+      "region": "apac",
+      "department": "engineering",
+      "location": "bangalore",
+      "title": "Senior Engineer",
+      "company": "northwind",
+      "years_experience": 11,
+      "source": "referral",
+      "willing_to_relocate": false
+    },
+    {
+      "id": "person-c027-0001",
+      "key": "c027",
+      "display_name": "Blair Cole",
+      "primary_email": "c027@bigbuck.test",
+      "primary_phone": "+15552027",
+      "lifecycle_stage": "candidate",
+      "visibility": "public",
+      "country": "US",
+      "region": "us",
+      "department": "sales",
+      "location": "remote",
+      "title": "Staff Engineer",
+      "company": "globex",
+      "years_experience": 12,
+      "source": "careers",
+      "willing_to_relocate": true
+    },
+    {
+      "id": "person-c028-0001",
+      "key": "c028",
+      "display_name": "Casey Frost",
+      "primary_email": "c028@bigbuck.test",
+      "primary_phone": "+15552028",
+      "lifecycle_stage": "candidate",
+      "visibility": "public",
+      "country": "US",
+      "region": "us",
+      "department": "sales",
+      "location": "sf",
+      "title": "Engineering Manager",
+      "company": "initech",
+      "years_experience": 13,
+      "source": "agency",
+      "willing_to_relocate": false
+    },
+    {
+      "id": "person-c029-0001",
+      "key": "c029",
+      "display_name": "Drew Iyer",
+      "primary_email": "c029@bigbuck.test",
+      "primary_phone": "+15552029",
+      "lifecycle_stage": "employee",
+      "visibility": "public",
+      "country": "US",
+      "region": "us",
+      "department": "engineering",
+      "location": "nyc",
+      "title": "Account Executive",
+      "company": "umbrella",
+      "years_experience": 14,
+      "source": "outbound",
+      "willing_to_relocate": true
+    },
+    {
+      "id": "person-c030-0001",
+      "key": "c030",
+      "display_name": "Ellis Lane",
+      "primary_email": "c030@bigbuck.test",
+      "primary_phone": "+15552030",
+      "lifecycle_stage": "alumni",
+      "visibility": "public",
+      "country": "US",
+      "region": "us",
+      "department": "engineering",
+      "location": "austin",
+      "title": "Senior AE",
+      "company": "hooli",
+      "years_experience": 15,
+      "source": "campus",
+      "willing_to_relocate": false
+    },
+    {
+      "id": "person-c031-0001",
+      "key": "c031",
+      "display_name": "Flynn Owens",
+      "primary_email": "c031@bigbuck.test",
+      "primary_phone": "+15552031",
+      "lifecycle_stage": "prospect",
+      "visibility": "public",
+      "country": "GB",
+      "region": "uk",
+      "department": "sales",
+      "location": "london",
+      "title": "Solutions Consultant",
+      "company": "piedpiper",
+      "years_experience": 1,
+      "source": "linkedin",
+      "willing_to_relocate": true
+    },
+    {
+      "id": "person-c032-0001",
+      "key": "c032",
+      "display_name": "Greer Stone",
+      "primary_email": "c032@bigbuck.test",
+      "primary_phone": "+15552032",
+      "lifecycle_stage": "candidate",
+      "visibility": "public",
+      "country": "DE",
+      "region": "eu",
+      "department": "sales",
+      "location": "berlin",
+      "title": "Product Manager",
+      "company": "stark",
+      "years_experience": 2,
+      "source": "referral",
+      "willing_to_relocate": false
+    },
+    {
+      "id": "person-c033-0001",
+      "key": "c033",
+      "display_name": "Hayden Wells",
+      "primary_email": "c033@bigbuck.test",
+      "primary_phone": "+15552033",
+      "lifecycle_stage": "candidate",
+      "visibility": "public",
+      "country": "FR",
+      "region": "eu",
+      "department": "engineering",
+      "location": "paris",
+      "title": "Designer",
+      "company": "acme",
+      "years_experience": 3,
+      "source": "careers",
+      "willing_to_relocate": true
+    },
+    {
+      "id": "person-c034-0001",
+      "key": "c034",
+      "display_name": "Ira Zhou",
+      "primary_email": "c034@bigbuck.test",
+      "primary_phone": "+15552034",
+      "lifecycle_stage": "candidate",
+      "visibility": "public",
+      "country": "CA",
+      "region": "us",
+      "department": null,
+      "location": "toronto",
+      "title": "Data Scientist",
+      "company": "northwind",
+      "years_experience": 4,
+      "source": "agency",
+      "willing_to_relocate": false
+    },
+    {
+      "id": "person-c035-0001",
+      "key": "c035",
+      "display_name": "Jules Carter",
+      "primary_email": "c035@bigbuck.test",
+      "primary_phone": "+15552035",
+      "lifecycle_stage": "employee",
+      "visibility": "restricted",
+      "country": "IN",
+      "region": "apac",
+      "department": "sales",
+      "location": "bangalore",
+      "title": "SRE",
+      "company": "globex",
+      "years_experience": 5,
+      "source": "outbound",
+      "willing_to_relocate": true
+    },
+    {
+      "id": "person-c036-0001",
+      "key": "c036",
+      "display_name": "Kit Foster",
+      "primary_email": "c036@bigbuck.test",
+      "primary_phone": "+15552036",
+      "lifecycle_stage": "alumni",
+      "visibility": "confidential",
+      "country": "US",
+      "region": "us",
+      "department": "sales",
+      "location": "remote",
+      "title": "Security Engineer",
+      "company": "initech",
+      "years_experience": 6,
+      "source": "campus",
+      "willing_to_relocate": false
+    },
+    {
+      "id": "person-c037-0001",
+      "key": "c037",
+      "display_name": "Lane Ito",
+      "primary_email": "c037@bigbuck.test",
+      "primary_phone": "+15552037",
+      "lifecycle_stage": "prospect",
+      "visibility": "private",
+      "country": "US",
+      "region": "us",
+      "department": "engineering",
+      "location": "sf",
+      "title": "Software Engineer",
+      "company": "umbrella",
+      "years_experience": 7,
+      "source": "linkedin",
+      "willing_to_relocate": true
+    },
+    {
+      "id": "person-c038-0001",
+      "key": "c038",
+      "display_name": "Marley Lopez",
+      "primary_email": "c038@bigbuck.test",
+      "primary_phone": "+15552038",
+      "lifecycle_stage": "candidate",
+      "visibility": "public",
+      "country": "US",
+      "region": "us",
+      "department": "engineering",
+      "location": "nyc",
+      "title": "Senior Engineer",
+      "company": "hooli",
+      "years_experience": 8,
+      "source": "referral",
+      "willing_to_relocate": false
+    },
+    {
+      "id": "person-c039-0001",
+      "key": "c039",
+      "display_name": "Nico Ortiz",
+      "primary_email": "c039@bigbuck.test",
+      "primary_phone": "+15552039",
+      "lifecycle_stage": "candidate",
+      "visibility": "public",
+      "country": "US",
+      "region": "us",
+      "department": "sales",
+      "location": "austin",
+      "title": "Staff Engineer",
+      "company": "piedpiper",
+      "years_experience": 9,
+      "source": "careers",
+      "willing_to_relocate": true
+    },
+    {
+      "id": "person-c040-0001",
+      "key": "c040",
+      "display_name": "Ocean Rivera",
+      "primary_email": "c040@bigbuck.test",
+      "primary_phone": "+15552040",
+      "lifecycle_stage": "candidate",
+      "visibility": "public",
+      "country": "GB",
+      "region": "uk",
+      "department": "sales",
+      "location": "london",
+      "title": "Engineering Manager",
+      "company": "stark",
+      "years_experience": 10,
+      "source": "agency",
+      "willing_to_relocate": false
+    },
+    {
+      "id": "person-c041-0001",
+      "key": "c041",
+      "display_name": "Paige Underwood",
+      "primary_email": "c041@bigbuck.test",
+      "primary_phone": "+15552041",
+      "lifecycle_stage": "employee",
+      "visibility": "public",
+      "country": "DE",
+      "region": "eu",
+      "department": "engineering",
+      "location": "berlin",
+      "title": "Account Executive",
+      "company": "acme",
+      "years_experience": 11,
+      "source": "outbound",
+      "willing_to_relocate": true
+    },
+    {
+      "id": "person-c042-0001",
+      "key": "c042",
+      "display_name": "Remy Xu",
+      "primary_email": "c042@bigbuck.test",
+      "primary_phone": "+15552042",
+      "lifecycle_stage": "alumni",
+      "visibility": "public",
+      "country": "FR",
+      "region": "eu",
+      "department": "engineering",
+      "location": "paris",
+      "title": "Senior AE",
+      "company": "northwind",
+      "years_experience": 12,
+      "source": "campus",
+      "willing_to_relocate": false
+    },
+    {
+      "id": "person-c043-0001",
+      "key": "c043",
+      "display_name": "Skye Adler",
+      "primary_email": "c043@bigbuck.test",
+      "primary_phone": "+15552043",
+      "lifecycle_stage": "prospect",
+      "visibility": "public",
+      "country": "CA",
+      "region": "us",
+      "department": "sales",
+      "location": "toronto",
+      "title": "Solutions Consultant",
+      "company": "globex",
+      "years_experience": 13,
+      "source": "linkedin",
+      "willing_to_relocate": true
+    },
+    {
+      "id": "person-c044-0001",
+      "key": "c044",
+      "display_name": "True Dunn",
+      "primary_email": "c044@bigbuck.test",
+      "primary_phone": "+15552044",
+      "lifecycle_stage": "candidate",
+      "visibility": "public",
+      "country": "IN",
+      "region": "apac",
+      "department": "sales",
+      "location": "bangalore",
+      "title": "Product Manager",
+      "company": "initech",
+      "years_experience": 14,
+      "source": "referral",
+      "willing_to_relocate": false
+    },
+    {
+      "id": "person-c045-0001",
+      "key": "c045",
+      "display_name": "Wren Green",
+      "primary_email": "c045@bigbuck.test",
+      "primary_phone": "+15552045",
+      "lifecycle_stage": "candidate",
+      "visibility": "public",
+      "country": "US",
+      "region": "us",
+      "department": null,
+      "location": "remote",
+      "title": "Designer",
+      "company": "umbrella",
+      "years_experience": 15,
+      "source": "careers",
+      "willing_to_relocate": true
+    },
+    {
+      "id": "person-c046-0001",
+      "key": "c046",
+      "display_name": "Ari Jain",
+      "primary_email": "c046@bigbuck.test",
+      "primary_phone": "+15552046",
+      "lifecycle_stage": "candidate",
+      "visibility": "public",
+      "country": "US",
+      "region": "us",
+      "department": "engineering",
+      "location": "sf",
+      "title": "Data Scientist",
+      "company": "hooli",
+      "years_experience": 1,
+      "source": "agency",
+      "willing_to_relocate": false
+    },
+    {
+      "id": "person-c047-0001",
+      "key": "c047",
+      "display_name": "Blake Moss",
+      "primary_email": "c047@bigbuck.test",
+      "primary_phone": "+15552047",
+      "lifecycle_stage": "employee",
+      "visibility": "public",
+      "country": "US",
+      "region": "us",
+      "department": "sales",
+      "location": "nyc",
+      "title": "SRE",
+      "company": "piedpiper",
+      "years_experience": 2,
+      "source": "outbound",
+      "willing_to_relocate": true
+    },
+    {
+      "id": "person-c048-0001",
+      "key": "c048",
+      "display_name": "Chris Price",
+      "primary_email": "c048@bigbuck.test",
+      "primary_phone": "+15552048",
+      "lifecycle_stage": "alumni",
+      "visibility": "public",
+      "country": "US",
+      "region": "us",
+      "department": "sales",
+      "location": "austin",
+      "title": "Security Engineer",
+      "company": "stark",
+      "years_experience": 3,
+      "source": "campus",
+      "willing_to_relocate": false
+    },
+    {
+      "id": "person-c049-0001",
+      "key": "c049",
+      "display_name": "Dana Torres",
+      "primary_email": "c049@bigbuck.test",
+      "primary_phone": "+15552049",
+      "lifecycle_stage": "prospect",
+      "visibility": "public",
+      "country": "GB",
+      "region": "uk",
+      "department": "engineering",
+      "location": "london",
+      "title": "Software Engineer",
+      "company": "acme",
+      "years_experience": 4,
+      "source": "linkedin",
+      "willing_to_relocate": true
+    },
+    {
+      "id": "person-c050-0001",
+      "key": "c050",
+      "display_name": "Eli Xu",
+      "primary_email": "c050@bigbuck.test",
+      "primary_phone": "+15552050",
+      "lifecycle_stage": "candidate",
+      "visibility": "public",
+      "country": "DE",
+      "region": "eu",
+      "department": "engineering",
+      "location": "berlin",
+      "title": "Senior Engineer",
+      "company": "northwind",
+      "years_experience": 5,
+      "source": "referral",
+      "willing_to_relocate": false
+    },
+    {
+      "id": "person-c051-0001",
+      "key": "c051",
+      "display_name": "Fran Alvarez",
+      "primary_email": "c051@bigbuck.test",
+      "primary_phone": "+15552051",
+      "lifecycle_stage": "candidate",
+      "visibility": "public",
+      "country": "FR",
+      "region": "eu",
+      "department": "sales",
+      "location": "paris",
+      "title": "Staff Engineer",
+      "company": "globex",
+      "years_experience": 6,
+      "source": "careers",
+      "willing_to_relocate": true
+    },
+    {
+      "id": "person-c052-0001",
+      "key": "c052",
+      "display_name": "Gray Diaz",
+      "primary_email": "c052@bigbuck.test",
+      "primary_phone": "+15552052",
+      "lifecycle_stage": "candidate",
+      "visibility": "restricted",
+      "country": "CA",
+      "region": "us",
+      "department": "sales",
+      "location": "toronto",
+      "title": "Engineering Manager",
+      "company": "initech",
+      "years_experience": 7,
+      "source": "agency",
+      "willing_to_relocate": false
+    },
+    {
+      "id": "person-c053-0001",
+      "key": "c053",
+      "display_name": "Hope Garcia",
+      "primary_email": "c053@bigbuck.test",
+      "primary_phone": "+15552053",
+      "lifecycle_stage": "employee",
+      "visibility": "confidential",
+      "country": "IN",
+      "region": "apac",
+      "department": "engineering",
+      "location": "bangalore",
+      "title": "Account Executive",
+      "company": "umbrella",
+      "years_experience": 8,
+      "source": "outbound",
+      "willing_to_relocate": true
+    },
+    {
+      "id": "person-c054-0001",
+      "key": "c054",
+      "display_name": "Ivan Jackson",
+      "primary_email": "c054@bigbuck.test",
+      "primary_phone": "+15552054",
+      "lifecycle_stage": "alumni",
+      "visibility": "private",
+      "country": "US",
+      "region": "us",
+      "department": "engineering",
+      "location": "remote",
+      "title": "Senior AE",
+      "company": "hooli",
+      "years_experience": 9,
+      "source": "campus",
+      "willing_to_relocate": false
+    },
+    {
+      "id": "person-c055-0001",
+      "key": "c055",
+      "display_name": "Jules Meyer",
+      "primary_email": "c055@bigbuck.test",
+      "primary_phone": "+15552055",
+      "lifecycle_stage": "prospect",
+      "visibility": "public",
+      "country": "US",
+      "region": "us",
+      "department": "sales",
+      "location": "sf",
+      "title": "Solutions Consultant",
+      "company": "piedpiper",
+      "years_experience": 10,
+      "source": "linkedin",
+      "willing_to_relocate": true
+    },
+    {
+      "id": "person-c056-0001",
+      "key": "c056",
+      "display_name": "Kris Patel",
+      "primary_email": "c056@bigbuck.test",
+      "primary_phone": "+15552056",
+      "lifecycle_stage": "candidate",
+      "visibility": "public",
+      "country": "US",
+      "region": "us",
+      "department": null,
+      "location": "nyc",
+      "title": "Product Manager",
+      "company": "stark",
+      "years_experience": 11,
+      "source": "referral",
+      "willing_to_relocate": false
+    },
+    {
+      "id": "person-c057-0001",
+      "key": "c057",
+      "display_name": "Lee Singh",
+      "primary_email": "c057@bigbuck.test",
+      "primary_phone": "+15552057",
+      "lifecycle_stage": "candidate",
+      "visibility": "public",
+      "country": "US",
+      "region": "us",
+      "department": "engineering",
+      "location": "austin",
+      "title": "Designer",
+      "company": "acme",
+      "years_experience": 12,
+      "source": "careers",
+      "willing_to_relocate": true
+    },
+    {
+      "id": "person-c058-0001",
+      "key": "c058",
+      "display_name": "Max Vega",
+      "primary_email": "c058@bigbuck.test",
+      "primary_phone": "+15552058",
+      "lifecycle_stage": "candidate",
+      "visibility": "public",
+      "country": "GB",
+      "region": "uk",
+      "department": "engineering",
+      "location": "london",
+      "title": "Data Scientist",
+      "company": "northwind",
+      "years_experience": 13,
+      "source": "agency",
+      "willing_to_relocate": false
+    },
+    {
+      "id": "person-c059-0001",
+      "key": "c059",
+      "display_name": "Noel Young",
+      "primary_email": "c059@bigbuck.test",
+      "primary_phone": "+15552059",
+      "lifecycle_stage": "employee",
+      "visibility": "public",
+      "country": "DE",
+      "region": "eu",
+      "department": "sales",
+      "location": "berlin",
+      "title": "SRE",
+      "company": "globex",
+      "years_experience": 14,
+      "source": "outbound",
+      "willing_to_relocate": true
+    },
+    {
+      "id": "person-c060-0001",
+      "key": "c060",
+      "display_name": "Oli Brooks",
+      "primary_email": "c060@bigbuck.test",
+      "primary_phone": "+15552060",
+      "lifecycle_stage": "alumni",
+      "visibility": "public",
+      "country": "FR",
+      "region": "eu",
+      "department": "sales",
+      "location": "paris",
+      "title": "Security Engineer",
+      "company": "initech",
+      "years_experience": 15,
+      "source": "campus",
+      "willing_to_relocate": false
+    },
+    {
+      "id": "person-c061-0001",
+      "key": "c061",
+      "display_name": "Pat Ernst",
+      "primary_email": "c061@bigbuck.test",
+      "primary_phone": "+15552061",
+      "lifecycle_stage": "prospect",
+      "visibility": "public",
+      "country": "CA",
+      "region": "us",
+      "department": "engineering",
+      "location": "toronto",
+      "title": "Software Engineer",
+      "company": "umbrella",
+      "years_experience": 1,
+      "source": "linkedin",
+      "willing_to_relocate": true
+    },
+    {
+      "id": "person-c062-0001",
+      "key": "c062",
+      "display_name": "Rae Holt",
+      "primary_email": "c062@bigbuck.test",
+      "primary_phone": "+15552062",
+      "lifecycle_stage": "candidate",
+      "visibility": "public",
+      "country": "IN",
+      "region": "apac",
+      "department": "engineering",
+      "location": "bangalore",
+      "title": "Senior Engineer",
+      "company": "hooli",
+      "years_experience": 2,
+      "source": "referral",
+      "willing_to_relocate": false
+    },
+    {
+      "id": "person-c063-0001",
+      "key": "c063",
+      "display_name": "Sam Kim",
+      "primary_email": "c063@bigbuck.test",
+      "primary_phone": "+15552063",
+      "lifecycle_stage": "candidate",
+      "visibility": "public",
+      "country": "US",
+      "region": "us",
+      "department": "sales",
+      "location": "remote",
+      "title": "Staff Engineer",
+      "company": "piedpiper",
+      "years_experience": 3,
+      "source": "careers",
+      "willing_to_relocate": true
+    },
+    {
+      "id": "person-c064-0001",
+      "key": "c064",
+      "display_name": "Tess Nash",
+      "primary_email": "c064@bigbuck.test",
+      "primary_phone": "+15552064",
+      "lifecycle_stage": "candidate",
+      "visibility": "public",
+      "country": "US",
+      "region": "us",
+      "department": "sales",
+      "location": "sf",
+      "title": "Engineering Manager",
+      "company": "stark",
+      "years_experience": 4,
+      "source": "agency",
+      "willing_to_relocate": false
+    },
+    {
+      "id": "person-c065-0001",
+      "key": "c065",
+      "display_name": "Uma Reed",
+      "primary_email": "c065@bigbuck.test",
+      "primary_phone": "+15552065",
+      "lifecycle_stage": "employee",
+      "visibility": "public",
+      "country": "US",
+      "region": "us",
+      "department": "engineering",
+      "location": "nyc",
+      "title": "Account Executive",
+      "company": "acme",
+      "years_experience": 5,
+      "source": "outbound",
+      "willing_to_relocate": true
+    },
+    {
+      "id": "person-c066-0001",
+      "key": "c066",
+      "display_name": "Vic Vargas",
+      "primary_email": "c066@bigbuck.test",
+      "primary_phone": "+15552066",
+      "lifecycle_stage": "alumni",
+      "visibility": "public",
+      "country": "US",
+      "region": "us",
+      "department": "engineering",
+      "location": "austin",
+      "title": "Senior AE",
+      "company": "northwind",
+      "years_experience": 6,
+      "source": "campus",
+      "willing_to_relocate": false
+    },
+    {
+      "id": "person-c067-0001",
+      "key": "c067",
+      "display_name": "Will Yang",
+      "primary_email": "c067@bigbuck.test",
+      "primary_phone": "+15552067",
+      "lifecycle_stage": "prospect",
+      "visibility": "public",
+      "country": "GB",
+      "region": "uk",
+      "department": null,
+      "location": "london",
+      "title": "Solutions Consultant",
+      "company": "globex",
+      "years_experience": 7,
+      "source": "linkedin",
+      "willing_to_relocate": true
+    },
+    {
+      "id": "person-c068-0001",
+      "key": "c068",
+      "display_name": "Xan Bennett",
+      "primary_email": "c068@bigbuck.test",
+      "primary_phone": "+15552068",
+      "lifecycle_stage": "candidate",
+      "visibility": "public",
+      "country": "DE",
+      "region": "eu",
+      "department": "sales",
+      "location": "berlin",
+      "title": "Product Manager",
+      "company": "initech",
+      "years_experience": 8,
+      "source": "referral",
+      "willing_to_relocate": false
+    },
+    {
+      "id": "person-c069-0001",
+      "key": "c069",
+      "display_name": "Yue Ellis",
+      "primary_email": "c069@bigbuck.test",
+      "primary_phone": "+15552069",
+      "lifecycle_stage": "candidate",
+      "visibility": "restricted",
+      "country": "FR",
+      "region": "eu",
+      "department": "engineering",
+      "location": "paris",
+      "title": "Designer",
+      "company": "umbrella",
+      "years_experience": 9,
+      "source": "careers",
+      "willing_to_relocate": true
+    },
+    {
+      "id": "person-c070-0001",
+      "key": "c070",
+      "display_name": "Zak Hayes",
+      "primary_email": "c070@bigbuck.test",
+      "primary_phone": "+15552070",
+      "lifecycle_stage": "candidate",
+      "visibility": "confidential",
+      "country": "CA",
+      "region": "us",
+      "department": "engineering",
+      "location": "toronto",
+      "title": "Data Scientist",
+      "company": "hooli",
+      "years_experience": 10,
+      "source": "agency",
+      "willing_to_relocate": false
+    },
+    {
+      "id": "person-c071-0001",
+      "key": "c071",
+      "display_name": "Avery Khan",
+      "primary_email": "c071@bigbuck.test",
+      "primary_phone": "+15552071",
+      "lifecycle_stage": "employee",
+      "visibility": "private",
+      "country": "IN",
+      "region": "apac",
+      "department": "sales",
+      "location": "bangalore",
+      "title": "SRE",
+      "company": "piedpiper",
+      "years_experience": 11,
+      "source": "outbound",
+      "willing_to_relocate": true
+    },
+    {
+      "id": "person-c072-0001",
+      "key": "c072",
+      "display_name": "Bailey Nguyen",
+      "primary_email": "c072@bigbuck.test",
+      "primary_phone": "+15552072",
+      "lifecycle_stage": "alumni",
+      "visibility": "public",
+      "country": "US",
+      "region": "us",
+      "department": "sales",
+      "location": "remote",
+      "title": "Security Engineer",
+      "company": "stark",
+      "years_experience": 12,
+      "source": "campus",
+      "willing_to_relocate": false
+    },
+    {
+      "id": "person-c073-0001",
+      "key": "c073",
+      "display_name": "Cameron Quinn",
+      "primary_email": "c073@bigbuck.test",
+      "primary_phone": "+15552073",
+      "lifecycle_stage": "prospect",
+      "visibility": "public",
+      "country": "US",
+      "region": "us",
+      "department": "engineering",
+      "location": "sf",
+      "title": "Software Engineer",
+      "company": "acme",
+      "years_experience": 13,
+      "source": "linkedin",
+      "willing_to_relocate": true
+    },
+    {
+      "id": "person-c074-0001",
+      "key": "c074",
+      "display_name": "Dakota Tran",
+      "primary_email": "c074@bigbuck.test",
+      "primary_phone": "+15552074",
+      "lifecycle_stage": "candidate",
+      "visibility": "public",
+      "country": "US",
+      "region": "us",
+      "department": "engineering",
+      "location": "nyc",
+      "title": "Senior Engineer",
+      "company": "northwind",
+      "years_experience": 14,
+      "source": "referral",
+      "willing_to_relocate": false
+    },
+    {
+      "id": "person-c075-0001",
+      "key": "c075",
+      "display_name": "Eden Walsh",
+      "primary_email": "c075@bigbuck.test",
+      "primary_phone": "+15552075",
+      "lifecycle_stage": "candidate",
+      "visibility": "public",
+      "country": "US",
+      "region": "us",
+      "department": "sales",
+      "location": "austin",
+      "title": "Staff Engineer",
+      "company": "globex",
+      "years_experience": 15,
+      "source": "careers",
+      "willing_to_relocate": true
+    },
+    {
+      "id": "person-c076-0001",
+      "key": "c076",
+      "display_name": "Finley Zimmerman",
+      "primary_email": "c076@bigbuck.test",
+      "primary_phone": "+15552076",
+      "lifecycle_stage": "candidate",
+      "visibility": "public",
+      "country": "GB",
+      "region": "uk",
+      "department": "sales",
+      "location": "london",
+      "title": "Engineering Manager",
+      "company": "initech",
+      "years_experience": 1,
+      "source": "agency",
+      "willing_to_relocate": false
+    },
+    {
+      "id": "person-c077-0001",
+      "key": "c077",
+      "display_name": "Harper Cole",
+      "primary_email": "c077@bigbuck.test",
+      "primary_phone": "+15552077",
+      "lifecycle_stage": "employee",
+      "visibility": "public",
+      "country": "DE",
+      "region": "eu",
+      "department": "engineering",
+      "location": "berlin",
+      "title": "Account Executive",
+      "company": "umbrella",
+      "years_experience": 2,
+      "source": "outbound",
+      "willing_to_relocate": true
+    },
+    {
+      "id": "person-c078-0001",
+      "key": "c078",
+      "display_name": "Indigo Frost",
+      "primary_email": "c078@bigbuck.test",
+      "primary_phone": "+15552078",
+      "lifecycle_stage": "alumni",
+      "visibility": "public",
+      "country": "FR",
+      "region": "eu",
+      "department": null,
+      "location": "paris",
+      "title": "Senior AE",
+      "company": "hooli",
+      "years_experience": 3,
+      "source": "campus",
+      "willing_to_relocate": false
+    },
+    {
+      "id": "person-c079-0001",
+      "key": "c079",
+      "display_name": "Jordan Iyer",
+      "primary_email": "c079@bigbuck.test",
+      "primary_phone": "+15552079",
+      "lifecycle_stage": "prospect",
+      "visibility": "public",
+      "country": "CA",
+      "region": "us",
+      "department": "sales",
+      "location": "toronto",
+      "title": "Solutions Consultant",
+      "company": "piedpiper",
+      "years_experience": 4,
+      "source": "linkedin",
+      "willing_to_relocate": true
+    },
+    {
+      "id": "person-c080-0001",
+      "key": "c080",
+      "display_name": "Kai Lane",
+      "primary_email": "c080@bigbuck.test",
+      "primary_phone": "+15552080",
+      "lifecycle_stage": "candidate",
+      "visibility": "public",
+      "country": "IN",
+      "region": "apac",
+      "department": "sales",
+      "location": "bangalore",
+      "title": "Product Manager",
+      "company": "stark",
+      "years_experience": 5,
+      "source": "referral",
+      "willing_to_relocate": false
+    },
+    {
+      "id": "person-c081-0001",
+      "key": "c081",
+      "display_name": "Logan Owens",
+      "primary_email": "c081@bigbuck.test",
+      "primary_phone": "+15552081",
+      "lifecycle_stage": "candidate",
+      "visibility": "public",
+      "country": "US",
+      "region": "us",
+      "department": "engineering",
+      "location": "remote",
+      "title": "Designer",
+      "company": "acme",
+      "years_experience": 6,
+      "source": "careers",
+      "willing_to_relocate": true
+    },
+    {
+      "id": "person-c082-0001",
+      "key": "c082",
+      "display_name": "Morgan Stone",
+      "primary_email": "c082@bigbuck.test",
+      "primary_phone": "+15552082",
+      "lifecycle_stage": "candidate",
+      "visibility": "public",
+      "country": "US",
+      "region": "us",
+      "department": "engineering",
+      "location": "sf",
+      "title": "Data Scientist",
+      "company": "northwind",
+      "years_experience": 7,
+      "source": "agency",
+      "willing_to_relocate": false
+    },
+    {
+      "id": "person-c083-0001",
+      "key": "c083",
+      "display_name": "Noa Wells",
+      "primary_email": "c083@bigbuck.test",
+      "primary_phone": "+15552083",
+      "lifecycle_stage": "employee",
+      "visibility": "public",
+      "country": "US",
+      "region": "us",
+      "department": "sales",
+      "location": "nyc",
+      "title": "SRE",
+      "company": "globex",
+      "years_experience": 8,
+      "source": "outbound",
+      "willing_to_relocate": true
+    },
+    {
+      "id": "person-c084-0001",
+      "key": "c084",
+      "display_name": "Oakley Zhou",
+      "primary_email": "c084@bigbuck.test",
+      "primary_phone": "+15552084",
+      "lifecycle_stage": "alumni",
+      "visibility": "public",
+      "country": "US",
+      "region": "us",
+      "department": "sales",
+      "location": "austin",
+      "title": "Security Engineer",
+      "company": "initech",
+      "years_experience": 9,
+      "source": "campus",
+      "willing_to_relocate": false
+    },
+    {
+      "id": "person-c085-0001",
+      "key": "c085",
+      "display_name": "Parker Carter",
+      "primary_email": "c085@bigbuck.test",
+      "primary_phone": "+15552085",
+      "lifecycle_stage": "prospect",
+      "visibility": "public",
+      "country": "GB",
+      "region": "uk",
+      "department": "engineering",
+      "location": "london",
+      "title": "Software Engineer",
+      "company": "umbrella",
+      "years_experience": 10,
+      "source": "linkedin",
+      "willing_to_relocate": true
+    },
+    {
+      "id": "person-c086-0001",
+      "key": "c086",
+      "display_name": "Quinn Foster",
+      "primary_email": "c086@bigbuck.test",
+      "primary_phone": "+15552086",
+      "lifecycle_stage": "candidate",
+      "visibility": "restricted",
+      "country": "DE",
+      "region": "eu",
+      "department": "engineering",
+      "location": "berlin",
+      "title": "Senior Engineer",
+      "company": "hooli",
+      "years_experience": 11,
+      "source": "referral",
+      "willing_to_relocate": false
+    },
+    {
+      "id": "person-c087-0001",
+      "key": "c087",
+      "display_name": "Reese Ito",
+      "primary_email": "c087@bigbuck.test",
+      "primary_phone": "+15552087",
+      "lifecycle_stage": "candidate",
+      "visibility": "confidential",
+      "country": "FR",
+      "region": "eu",
+      "department": "sales",
+      "location": "paris",
+      "title": "Staff Engineer",
+      "company": "piedpiper",
+      "years_experience": 12,
+      "source": "careers",
+      "willing_to_relocate": true
+    },
+    {
+      "id": "person-c088-0001",
+      "key": "c088",
+      "display_name": "Sage Lopez",
+      "primary_email": "c088@bigbuck.test",
+      "primary_phone": "+15552088",
+      "lifecycle_stage": "candidate",
+      "visibility": "private",
+      "country": "CA",
+      "region": "us",
+      "department": "sales",
+      "location": "toronto",
+      "title": "Engineering Manager",
+      "company": "stark",
+      "years_experience": 13,
+      "source": "agency",
+      "willing_to_relocate": false
+    },
+    {
+      "id": "person-c089-0001",
+      "key": "c089",
+      "display_name": "Taylor Ortiz",
+      "primary_email": "c089@bigbuck.test",
+      "primary_phone": "+15552089",
+      "lifecycle_stage": "employee",
+      "visibility": "public",
+      "country": "IN",
+      "region": "apac",
+      "department": null,
+      "location": "bangalore",
+      "title": "Account Executive",
+      "company": "acme",
+      "years_experience": 14,
+      "source": "outbound",
+      "willing_to_relocate": true
+    },
+    {
+      "id": "person-c090-0001",
+      "key": "c090",
+      "display_name": "Uri Rivera",
+      "primary_email": "c090@bigbuck.test",
+      "primary_phone": "+15552090",
+      "lifecycle_stage": "alumni",
+      "visibility": "public",
+      "country": "US",
+      "region": "us",
+      "department": "engineering",
+      "location": "remote",
+      "title": "Senior AE",
+      "company": "northwind",
+      "years_experience": 15,
+      "source": "campus",
+      "willing_to_relocate": false
+    },
+    {
+      "id": "person-c091-0001",
+      "key": "c091",
+      "display_name": "Val Underwood",
+      "primary_email": "c091@bigbuck.test",
+      "primary_phone": "+15552091",
+      "lifecycle_stage": "prospect",
+      "visibility": "public",
+      "country": "US",
+      "region": "us",
+      "department": "sales",
+      "location": "sf",
+      "title": "Solutions Consultant",
+      "company": "globex",
+      "years_experience": 1,
+      "source": "linkedin",
+      "willing_to_relocate": true
+    },
+    {
+      "id": "person-c092-0001",
+      "key": "c092",
+      "display_name": "Wes Xu",
+      "primary_email": "c092@bigbuck.test",
+      "primary_phone": "+15552092",
+      "lifecycle_stage": "candidate",
+      "visibility": "public",
+      "country": "US",
+      "region": "us",
+      "department": "sales",
+      "location": "nyc",
+      "title": "Product Manager",
+      "company": "initech",
+      "years_experience": 2,
+      "source": "referral",
+      "willing_to_relocate": false
+    },
+    {
+      "id": "person-c093-0001",
+      "key": "c093",
+      "display_name": "Xia Adler",
+      "primary_email": "c093@bigbuck.test",
+      "primary_phone": "+15552093",
+      "lifecycle_stage": "candidate",
+      "visibility": "public",
+      "country": "US",
+      "region": "us",
+      "department": "engineering",
+      "location": "austin",
+      "title": "Designer",
+      "company": "umbrella",
+      "years_experience": 3,
+      "source": "careers",
+      "willing_to_relocate": true
+    },
+    {
+      "id": "person-c094-0001",
+      "key": "c094",
+      "display_name": "Yuki Dunn",
+      "primary_email": "c094@bigbuck.test",
+      "primary_phone": "+15552094",
+      "lifecycle_stage": "candidate",
+      "visibility": "public",
+      "country": "GB",
+      "region": "uk",
+      "department": "engineering",
+      "location": "london",
+      "title": "Data Scientist",
+      "company": "hooli",
+      "years_experience": 4,
+      "source": "agency",
+      "willing_to_relocate": false
+    },
+    {
+      "id": "person-c095-0001",
+      "key": "c095",
+      "display_name": "Zion Green",
+      "primary_email": "c095@bigbuck.test",
+      "primary_phone": "+15552095",
+      "lifecycle_stage": "employee",
+      "visibility": "public",
+      "country": "DE",
+      "region": "eu",
+      "department": "sales",
+      "location": "berlin",
+      "title": "SRE",
+      "company": "piedpiper",
+      "years_experience": 5,
+      "source": "outbound",
+      "willing_to_relocate": true
+    },
+    {
+      "id": "person-c096-0001",
+      "key": "c096",
+      "display_name": "Alex Jain",
+      "primary_email": "c096@bigbuck.test",
+      "primary_phone": "+15552096",
+      "lifecycle_stage": "alumni",
+      "visibility": "public",
+      "country": "FR",
+      "region": "eu",
+      "department": "sales",
+      "location": "paris",
+      "title": "Security Engineer",
+      "company": "stark",
+      "years_experience": 6,
+      "source": "campus",
+      "willing_to_relocate": false
+    },
+    {
+      "id": "person-c097-0001",
+      "key": "c097",
+      "display_name": "Blair Moss",
+      "primary_email": "c097@bigbuck.test",
+      "primary_phone": "+15552097",
+      "lifecycle_stage": "prospect",
+      "visibility": "public",
+      "country": "CA",
+      "region": "us",
+      "department": "engineering",
+      "location": "toronto",
+      "title": "Software Engineer",
+      "company": "acme",
+      "years_experience": 7,
+      "source": "linkedin",
+      "willing_to_relocate": true
+    },
+    {
+      "id": "person-c098-0001",
+      "key": "c098",
+      "display_name": "Casey Price",
+      "primary_email": "c098@bigbuck.test",
+      "primary_phone": "+15552098",
+      "lifecycle_stage": "candidate",
+      "visibility": "public",
+      "country": "IN",
+      "region": "apac",
+      "department": "engineering",
+      "location": "bangalore",
+      "title": "Senior Engineer",
+      "company": "northwind",
+      "years_experience": 8,
+      "source": "referral",
+      "willing_to_relocate": false
+    },
+    {
+      "id": "person-c099-0001",
+      "key": "c099",
+      "display_name": "Drew Torres",
+      "primary_email": "c099@bigbuck.test",
+      "primary_phone": "+15552099",
+      "lifecycle_stage": "candidate",
+      "visibility": "public",
+      "country": "US",
+      "region": "us",
+      "department": "sales",
+      "location": "remote",
+      "title": "Staff Engineer",
+      "company": "globex",
+      "years_experience": 9,
+      "source": "careers",
+      "willing_to_relocate": true
+    },
+    {
+      "id": "person-c100-0001",
+      "key": "c100",
+      "display_name": "Ellis Xu",
+      "primary_email": "c100@bigbuck.test",
+      "primary_phone": "+15552100",
+      "lifecycle_stage": "candidate",
+      "visibility": "public",
+      "country": "US",
+      "region": "us",
+      "department": null,
+      "location": "sf",
+      "title": "Engineering Manager",
+      "company": "initech",
+      "years_experience": 10,
+      "source": "agency",
+      "willing_to_relocate": false
+    }
+  ],
+  "jobs": [
+    {
+      "id": "job-bigbuck-platform-0001",
+      "title": "Platform Engineer",
+      "status": "active",
+      "openings": 2,
+      "confidential": false,
+      "dimensions": [{ "key": "department", "label": "Department", "value": "Engineering" }],
+      "pipeline_id": "pipe-bigbuck-eng-0001",
+      "pipeline": {
+        "id": "pipe-bigbuck-eng-0001",
+        "stages": [
+          {
+            "key": "applied",
+            "name": "Applied",
+            "type": "apply",
+            "origin": "template",
+            "interviews": []
+          },
+          {
+            "key": "onsite",
+            "name": "Onsite",
+            "type": "interview",
+            "origin": "template",
+            "interviews": [
+              {
+                "key": "screen",
+                "name": "Recruiter screen",
+                "origin": "template",
+                "required": true,
+                "rubric_key": "recruiter-screen"
+              },
+              {
+                "key": "coding",
+                "name": "Coding",
+                "origin": "template",
+                "required": true,
+                "rubric_key": "coding"
+              },
+              {
+                "key": "system-design",
+                "name": "System design",
+                "origin": "template",
+                "required": true,
+                "rubric_key": "system-design"
+              },
+              {
+                "key": "onsite",
+                "name": "Onsite",
+                "origin": "template",
+                "required": true,
+                "rubric_key": "onsite"
+              }
+            ]
+          },
+          {
+            "key": "offer",
+            "name": "Offer",
+            "type": "offer",
+            "origin": "template",
+            "interviews": []
+          }
+        ]
+      },
+      "careers_visibility": "both",
+      "careers_published": true
+    },
+    {
+      "id": "job-bigbuck-ae-0001",
+      "title": "Account Executive",
+      "status": "active",
+      "openings": 1,
+      "confidential": false,
+      "dimensions": [{ "key": "department", "label": "Department", "value": "Sales" }],
+      "pipeline_id": "pipe-bigbuck-sales-0001",
+      "pipeline": {
+        "id": "pipe-bigbuck-sales-0001",
+        "stages": [
+          {
+            "key": "applied",
+            "name": "Applied",
+            "type": "apply",
+            "origin": "template",
+            "interviews": []
+          },
+          {
+            "key": "onsite",
+            "name": "Onsite",
+            "type": "interview",
+            "origin": "template",
+            "interviews": [
+              {
+                "key": "screen",
+                "name": "Recruiter screen",
+                "origin": "template",
+                "required": true,
+                "rubric_key": "recruiter-screen"
+              },
+              {
+                "key": "discovery",
+                "name": "Discovery",
+                "origin": "template",
+                "required": true,
+                "rubric_key": "discovery"
+              },
+              {
+                "key": "case-study",
+                "name": "Case study",
+                "origin": "template",
+                "required": true,
+                "rubric_key": "case-study"
+              },
+              {
+                "key": "onsite",
+                "name": "Onsite",
+                "origin": "template",
+                "required": true,
+                "rubric_key": "onsite-sales"
+              }
+            ]
+          },
+          {
+            "key": "offer",
+            "name": "Offer",
+            "type": "offer",
+            "origin": "template",
+            "interviews": []
+          }
+        ]
+      },
+      "careers_visibility": "both",
+      "careers_published": true
+    }
+  ],
+  "applications": [
+    {
+      "id": "app-ava-platform-0001",
+      "job_id": "job-bigbuck-platform-0001",
+      "person_id": "person-ava-0001",
+      "status": "active",
+      "current_stage_key": "applied",
+      "pipeline_id": "pipe-bigbuck-eng-0001"
+    },
+    {
+      "id": "app-ben-platform-0001",
+      "job_id": "job-bigbuck-platform-0001",
+      "person_id": "person-ben-0001",
+      "status": "active",
+      "current_stage_key": "onsite",
+      "pipeline_id": "pipe-bigbuck-eng-0001"
+    },
+    {
+      "id": "app-diego-platform-0001",
+      "job_id": "job-bigbuck-platform-0001",
+      "person_id": "person-diego-0001",
+      "status": "active",
+      "current_stage_key": "applied",
+      "pipeline_id": "pipe-bigbuck-eng-0001"
+    },
+    {
+      "id": "app-farah-platform-0001",
+      "job_id": "job-bigbuck-platform-0001",
+      "person_id": "person-farah-0001",
+      "status": "active",
+      "current_stage_key": "offer",
+      "pipeline_id": "pipe-bigbuck-eng-0001"
+    },
+    {
+      "id": "app-hana-platform-0001",
+      "job_id": "job-bigbuck-platform-0001",
+      "person_id": "person-hana-0001",
+      "status": "active",
+      "current_stage_key": "onsite",
+      "pipeline_id": "pipe-bigbuck-eng-0001"
+    },
+    {
+      "id": "app-jade-platform-0001",
+      "job_id": "job-bigbuck-platform-0001",
+      "person_id": "person-jade-0001",
+      "status": "withdrawn",
+      "current_stage_key": "applied",
+      "pipeline_id": "pipe-bigbuck-eng-0001"
+    },
+    {
+      "id": "app-kai-ae-0001",
+      "job_id": "job-bigbuck-ae-0001",
+      "person_id": "person-kai-0001",
+      "status": "active",
+      "current_stage_key": "applied",
+      "pipeline_id": "pipe-bigbuck-sales-0001"
+    },
+    {
+      "id": "app-lena-ae-0001",
+      "job_id": "job-bigbuck-ae-0001",
+      "person_id": "person-lena-0001",
+      "status": "active",
+      "current_stage_key": "onsite",
+      "pipeline_id": "pipe-bigbuck-sales-0001"
+    },
+    {
+      "id": "app-nina-ae-0001",
+      "job_id": "job-bigbuck-ae-0001",
+      "person_id": "person-nina-0001",
+      "status": "active",
+      "current_stage_key": "applied",
+      "pipeline_id": "pipe-bigbuck-sales-0001"
+    },
+    {
+      "id": "app-priya-ae-0001",
+      "job_id": "job-bigbuck-ae-0001",
+      "person_id": "person-priya-0001",
+      "status": "active",
+      "current_stage_key": "offer",
+      "pipeline_id": "pipe-bigbuck-sales-0001"
+    },
+    {
+      "id": "app-tess-platform-0001",
+      "job_id": "job-bigbuck-platform-0001",
+      "person_id": "person-tess-0001",
+      "status": "rejected",
+      "current_stage_key": "applied",
+      "pipeline_id": "pipe-bigbuck-eng-0001"
+    },
+    {
+      "id": "app-uma-platform-0001",
+      "job_id": "job-bigbuck-platform-0001",
+      "person_id": "person-uma-0001",
+      "status": "active",
+      "current_stage_key": "onsite",
+      "pipeline_id": "pipe-bigbuck-eng-0001"
+    },
+    {
+      "id": "app-victor-platform-0001",
+      "job_id": "job-bigbuck-platform-0001",
+      "person_id": "person-victor-0001",
+      "status": "active",
+      "current_stage_key": "applied",
+      "pipeline_id": "pipe-bigbuck-eng-0001"
+    },
+    {
+      "id": "app-wren-platform-0001",
+      "job_id": "job-bigbuck-platform-0001",
+      "person_id": "person-wren-0001",
+      "status": "active",
+      "current_stage_key": "onsite",
+      "pipeline_id": "pipe-bigbuck-eng-0001"
+    },
+    {
+      "id": "app-yasmin-ae-0001",
+      "job_id": "job-bigbuck-ae-0001",
+      "person_id": "person-yasmin-0001",
+      "status": "active",
+      "current_stage_key": "applied",
+      "pipeline_id": "pipe-bigbuck-sales-0001"
+    },
+    {
+      "id": "app-c027-ae-0001",
+      "job_id": "job-bigbuck-ae-0001",
+      "person_id": "person-c027-0001",
+      "status": "active",
+      "current_stage_key": "applied",
+      "pipeline_id": "pipe-bigbuck-sales-0001"
+    },
+    {
+      "id": "app-c028-ae-0001",
+      "job_id": "job-bigbuck-ae-0001",
+      "person_id": "person-c028-0001",
+      "status": "active",
+      "current_stage_key": "onsite",
+      "pipeline_id": "pipe-bigbuck-sales-0001"
+    },
+    {
+      "id": "app-c029-platform-0001",
+      "job_id": "job-bigbuck-platform-0001",
+      "person_id": "person-c029-0001",
+      "status": "active",
+      "current_stage_key": "onsite",
+      "pipeline_id": "pipe-bigbuck-eng-0001"
+    },
+    {
+      "id": "app-c030-platform-0001",
+      "job_id": "job-bigbuck-platform-0001",
+      "person_id": "person-c030-0001",
+      "status": "active",
+      "current_stage_key": "offer",
+      "pipeline_id": "pipe-bigbuck-eng-0001"
+    },
+    {
+      "id": "app-c032-ae-0001",
+      "job_id": "job-bigbuck-ae-0001",
+      "person_id": "person-c032-0001",
+      "status": "active",
+      "current_stage_key": "applied",
+      "pipeline_id": "pipe-bigbuck-sales-0001"
+    },
+    {
+      "id": "app-c033-platform-0001",
+      "job_id": "job-bigbuck-platform-0001",
+      "person_id": "person-c033-0001",
+      "status": "active",
+      "current_stage_key": "onsite",
+      "pipeline_id": "pipe-bigbuck-eng-0001"
+    },
+    {
+      "id": "app-c034-platform-0001",
+      "job_id": "job-bigbuck-platform-0001",
+      "person_id": "person-c034-0001",
+      "status": "active",
+      "current_stage_key": "onsite",
+      "pipeline_id": "pipe-bigbuck-eng-0001"
+    },
+    {
+      "id": "app-c035-ae-0001",
+      "job_id": "job-bigbuck-ae-0001",
+      "person_id": "person-c035-0001",
+      "status": "active",
+      "current_stage_key": "offer",
+      "pipeline_id": "pipe-bigbuck-sales-0001"
+    },
+    {
+      "id": "app-c038-platform-0001",
+      "job_id": "job-bigbuck-platform-0001",
+      "person_id": "person-c038-0001",
+      "status": "active",
+      "current_stage_key": "onsite",
+      "pipeline_id": "pipe-bigbuck-eng-0001"
+    },
+    {
+      "id": "app-c039-ae-0001",
+      "job_id": "job-bigbuck-ae-0001",
+      "person_id": "person-c039-0001",
+      "status": "active",
+      "current_stage_key": "onsite",
+      "pipeline_id": "pipe-bigbuck-sales-0001"
+    },
+    {
+      "id": "app-c040-ae-0001",
+      "job_id": "job-bigbuck-ae-0001",
+      "person_id": "person-c040-0001",
+      "status": "active",
+      "current_stage_key": "offer",
+      "pipeline_id": "pipe-bigbuck-sales-0001"
+    },
+    {
+      "id": "app-c042-platform-0001",
+      "job_id": "job-bigbuck-platform-0001",
+      "person_id": "person-c042-0001",
+      "status": "active",
+      "current_stage_key": "applied",
+      "pipeline_id": "pipe-bigbuck-eng-0001"
+    },
+    {
+      "id": "app-c044-ae-0001",
+      "job_id": "job-bigbuck-ae-0001",
+      "person_id": "person-c044-0001",
+      "status": "active",
+      "current_stage_key": "onsite",
+      "pipeline_id": "pipe-bigbuck-sales-0001"
+    },
+    {
+      "id": "app-c045-platform-0001",
+      "job_id": "job-bigbuck-platform-0001",
+      "person_id": "person-c045-0001",
+      "status": "active",
+      "current_stage_key": "offer",
+      "pipeline_id": "pipe-bigbuck-eng-0001"
+    },
+    {
+      "id": "app-c047-ae-0001",
+      "job_id": "job-bigbuck-ae-0001",
+      "person_id": "person-c047-0001",
+      "status": "rejected",
+      "current_stage_key": "applied",
+      "pipeline_id": "pipe-bigbuck-sales-0001"
+    },
+    {
+      "id": "app-c048-ae-0001",
+      "job_id": "job-bigbuck-ae-0001",
+      "person_id": "person-c048-0001",
+      "status": "withdrawn",
+      "current_stage_key": "onsite",
+      "pipeline_id": "pipe-bigbuck-sales-0001"
+    },
+    {
+      "id": "app-c050-platform-0001",
+      "job_id": "job-bigbuck-platform-0001",
+      "person_id": "person-c050-0001",
+      "status": "active",
+      "current_stage_key": "offer",
+      "pipeline_id": "pipe-bigbuck-eng-0001"
+    },
+    {
+      "id": "app-c052-ae-0001",
+      "job_id": "job-bigbuck-ae-0001",
+      "person_id": "person-c052-0001",
+      "status": "active",
+      "current_stage_key": "applied",
+      "pipeline_id": "pipe-bigbuck-sales-0001"
+    },
+    {
+      "id": "app-c053-platform-0001",
+      "job_id": "job-bigbuck-platform-0001",
+      "person_id": "person-c053-0001",
+      "status": "active",
+      "current_stage_key": "onsite",
+      "pipeline_id": "pipe-bigbuck-eng-0001"
+    },
+    {
+      "id": "app-c054-platform-0001",
+      "job_id": "job-bigbuck-platform-0001",
+      "person_id": "person-c054-0001",
+      "status": "active",
+      "current_stage_key": "onsite",
+      "pipeline_id": "pipe-bigbuck-eng-0001"
+    },
+    {
+      "id": "app-c057-platform-0001",
+      "job_id": "job-bigbuck-platform-0001",
+      "person_id": "person-c057-0001",
+      "status": "active",
+      "current_stage_key": "applied",
+      "pipeline_id": "pipe-bigbuck-eng-0001"
+    },
+    {
+      "id": "app-c058-platform-0001",
+      "job_id": "job-bigbuck-platform-0001",
+      "person_id": "person-c058-0001",
+      "status": "active",
+      "current_stage_key": "onsite",
+      "pipeline_id": "pipe-bigbuck-eng-0001"
+    },
+    {
+      "id": "app-c059-ae-0001",
+      "job_id": "job-bigbuck-ae-0001",
+      "person_id": "person-c059-0001",
+      "status": "active",
+      "current_stage_key": "onsite",
+      "pipeline_id": "pipe-bigbuck-sales-0001"
+    },
+    {
+      "id": "app-c060-ae-0001",
+      "job_id": "job-bigbuck-ae-0001",
+      "person_id": "person-c060-0001",
+      "status": "active",
+      "current_stage_key": "offer",
+      "pipeline_id": "pipe-bigbuck-sales-0001"
+    },
+    {
+      "id": "app-c062-platform-0001",
+      "job_id": "job-bigbuck-platform-0001",
+      "person_id": "person-c062-0001",
+      "status": "active",
+      "current_stage_key": "applied",
+      "pipeline_id": "pipe-bigbuck-eng-0001"
+    },
+    {
+      "id": "app-c063-ae-0001",
+      "job_id": "job-bigbuck-ae-0001",
+      "person_id": "person-c063-0001",
+      "status": "active",
+      "current_stage_key": "onsite",
+      "pipeline_id": "pipe-bigbuck-sales-0001"
+    },
+    {
+      "id": "app-c064-ae-0001",
+      "job_id": "job-bigbuck-ae-0001",
+      "person_id": "person-c064-0001",
+      "status": "active",
+      "current_stage_key": "onsite",
+      "pipeline_id": "pipe-bigbuck-sales-0001"
+    },
+    {
+      "id": "app-c065-platform-0001",
+      "job_id": "job-bigbuck-platform-0001",
+      "person_id": "person-c065-0001",
+      "status": "active",
+      "current_stage_key": "offer",
+      "pipeline_id": "pipe-bigbuck-eng-0001"
+    },
+    {
+      "id": "app-c068-ae-0001",
+      "job_id": "job-bigbuck-ae-0001",
+      "person_id": "person-c068-0001",
+      "status": "active",
+      "current_stage_key": "onsite",
+      "pipeline_id": "pipe-bigbuck-sales-0001"
+    },
+    {
+      "id": "app-c069-platform-0001",
+      "job_id": "job-bigbuck-platform-0001",
+      "person_id": "person-c069-0001",
+      "status": "active",
+      "current_stage_key": "onsite",
+      "pipeline_id": "pipe-bigbuck-eng-0001"
+    },
+    {
+      "id": "app-c070-platform-0001",
+      "job_id": "job-bigbuck-platform-0001",
+      "person_id": "person-c070-0001",
+      "status": "rejected",
+      "current_stage_key": "offer",
+      "pipeline_id": "pipe-bigbuck-eng-0001"
+    },
+    {
+      "id": "app-c072-ae-0001",
+      "job_id": "job-bigbuck-ae-0001",
+      "person_id": "person-c072-0001",
+      "status": "hired",
+      "current_stage_key": "applied",
+      "pipeline_id": "pipe-bigbuck-sales-0001"
+    },
+    {
+      "id": "app-c074-platform-0001",
+      "job_id": "job-bigbuck-platform-0001",
+      "person_id": "person-c074-0001",
+      "status": "active",
+      "current_stage_key": "onsite",
+      "pipeline_id": "pipe-bigbuck-eng-0001"
+    },
+    {
+      "id": "app-c075-ae-0001",
+      "job_id": "job-bigbuck-ae-0001",
+      "person_id": "person-c075-0001",
+      "status": "active",
+      "current_stage_key": "offer",
+      "pipeline_id": "pipe-bigbuck-sales-0001"
+    },
+    {
+      "id": "app-c077-platform-0001",
+      "job_id": "job-bigbuck-platform-0001",
+      "person_id": "person-c077-0001",
+      "status": "active",
+      "current_stage_key": "applied",
+      "pipeline_id": "pipe-bigbuck-eng-0001"
+    },
+    {
+      "id": "app-c078-platform-0001",
+      "job_id": "job-bigbuck-platform-0001",
+      "person_id": "person-c078-0001",
+      "status": "active",
+      "current_stage_key": "onsite",
+      "pipeline_id": "pipe-bigbuck-eng-0001"
+    },
+    {
+      "id": "app-c080-ae-0001",
+      "job_id": "job-bigbuck-ae-0001",
+      "person_id": "person-c080-0001",
+      "status": "active",
+      "current_stage_key": "offer",
+      "pipeline_id": "pipe-bigbuck-sales-0001"
+    },
+    {
+      "id": "app-c082-platform-0001",
+      "job_id": "job-bigbuck-platform-0001",
+      "person_id": "person-c082-0001",
+      "status": "active",
+      "current_stage_key": "applied",
+      "pipeline_id": "pipe-bigbuck-eng-0001"
+    },
+    {
+      "id": "app-c083-ae-0001",
+      "job_id": "job-bigbuck-ae-0001",
+      "person_id": "person-c083-0001",
+      "status": "active",
+      "current_stage_key": "onsite",
+      "pipeline_id": "pipe-bigbuck-sales-0001"
+    },
+    {
+      "id": "app-c084-ae-0001",
+      "job_id": "job-bigbuck-ae-0001",
+      "person_id": "person-c084-0001",
+      "status": "active",
+      "current_stage_key": "onsite",
+      "pipeline_id": "pipe-bigbuck-sales-0001"
+    },
+    {
+      "id": "app-c087-ae-0001",
+      "job_id": "job-bigbuck-ae-0001",
+      "person_id": "person-c087-0001",
+      "status": "active",
+      "current_stage_key": "applied",
+      "pipeline_id": "pipe-bigbuck-sales-0001"
+    },
+    {
+      "id": "app-c088-ae-0001",
+      "job_id": "job-bigbuck-ae-0001",
+      "person_id": "person-c088-0001",
+      "status": "active",
+      "current_stage_key": "onsite",
+      "pipeline_id": "pipe-bigbuck-sales-0001"
+    },
+    {
+      "id": "app-c089-platform-0001",
+      "job_id": "job-bigbuck-platform-0001",
+      "person_id": "person-c089-0001",
+      "status": "active",
+      "current_stage_key": "onsite",
+      "pipeline_id": "pipe-bigbuck-eng-0001"
+    },
+    {
+      "id": "app-c090-platform-0001",
+      "job_id": "job-bigbuck-platform-0001",
+      "person_id": "person-c090-0001",
+      "status": "active",
+      "current_stage_key": "offer",
+      "pipeline_id": "pipe-bigbuck-eng-0001"
+    },
+    {
+      "id": "app-c092-ae-0001",
+      "job_id": "job-bigbuck-ae-0001",
+      "person_id": "person-c092-0001",
+      "status": "active",
+      "current_stage_key": "applied",
+      "pipeline_id": "pipe-bigbuck-sales-0001"
+    },
+    {
+      "id": "app-c093-platform-0001",
+      "job_id": "job-bigbuck-platform-0001",
+      "person_id": "person-c093-0001",
+      "status": "rejected",
+      "current_stage_key": "onsite",
+      "pipeline_id": "pipe-bigbuck-eng-0001"
+    },
+    {
+      "id": "app-c094-platform-0001",
+      "job_id": "job-bigbuck-platform-0001",
+      "person_id": "person-c094-0001",
+      "status": "withdrawn",
+      "current_stage_key": "onsite",
+      "pipeline_id": "pipe-bigbuck-eng-0001"
+    },
+    {
+      "id": "app-c095-ae-0001",
+      "job_id": "job-bigbuck-ae-0001",
+      "person_id": "person-c095-0001",
+      "status": "hired",
+      "current_stage_key": "offer",
+      "pipeline_id": "pipe-bigbuck-sales-0001"
+    },
+    {
+      "id": "app-c098-platform-0001",
+      "job_id": "job-bigbuck-platform-0001",
+      "person_id": "person-c098-0001",
+      "status": "active",
+      "current_stage_key": "onsite",
+      "pipeline_id": "pipe-bigbuck-eng-0001"
+    },
+    {
+      "id": "app-c099-ae-0001",
+      "job_id": "job-bigbuck-ae-0001",
+      "person_id": "person-c099-0001",
+      "status": "active",
+      "current_stage_key": "onsite",
+      "pipeline_id": "pipe-bigbuck-sales-0001"
+    },
+    {
+      "id": "app-c100-platform-0001",
+      "job_id": "job-bigbuck-platform-0001",
+      "person_id": "person-c100-0001",
+      "status": "active",
+      "current_stage_key": "offer",
+      "pipeline_id": "pipe-bigbuck-eng-0001"
+    }
+  ],
+  "offers": [
+    {
+      "id": "offer-ben-draft-0001",
+      "application_id": "app-ben-platform-0001",
+      "status": "draft",
+      "fields": {
+        "currency": "USD",
+        "base_salary": 185000
+      }
+    },
+    {
+      "id": "offer-farah-pending_approval-0001",
+      "application_id": "app-farah-platform-0001",
+      "status": "pending_approval",
+      "fields": {
+        "equity": "0.10%",
+        "currency": "USD",
+        "start_date": "2026-12-09",
+        "base_salary": 145000
+      }
+    },
+    {
+      "id": "offer-priya-sent-0001",
+      "application_id": "app-priya-ae-0001",
+      "status": "sent",
+      "fields": {
+        "equity": "0.10%",
+        "currency": "USD",
+        "start_date": "2026-12-19",
+        "base_salary": 155000
+      }
+    },
+    {
+      "id": "offer-c030-changes_requested-0001",
+      "application_id": "app-c030-platform-0001",
+      "status": "changes_requested",
+      "fields": {
+        "equity": "0.14%",
+        "currency": "USD",
+        "start_date": "2027-01-02",
+        "base_salary": 169000
+      }
+    },
+    {
+      "id": "offer-c035-approved-0001",
+      "application_id": "app-c035-ae-0001",
+      "status": "approved",
+      "fields": {
+        "equity": "0.09%",
+        "currency": "USD",
+        "start_date": "2027-01-07",
+        "base_salary": 174000
+      }
+    },
+    {
+      "id": "offer-c040-declined-0001",
+      "application_id": "app-c040-ae-0001",
+      "status": "declined",
+      "fields": {
+        "equity": "0.14%",
+        "currency": "USD",
+        "start_date": "2027-01-12",
+        "base_salary": 179000
+      }
+    },
+    {
+      "id": "offer-c045-expired-0001",
+      "application_id": "app-c045-platform-0001",
+      "status": "expired",
+      "fields": {
+        "equity": "0.09%",
+        "currency": "USD",
+        "start_date": "2027-01-17",
+        "base_salary": 184000
+      }
+    },
+    {
+      "id": "offer-c050-rescinded-0001",
+      "application_id": "app-c050-platform-0001",
+      "status": "rescinded",
+      "fields": {
+        "equity": "0.14%",
+        "currency": "USD",
+        "start_date": "2027-01-22",
+        "base_salary": 189000
+      }
+    },
+    {
+      "id": "offer-c060-draft-0001",
+      "application_id": "app-c060-ae-0001",
+      "status": "draft",
+      "fields": {
+        "equity": "0.14%",
+        "currency": "USD",
+        "start_date": "2027-02-01",
+        "base_salary": 199000
+      }
+    },
+    {
+      "id": "offer-c065-pending_approval-0001",
+      "application_id": "app-c065-platform-0001",
+      "status": "pending_approval",
+      "fields": {
+        "equity": "0.09%",
+        "currency": "USD",
+        "start_date": "2027-02-06",
+        "base_salary": 204000
+      }
+    },
+    {
+      "id": "offer-c075-changes_requested-0001",
+      "application_id": "app-c075-ae-0001",
+      "status": "changes_requested",
+      "fields": {
+        "equity": "0.09%",
+        "currency": "USD",
+        "start_date": "2027-02-16",
+        "base_salary": 214000
+      }
+    },
+    {
+      "id": "offer-c080-approved-0001",
+      "application_id": "app-c080-ae-0001",
+      "status": "approved",
+      "fields": {
+        "equity": "0.14%",
+        "currency": "USD",
+        "start_date": "2027-02-21",
+        "base_salary": 219000
+      }
+    },
+    {
+      "id": "offer-c090-sent-0001",
+      "application_id": "app-c090-platform-0001",
+      "status": "sent",
+      "fields": {
+        "equity": "0.14%",
+        "currency": "USD",
+        "start_date": "2027-03-03",
+        "base_salary": 229000
+      }
+    },
+    {
+      "id": "offer-c095-accepted-0001",
+      "application_id": "app-c095-ae-0001",
+      "status": "accepted",
+      "fields": {
+        "equity": "0.09%",
+        "currency": "USD",
+        "start_date": "2027-03-08",
+        "base_salary": 234000
+      }
+    },
+    {
+      "id": "offer-c100-accepted-0001",
+      "application_id": "app-c100-platform-0001",
+      "status": "accepted",
+      "fields": {
+        "equity": "0.14%",
+        "currency": "USD",
+        "start_date": "2027-03-13",
+        "base_salary": 239000
+      }
+    }
+  ],
+  "projects": [
+    {
+      "id": "project-platform-pool-0001",
+      "name": "Platform warm bench",
+      "job_id": "job-bigbuck-platform-0001",
+      "pipeline_id": "pipe-sourcing-platform-0001",
+      "confidential": false,
+      "member_count": 18,
+      "pipeline": {
+        "id": "pipe-sourcing-platform-0001",
+        "stages": [
+          {
+            "key": "prospect",
+            "name": "Prospect",
+            "type": "source",
+            "origin": "template",
+            "interviews": []
+          },
+          {
+            "key": "reached-out",
+            "name": "Reached out",
+            "type": "outreach",
+            "origin": "template",
+            "interviews": []
+          },
+          {
+            "key": "replied",
+            "name": "Replied",
+            "type": "outreach",
+            "origin": "template",
+            "interviews": []
+          },
+          {
+            "key": "ready",
+            "name": "Ready",
+            "type": "ready",
+            "origin": "template",
+            "interviews": []
+          }
+        ]
+      },
+      "job": {
+        "id": "job-bigbuck-platform-0001",
+        "title": "Platform Engineer",
+        "status": "active"
+      }
+    },
+    {
+      "id": "project-ae-pool-0001",
+      "name": "AE talent pool",
+      "job_id": "job-bigbuck-ae-0001",
+      "pipeline_id": "pipe-sourcing-sales-0001",
+      "confidential": false,
+      "member_count": 12,
+      "pipeline": {
+        "id": "pipe-sourcing-sales-0001",
+        "stages": [
+          {
+            "key": "prospect",
+            "name": "Prospect",
+            "type": "source",
+            "origin": "template",
+            "interviews": []
+          },
+          {
+            "key": "reached-out",
+            "name": "Reached out",
+            "type": "outreach",
+            "origin": "template",
+            "interviews": []
+          },
+          {
+            "key": "replied",
+            "name": "Replied",
+            "type": "outreach",
+            "origin": "template",
+            "interviews": []
+          },
+          {
+            "key": "ready",
+            "name": "Ready",
+            "type": "ready",
+            "origin": "template",
+            "interviews": []
+          }
+        ]
+      },
+      "job": {
+        "id": "job-bigbuck-ae-0001",
+        "title": "Account Executive",
+        "status": "active"
+      }
+    }
+  ],
+  "project_members": [
+    {
+      "id": "pm-cara-platform-0001",
+      "project_id": "project-platform-pool-0001",
+      "person_id": "person-cara-0001",
+      "pipeline_id": "pipe-sourcing-platform-0001",
+      "current_stage_key": "prospect",
+      "status": "active",
+      "converted_application_id": null
+    },
+    {
+      "id": "pm-ian-platform-0001",
+      "project_id": "project-platform-pool-0001",
+      "person_id": "person-ian-0001",
+      "pipeline_id": "pipe-sourcing-platform-0001",
+      "current_stage_key": "reached-out",
+      "status": "active",
+      "converted_application_id": null
+    },
+    {
+      "id": "pm-marco-ae-0001",
+      "project_id": "project-ae-pool-0001",
+      "person_id": "person-marco-0001",
+      "pipeline_id": "pipe-sourcing-sales-0001",
+      "current_stage_key": "replied",
+      "status": "active",
+      "converted_application_id": null
+    },
+    {
+      "id": "pm-rosa-ae-0001",
+      "project_id": "project-ae-pool-0001",
+      "person_id": "person-rosa-0001",
+      "pipeline_id": "pipe-sourcing-sales-0001",
+      "current_stage_key": "prospect",
+      "status": "active",
+      "converted_application_id": null
+    },
+    {
+      "id": "pm-sam-platform-0001",
+      "project_id": "project-platform-pool-0001",
+      "person_id": "person-sam-0001",
+      "pipeline_id": "pipe-sourcing-platform-0001",
+      "current_stage_key": "ready",
+      "status": "active",
+      "converted_application_id": null
+    },
+    {
+      "id": "pm-zachary-platform-0001",
+      "project_id": "project-platform-pool-0001",
+      "person_id": "person-zachary-0001",
+      "pipeline_id": "pipe-sourcing-platform-0001",
+      "current_stage_key": "reached-out",
+      "status": "active",
+      "converted_application_id": null
+    },
+    {
+      "id": "pm-c026-platform-0001",
+      "project_id": "project-platform-pool-0001",
+      "person_id": "person-c026-0001",
+      "pipeline_id": "pipe-sourcing-platform-0001",
+      "current_stage_key": "reached-out",
+      "status": "active",
+      "converted_application_id": null
+    },
+    {
+      "id": "pm-c031-ae-0001",
+      "project_id": "project-ae-pool-0001",
+      "person_id": "person-c031-0001",
+      "pipeline_id": "pipe-sourcing-sales-0001",
+      "current_stage_key": "replied",
+      "status": "active",
+      "converted_application_id": null
+    },
+    {
+      "id": "pm-c036-ae-0001",
+      "project_id": "project-ae-pool-0001",
+      "person_id": "person-c036-0001",
+      "pipeline_id": "pipe-sourcing-sales-0001",
+      "current_stage_key": "ready",
+      "status": "active",
+      "converted_application_id": null
+    },
+    {
+      "id": "pm-c037-platform-0001",
+      "project_id": "project-platform-pool-0001",
+      "person_id": "person-c037-0001",
+      "pipeline_id": "pipe-sourcing-platform-0001",
+      "current_stage_key": "prospect",
+      "status": "active",
+      "converted_application_id": null
+    },
+    {
+      "id": "pm-c041-platform-0001",
+      "project_id": "project-platform-pool-0001",
+      "person_id": "person-c041-0001",
+      "pipeline_id": "pipe-sourcing-platform-0001",
+      "current_stage_key": "prospect",
+      "status": "active",
+      "converted_application_id": null
+    },
+    {
+      "id": "pm-c043-ae-0001",
+      "project_id": "project-ae-pool-0001",
+      "person_id": "person-c043-0001",
+      "pipeline_id": "pipe-sourcing-sales-0001",
+      "current_stage_key": "replied",
+      "status": "active",
+      "converted_application_id": null
+    },
+    {
+      "id": "pm-c046-platform-0001",
+      "project_id": "project-platform-pool-0001",
+      "person_id": "person-c046-0001",
+      "pipeline_id": "pipe-sourcing-platform-0001",
+      "current_stage_key": "reached-out",
+      "status": "active",
+      "converted_application_id": null
+    },
+    {
+      "id": "pm-c049-platform-0001",
+      "project_id": "project-platform-pool-0001",
+      "person_id": "person-c049-0001",
+      "pipeline_id": "pipe-sourcing-platform-0001",
+      "current_stage_key": "prospect",
+      "status": "active",
+      "converted_application_id": null
+    },
+    {
+      "id": "pm-c051-ae-0001",
+      "project_id": "project-ae-pool-0001",
+      "person_id": "person-c051-0001",
+      "pipeline_id": "pipe-sourcing-sales-0001",
+      "current_stage_key": "replied",
+      "status": "active",
+      "converted_application_id": null
+    },
+    {
+      "id": "pm-c055-ae-0001",
+      "project_id": "project-ae-pool-0001",
+      "person_id": "person-c055-0001",
+      "pipeline_id": "pipe-sourcing-sales-0001",
+      "current_stage_key": "replied",
+      "status": "active",
+      "converted_application_id": null
+    },
+    {
+      "id": "pm-c056-platform-0001",
+      "project_id": "project-platform-pool-0001",
+      "person_id": "person-c056-0001",
+      "pipeline_id": "pipe-sourcing-platform-0001",
+      "current_stage_key": "ready",
+      "status": "active",
+      "converted_application_id": null
+    },
+    {
+      "id": "pm-c061-platform-0001",
+      "project_id": "project-platform-pool-0001",
+      "person_id": "person-c061-0001",
+      "pipeline_id": "pipe-sourcing-platform-0001",
+      "current_stage_key": "prospect",
+      "status": "active",
+      "converted_application_id": null
+    },
+    {
+      "id": "pm-c066-platform-0001",
+      "project_id": "project-platform-pool-0001",
+      "person_id": "person-c066-0001",
+      "pipeline_id": "pipe-sourcing-platform-0001",
+      "current_stage_key": "reached-out",
+      "status": "active",
+      "converted_application_id": null
+    },
+    {
+      "id": "pm-c067-platform-0001",
+      "project_id": "project-platform-pool-0001",
+      "person_id": "person-c067-0001",
+      "pipeline_id": "pipe-sourcing-platform-0001",
+      "current_stage_key": "replied",
+      "status": "active",
+      "converted_application_id": null
+    },
+    {
+      "id": "pm-c071-ae-0001",
+      "project_id": "project-ae-pool-0001",
+      "person_id": "person-c071-0001",
+      "pipeline_id": "pipe-sourcing-sales-0001",
+      "current_stage_key": "replied",
+      "status": "active",
+      "converted_application_id": null
+    },
+    {
+      "id": "pm-c073-platform-0001",
+      "project_id": "project-platform-pool-0001",
+      "person_id": "person-c073-0001",
+      "pipeline_id": "pipe-sourcing-platform-0001",
+      "current_stage_key": "prospect",
+      "status": "active",
+      "converted_application_id": null
+    },
+    {
+      "id": "pm-c076-ae-0001",
+      "project_id": "project-ae-pool-0001",
+      "person_id": "person-c076-0001",
+      "pipeline_id": "pipe-sourcing-sales-0001",
+      "current_stage_key": "ready",
+      "status": "active",
+      "converted_application_id": null
+    },
+    {
+      "id": "pm-c079-ae-0001",
+      "project_id": "project-ae-pool-0001",
+      "person_id": "person-c079-0001",
+      "pipeline_id": "pipe-sourcing-sales-0001",
+      "current_stage_key": "replied",
+      "status": "active",
+      "converted_application_id": null
+    },
+    {
+      "id": "pm-c081-platform-0001",
+      "project_id": "project-platform-pool-0001",
+      "person_id": "person-c081-0001",
+      "pipeline_id": "pipe-sourcing-platform-0001",
+      "current_stage_key": "prospect",
+      "status": "active",
+      "converted_application_id": null
+    },
+    {
+      "id": "pm-c085-platform-0001",
+      "project_id": "project-platform-pool-0001",
+      "person_id": "person-c085-0001",
+      "pipeline_id": "pipe-sourcing-platform-0001",
+      "current_stage_key": "prospect",
+      "status": "active",
+      "converted_application_id": null
+    },
+    {
+      "id": "pm-c086-platform-0001",
+      "project_id": "project-platform-pool-0001",
+      "person_id": "person-c086-0001",
+      "pipeline_id": "pipe-sourcing-platform-0001",
+      "current_stage_key": "reached-out",
+      "status": "active",
+      "converted_application_id": null
+    },
+    {
+      "id": "pm-c091-ae-0001",
+      "project_id": "project-ae-pool-0001",
+      "person_id": "person-c091-0001",
+      "pipeline_id": "pipe-sourcing-sales-0001",
+      "current_stage_key": "replied",
+      "status": "active",
+      "converted_application_id": null
+    },
+    {
+      "id": "pm-c096-ae-0001",
+      "project_id": "project-ae-pool-0001",
+      "person_id": "person-c096-0001",
+      "pipeline_id": "pipe-sourcing-sales-0001",
+      "current_stage_key": "ready",
+      "status": "active",
+      "converted_application_id": null
+    },
+    {
+      "id": "pm-c097-platform-0001",
+      "project_id": "project-platform-pool-0001",
+      "person_id": "person-c097-0001",
+      "pipeline_id": "pipe-sourcing-platform-0001",
+      "current_stage_key": "prospect",
+      "status": "active",
+      "converted_application_id": null
+    }
+  ],
+  "interviewer_profiles": [
+    {
+      "id": "iprofile-owner-0001",
+      "user_id": "user-bigbuck-owner-0001",
+      "time_zone": "America/Los_Angeles",
+      "working_hours": {
+        "mon": [
+          [
+            "09:00",
+            "17:00"
+          ]
+        ],
+        "tue": [
+          [
+            "09:00",
+            "17:00"
+          ]
+        ],
+        "wed": [
+          [
+            "09:00",
+            "17:00"
+          ]
+        ],
+        "thu": [
+          [
+            "09:00",
+            "17:00"
+          ]
+        ],
+        "fri": [
+          [
+            "09:00",
+            "17:00"
+          ]
+        ]
+      },
+      "daily_limit": 3,
+      "weekly_limit": 10,
+      "buffer_minutes": 15,
+      "paused": false
+    },
+    {
+      "id": "iprofile-admin-0001",
+      "user_id": "user-bigbuck-admin-0001",
+      "time_zone": "America/Los_Angeles",
+      "working_hours": {
+        "mon": [
+          [
+            "09:00",
+            "17:00"
+          ]
+        ],
+        "tue": [
+          [
+            "09:00",
+            "17:00"
+          ]
+        ],
+        "wed": [
+          [
+            "09:00",
+            "17:00"
+          ]
+        ],
+        "thu": [
+          [
+            "09:00",
+            "17:00"
+          ]
+        ],
+        "fri": [
+          [
+            "09:00",
+            "17:00"
+          ]
+        ]
+      },
+      "daily_limit": 4,
+      "weekly_limit": 12,
+      "buffer_minutes": 15,
+      "paused": false
+    },
+    {
+      "id": "iprofile-recruiter-0001",
+      "user_id": "user-bigbuck-recruiter-0001",
+      "time_zone": "America/New_York",
+      "working_hours": {
+        "mon": [
+          [
+            "09:00",
+            "17:00"
+          ]
+        ],
+        "tue": [
+          [
+            "09:00",
+            "17:00"
+          ]
+        ],
+        "wed": [
+          [
+            "09:00",
+            "17:00"
+          ]
+        ],
+        "thu": [
+          [
+            "09:00",
+            "17:00"
+          ]
+        ],
+        "fri": [
+          [
+            "09:00",
+            "17:00"
+          ]
+        ]
+      },
+      "daily_limit": 6,
+      "weekly_limit": 20,
+      "buffer_minutes": 10,
+      "paused": false
+    },
+    {
+      "id": "iprofile-hiring-manager-0001",
+      "user_id": "user-bigbuck-hiring-manager-0001",
+      "time_zone": "America/Los_Angeles",
+      "working_hours": {
+        "mon": [
+          [
+            "11:00",
+            "19:00"
+          ]
+        ],
+        "tue": [
+          [
+            "11:00",
+            "19:00"
+          ]
+        ],
+        "wed": [
+          [
+            "11:00",
+            "19:00"
+          ]
+        ],
+        "thu": [
+          [
+            "11:00",
+            "19:00"
+          ]
+        ],
+        "fri": [
+          [
+            "10:00",
+            "16:00"
+          ]
+        ]
+      },
+      "daily_limit": 3,
+      "weekly_limit": 8,
+      "buffer_minutes": 20,
+      "paused": false
+    },
+    {
+      "id": "iprofile-sales-hm-0001",
+      "user_id": "user-bigbuck-sales-hm-0001",
+      "time_zone": "America/Chicago",
+      "working_hours": {
+        "mon": [
+          [
+            "09:00",
+            "17:00"
+          ]
+        ],
+        "tue": [
+          [
+            "09:00",
+            "17:00"
+          ]
+        ],
+        "wed": [
+          [
+            "09:00",
+            "17:00"
+          ]
+        ],
+        "thu": [
+          [
+            "09:00",
+            "17:00"
+          ]
+        ],
+        "fri": [
+          [
+            "09:00",
+            "17:00"
+          ]
+        ]
+      },
+      "daily_limit": 4,
+      "weekly_limit": 12,
+      "buffer_minutes": 15,
+      "paused": false
+    },
+    {
+      "id": "iprofile-interviewer-eng-0001",
+      "user_id": "user-bigbuck-interviewer-eng-0001",
+      "time_zone": "Europe/Berlin",
+      "working_hours": {
+        "mon": [
+          [
+            "09:00",
+            "18:00"
+          ]
+        ],
+        "tue": [
+          [
+            "09:00",
+            "18:00"
+          ]
+        ],
+        "wed": [
+          [
+            "09:00",
+            "18:00"
+          ]
+        ],
+        "thu": [
+          [
+            "09:00",
+            "18:00"
+          ]
+        ],
+        "fri": [
+          [
+            "09:00",
+            "15:00"
+          ]
+        ]
+      },
+      "daily_limit": 5,
+      "weekly_limit": 15,
+      "buffer_minutes": 15,
+      "paused": false
+    },
+    {
+      "id": "iprofile-interviewer-sales-0001",
+      "user_id": "user-bigbuck-interviewer-sales-0001",
+      "time_zone": "America/New_York",
+      "working_hours": {
+        "mon": [
+          [
+            "09:00",
+            "17:00"
+          ]
+        ],
+        "tue": [
+          [
+            "09:00",
+            "17:00"
+          ]
+        ],
+        "wed": [
+          [
+            "09:00",
+            "17:00"
+          ]
+        ],
+        "thu": [
+          [
+            "09:00",
+            "17:00"
+          ]
+        ],
+        "fri": [
+          [
+            "09:00",
+            "17:00"
+          ]
+        ]
+      },
+      "daily_limit": 5,
+      "weekly_limit": 15,
+      "buffer_minutes": 15,
+      "paused": false
+    }
+  ],
+  "interviewer_pools": [
+    {
+      "id": "ipool-eng-panel-0001",
+      "key": "eng-panel",
+      "name": "Engineering panel",
+      "member_user_ids": [
+        "user-bigbuck-hiring-manager-0001",
+        "user-bigbuck-interviewer-eng-0001",
+        "user-bigbuck-recruiter-0001"
+      ]
+    },
+    {
+      "id": "ipool-sales-panel-0001",
+      "key": "sales-panel",
+      "name": "Sales panel",
+      "member_user_ids": [
+        "user-bigbuck-sales-hm-0001",
+        "user-bigbuck-interviewer-sales-0001",
+        "user-bigbuck-recruiter-0001"
+      ]
+    }
+  ],
+  "calendar_connections": [
+    {
+      "id": "cal-domain-0001",
+      "kind": "domain",
+      "user_id": null,
+      "calendar_id": "domain:bigbuck.test",
+      "status": "connected"
+    },
+    {
+      "id": "cal-owner-0001",
+      "kind": "user",
+      "user_id": "user-bigbuck-owner-0001",
+      "calendar_id": "primary:owner@bigbuck.test",
+      "status": "connected"
+    },
+    {
+      "id": "cal-admin-0001",
+      "kind": "user",
+      "user_id": "user-bigbuck-admin-0001",
+      "calendar_id": "primary:admin@bigbuck.test",
+      "status": "connected"
+    },
+    {
+      "id": "cal-recruiter-0001",
+      "kind": "user",
+      "user_id": "user-bigbuck-recruiter-0001",
+      "calendar_id": "primary:recruiter@bigbuck.test",
+      "status": "connected"
+    },
+    {
+      "id": "cal-hiring-manager-0001",
+      "kind": "user",
+      "user_id": "user-bigbuck-hiring-manager-0001",
+      "calendar_id": "primary:hm@bigbuck.test",
+      "status": "connected"
+    },
+    {
+      "id": "cal-sales-hm-0001",
+      "kind": "user",
+      "user_id": "user-bigbuck-sales-hm-0001",
+      "calendar_id": "primary:sales.hm@bigbuck.test",
+      "status": "connected"
+    },
+    {
+      "id": "cal-interviewer-eng-0001",
+      "kind": "user",
+      "user_id": "user-bigbuck-interviewer-eng-0001",
+      "calendar_id": "primary:ivy.interviewer@bigbuck.test",
+      "status": "connected"
+    },
+    {
+      "id": "cal-interviewer-sales-0001",
+      "kind": "user",
+      "user_id": "user-bigbuck-interviewer-sales-0001",
+      "calendar_id": "primary:owen.interviewer@bigbuck.test",
+      "status": "connected"
+    }
+  ],
+  "hiring_teams": [
+    {
+      "id": "hteam-platform-0001",
+      "job_id": "job-bigbuck-platform-0001",
+      "members": [
+        {
+          "id": "htm-platform-hiring-manager-0001",
+          "user_id": "user-bigbuck-hiring-manager-0001",
+          "team_role": "hiring-manager"
+        },
+        {
+          "id": "htm-platform-recruiter-0001",
+          "user_id": "user-bigbuck-recruiter-0001",
+          "team_role": "recruiter"
+        },
+        {
+          "id": "htm-platform-interviewer-0001",
+          "user_id": "user-bigbuck-interviewer-eng-0001",
+          "team_role": "interviewer"
+        },
+        {
+          "id": "htm-platform-coordinator-0001",
+          "user_id": "user-bigbuck-admin-0001",
+          "team_role": "coordinator"
+        }
+      ]
+    },
+    {
+      "id": "hteam-ae-0001",
+      "job_id": "job-bigbuck-ae-0001",
+      "members": [
+        {
+          "id": "htm-ae-hiring-manager-0001",
+          "user_id": "user-bigbuck-sales-hm-0001",
+          "team_role": "hiring-manager"
+        },
+        {
+          "id": "htm-ae-recruiter-0001",
+          "user_id": "user-bigbuck-recruiter-0001",
+          "team_role": "recruiter"
+        },
+        {
+          "id": "htm-ae-interviewer-0001",
+          "user_id": "user-bigbuck-interviewer-sales-0001",
+          "team_role": "interviewer"
+        }
+      ]
+    }
+  ],
+  "rooms": [
+    {
+      "id": "room-sf-board-0001",
+      "key": "sf-board",
+      "name": "SF Boardroom",
+      "resource_email": "sf-board@resource.bigbuck.test",
+      "location_key": "sf",
+      "capacity": 8
+    },
+    {
+      "id": "room-nyc-huddle-0001",
+      "key": "nyc-huddle",
+      "name": "NYC Huddle",
+      "resource_email": "nyc-huddle@resource.bigbuck.test",
+      "location_key": "nyc",
+      "capacity": 4
+    },
+    {
+      "id": "room-remote-meet-0001",
+      "key": "remote-meet",
+      "name": "Remote Meet",
+      "resource_email": "remote-meet@resource.bigbuck.test",
+      "location_key": "remote",
+      "capacity": 12
+    }
+  ],
+  "holidays": [
+    {
+      "id": "holiday-1-0001",
+      "name": "Company Day",
+      "observed_on": "2026-12-24",
+      "location_key": null
+    },
+    {
+      "id": "holiday-2-0001",
+      "name": "SF Office Closure",
+      "observed_on": "2026-07-03",
+      "location_key": "sf"
+    }
+  ],
+  "expectations": {
+    "admin_count": 100,
+    "recruiter_count": 84,
+    "hiring_manager_count": 38,
+    "non_user_count": 0,
+    "restricted_names": [
+      "Diego Santos",
+      "Ian Brooks",
+      "Nina Patel",
+      "Uma Sharma",
+      "Jules Carter",
+      "Kit Foster",
+      "Lane Ito",
+      "Gray Diaz",
+      "Hope Garcia",
+      "Ivan Jackson",
+      "Yue Ellis",
+      "Zak Hayes",
+      "Avery Khan",
+      "Quinn Foster",
+      "Reese Ito",
+      "Sage Lopez"
+    ],
+    "hiring_manager_names": [
+      "Ava Chen",
+      "Ben Ortiz",
+      "Cara Nguyen",
+      "Elena Rossi",
+      "Farah Khan",
+      "Gabe Miller",
+      "Hana Park",
+      "Jade Thompson",
+      "Victor Lang",
+      "Wren Cole",
+      "Zachary Kim",
+      "Alex Zimmerman",
+      "Drew Iyer",
+      "Ellis Lane",
+      "Hayden Wells",
+      "Marley Lopez",
+      "Paige Underwood",
+      "Remy Xu",
+      "Ari Jain",
+      "Dana Torres",
+      "Eli Xu",
+      "Lee Singh",
+      "Max Vega",
+      "Pat Ernst",
+      "Rae Holt",
+      "Uma Reed",
+      "Vic Vargas",
+      "Cameron Quinn",
+      "Dakota Tran",
+      "Harper Cole",
+      "Logan Owens",
+      "Morgan Stone",
+      "Parker Carter",
+      "Uri Rivera",
+      "Xia Adler",
+      "Yuki Dunn",
+      "Blair Moss",
+      "Casey Price"
+    ]
+  }
+}

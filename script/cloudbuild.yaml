@@ -1,0 +1,15 @@
+# Builds the Rails API image (Dockerfile) and the Remix web image (Dockerfile.web) from the repo root.
+# Used by script/gcp-launch.sh:  gcloud builds submit --config script/cloudbuild.yaml --substitutions=...
+steps:
+  - name: gcr.io/cloud-builders/docker
+    id: api
+    args: [build, -f, Dockerfile, -t, '${_API_IMAGE}', .]
+  - name: gcr.io/cloud-builders/docker
+    id: web
+    args: [build, --platform=linux/amd64, -f, Dockerfile.web, -t, '${_WEB_IMAGE}', .]
+images:
+  - '${_API_IMAGE}'
+  - '${_WEB_IMAGE}'
+options:
+  logging: CLOUD_LOGGING_ONLY
+timeout: 2400s

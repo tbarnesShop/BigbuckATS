@@ -1,0 +1,14 @@
+# Upload sources only; Vercel installs dependencies and builds web/ (web/vercel.json).
+**/node_modules
+**/dist
+web/.repo
+vendor
+tmp
+log
+storage
+coverage
+research
+design
+.git
+.vercel
+*.log
