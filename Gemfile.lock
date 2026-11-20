@@ -145,7 +145,7 @@ GEM
       base64 (~> 0.2)
       faraday (>= 1.0, < 3.a)
     google-cloud-errors (1.7.1)
-    google-cloud-storage (1.62.1)
+    google-cloud-storage (1.62.2)
       addressable (~> 2.8)
       digest-crc (~> 0.4)
       google-apis-core (>= 0.18, < 2)
@@ -205,6 +205,7 @@ GEM
       net-smtp
     marcel (1.2.1)
     mini_mime (1.1.5)
+    mini_portile2 (2.8.9)
     minitest (6.1.0)
       drb (~> 2.0)
       prism (>= 1.5, < 3)
@@ -233,6 +234,9 @@ GEM
     net-ssh (7.3.9)
       logger
     nio4r (2.7.5)
+    nokogiri (1.19.7)
+      mini_portile2 (~> 2.8.2)
+      racc (~> 1.4)
     nokogiri (1.19.7-arm64-darwin)
       racc (~> 1.4)
     nokogiri (1.19.7-x86_64-linux-gnu)
@@ -379,6 +383,7 @@ GEM
       net-ssh (>= 2.8.0)
       ostruct
     thor (1.5.0)
+    thruster (0.1.27)
     thruster (0.1.27-arm64-darwin)
     thruster (0.1.27-x86_64-linux)
     timeout (0.6.1)
@@ -411,7 +416,7 @@ DEPENDENCIES
   bundler-audit
   csv (~> 3.3)
   debug
-  google-cloud-storage (~> 1.57)
+  google-cloud-storage (~> 1.62)
   googleauth (~> 1.16)
   graphql (~> 2.6)
   jwt (~> 3.1)
