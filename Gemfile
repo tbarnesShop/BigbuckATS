@@ -43,7 +43,7 @@ gem "csv", "~> 3.3"
 gem "jwt", "~> 3.1"
 gem "oauth2", "~> 2.0"
 gem "googleauth", "~> 1.16"
-gem "google-cloud-storage", "~> 1.57"
+gem "google-cloud-storage", "~> 1.62"
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem

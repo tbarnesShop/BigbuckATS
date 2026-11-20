@@ -145,7 +145,7 @@ GEM
       base64 (~> 0.2)
       faraday (>= 1.0, < 3.a)
     google-cloud-errors (1.7.1)
-    google-cloud-storage (1.62.1)
+    google-cloud-storage (1.62.2)
       addressable (~> 2.8)
       digest-crc (~> 0.4)
       google-apis-core (>= 0.18, < 2)
@@ -416,7 +416,7 @@ DEPENDENCIES
   bundler-audit
   csv (~> 3.3)
   debug
-  google-cloud-storage (~> 1.57)
+  google-cloud-storage (~> 1.62)
   googleauth (~> 1.16)
   graphql (~> 2.6)
   jwt (~> 3.1)
