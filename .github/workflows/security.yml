@@ -23,7 +23,7 @@ jobs:
           bundle exec rubocop
           bin/brakeman --quiet --no-pager --exit-on-warn --exit-on-error
           bundle exec bundler-audit check --update
-      - uses: pnpm/action-setup@v5
+      - uses: pnpm/action-setup@v6
         with:
           version: 10.34.5
       - uses: actions/setup-node@v7
