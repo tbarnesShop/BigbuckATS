@@ -75,7 +75,7 @@ GEM
       securerandom (>= 0.3)
       tzinfo (~> 2.0, >= 2.0.5)
       uri (>= 0.13.1)
-    addressable (2.9.2)
+    addressable (2.10.0)
       public_suffix (>= 2.0.2, < 8.0)
     anonymous_loader (0.1.5)
       version_gem (~> 1.1, >= 1.1.17)
@@ -155,7 +155,7 @@ GEM
       googleauth (~> 1.9)
       mini_mime (~> 1.0)
     google-logging-utils (0.2.2)
-    googleauth (1.17.7)
+    googleauth (1.17.8)
       faraday (>= 1.0, < 3.a)
       google-cloud-env (~> 2.2)
       google-logging-utils (~> 0.1)
@@ -177,7 +177,7 @@ GEM
       prism (>= 1.3.0)
       rdoc (>= 4.0.0)
       reline (>= 0.4.2)
-    json (3.1.0)
+    json (3.2.0)
     jwt (3.3.0)
       base64
     kamal (2.12.0)
@@ -417,7 +417,7 @@ DEPENDENCIES
   csv (~> 3.3)
   debug
   google-cloud-storage (~> 1.62)
-  googleauth (~> 1.16)
+  googleauth (~> 1.17)
   graphql (~> 2.6)
   jwt (~> 3.1)
   kamal

@@ -42,7 +42,7 @@ gem "csv", "~> 3.3"
 # Verify access tokens issued by the configured external OAuth provider.
 gem "jwt", "~> 3.1"
 gem "oauth2", "~> 2.0"
-gem "googleauth", "~> 1.16"
+gem "googleauth", "~> 1.17"
 gem "google-cloud-storage", "~> 1.62"
 
 group :development, :test do
