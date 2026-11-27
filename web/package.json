@@ -44,7 +44,7 @@
     "@graphql-codegen/cli": "^8.0.0",
     "@graphql-codegen/typescript": "^6.1.2",
     "@graphql-codegen/typescript-operations": "^6.2.0",
-    "@types/node": "^24.19.2",
+    "@types/node": "^26.6.6",
     "graphql": "^17.1.0",
     "oxlint": "^1.94.0",
     "playwright": "^1.65.0",
