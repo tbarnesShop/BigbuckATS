@@ -83,7 +83,7 @@
     }
   },
   "optionalDependencies": {
-    "@oxc-minify/binding-linux-x64-gnu": "^0.157.0",
+    "@oxc-minify/binding-linux-x64-gnu": "^0.160.0",
     "@oxc-parser/binding-linux-x64-gnu": "^0.159.0",
     "@oxc-resolver/binding-linux-x64-gnu": "^11.24.2",
     "@oxc-transform/binding-linux-x64-gnu": "^0.157.0",
